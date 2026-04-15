@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('leads')) return;
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('form_submission_id')->nullable();

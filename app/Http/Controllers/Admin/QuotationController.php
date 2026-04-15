@@ -44,7 +44,7 @@ class QuotationController extends Controller
         
         if ($request->has('items')) {
             foreach ($request->items as $item) {
-                // Store project notes in the options_json blob for industrial reliability
+                // Combine installation notes with selected attributes
                 $options = $item['options'] ?? [];
                 if (!empty($item['notes'])) {
                     $options['installation_note'] = $item['notes'];
@@ -56,7 +56,7 @@ class QuotationController extends Controller
                     'width'        => $item['width'] ?? 0,
                     'height'       => $item['height'] ?? 0,
                     'quantity'     => $item['quantity'] ?? 1,
-                    'unit_price'   => $item['rate'] ?? 0, // Using standard industrial 'rate'
+                    'unit_price'   => $item['price'] ?? ($item['rate'] ?? 0),
                     'subtotal'     => $item['total'] ?? 0,
                     'options_json' => $options
                 ]);

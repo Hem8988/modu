@@ -35,6 +35,9 @@
                 <div class="settings-tab" onclick="switchTab('sms', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
                     <span style="font-size: 20px;">📱</span> SMS Automation
                 </div>
+                <div class="settings-tab" onclick="switchTab('master-products', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 20px;">📋</span> Master Product Options
+                </div>
 
 
             </div>
@@ -185,6 +188,55 @@
                     </div>
                 </div>
 
+
+                {{-- Master Product Options Card --}}
+                <div id="section-master-products" class="settings-section" style="display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 30px; gap: 20px;">
+                        <div>
+                            <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 12px;">
+                                Global Attribute Registry
+                            </h2>
+                            <p style="color: #64748b; font-size: 14px; margin-top: 8px;">These options will appear as "Quick Add" buttons when you manage products in the Catalog.</p>
+                        </div>
+                        <button type="button" onclick="openMasterAttrModal()" style="background: var(--gold); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(184, 155, 94, 0.2); white-space: nowrap;">
+                            + Add Global Option
+                        </button>
+                    </div>
+
+                    <div style="display: grid; gap: 16px;">
+                        @forelse($masterAttributes as $ma)
+                            <div style="background: #f8fafc; border: 1px solid #f1f5f9; padding: 20px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s;" onmouseover="this.style.borderColor='#e2e8f0'; this.style.background='#fff';">
+                                <div>
+                                    <div style="font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 10px; font-size: 16px;">
+                                        {{ $ma->label }}
+                                        @if(!$ma->is_active) <span style="font-size: 10px; background: #fee2e2; color: #ef4444; padding: 3px 8px; border-radius: 6px; font-weight: 900; text-transform: uppercase;">Inactive</span> @endif
+                                    </div>
+                                    <div style="font-size: 13px; color: #64748b; margin-top: 6px; font-weight: 500; display: flex; gap: 15px;">
+                                        <span><span style="color: #94a3b8; font-weight: 700;">Values:</span> {{ $ma->default_values ?: '(Custom)' }}</span>
+                                        @if($ma->default_price > 0)
+                                            <span style="color: #10b981; font-weight: 700;">+ ${{ number_format($ma->default_price, 2) }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button type="button" onclick='openMasterAttrModal({{ $ma->id }}, "{{ addslashes($ma->label) }}", "{{ addslashes($ma->default_values) }}", {{ $ma->is_active ? 1 : 0 }}, {{ $ma->default_price }})' 
+                                            style="background: #fff; border: 1px solid #e2e8f0; color: #64748b; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.color='#2563eb'; this.style.borderColor='#2563eb';">✎</button>
+                                    <form action="{{ route('admin.master-attributes.destroy', $ma->id) }}" method="POST" onsubmit="return confirm('Archive this global option?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" style="background: #fff; border: 1px solid #fee2e2; color: #ef4444; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';">✕</button>
+                                    </form>
+                                </div>
+                            </div>
+                        @empty
+                            <div style="text-align: center; padding: 60px; border: 2px dashed #f1f5f9; border-radius: 20px;">
+                                <div style="font-size: 40px; margin-bottom: 16px; opacity: 0.3;">📋</div>
+                                <h4 style="color: #64748b; margin: 0;">No Master Options Defined</h4>
+                                <p style="color: #94a3b8; font-size: 13px; margin-top: 5px;">Add global options to speed up your product cataloging.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+
                 <div style="display: flex; justify-content: flex-end; gap: 16px; padding-bottom: 40px;">
                     <button type="reset" style="padding: 14px 28px; border-radius: 12px; border: 1px solid #e2e8f0; background: #fff; font-weight: 800; color: #64748b; cursor: pointer;">Discard Changes</button>
                     <button type="submit" style="padding: 14px 40px; border-radius: 12px; border: none; background: #2563eb; color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(37,99,235,0.25);">Save Settings ➔</button>
@@ -196,7 +248,80 @@
     </form>
 </div>
 
+{{-- Master Attribute Modal --}}
+<div id="master-attr-modal" style="position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
+    <div style="background: #fff; width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden;">
+        <div style="padding: 24px 28px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+            <h3 id="modal-attr-title" style="margin: 0; font-size: 18px; font-weight: 900; color: #0f172a;">📋 Configure Global Option</h3>
+            <button onclick="closeMasterAttrModal()" style="background: none; border: none; font-size: 24px; color: #64748b; cursor: pointer;">&times;</button>
+        </div>
+        <form id="master-attr-form" method="POST">
+            @csrf
+            <div id="modal-attr-method"></div>
+            <div style="padding: 28px;">
+                <div style="display: grid; gap: 20px;">
+                    <div>
+                        <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Option Label</label>
+                        <input type="text" name="label" id="ma_label" required placeholder="e.g. Fabric Type" 
+                               style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Default Surcharge ($)</label>
+                        <input type="number" step="0.01" name="default_price" id="ma_price" placeholder="0.00" 
+                               style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Default Multi-Selection Values</label>
+                        <textarea name="default_values" id="ma_values" rows="3" placeholder="e.g. Scala, Deco, Silk (Separate by comma)" 
+                                  style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; resize: none;"></textarea>
+                        <span style="font-size: 12px; color: #94a3b8; margin-top: 6px; display: block;">Separate values with a comma. These will be clickable shortcuts.</span>
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 20px 28px; background: #fafafa; border-top: 1px solid #e2e8f0; text-align: right; display: flex; justify-content: flex-end; gap: 12px;">
+                <button type="button" onclick="closeMasterAttrModal()" style="padding: 10px 20px; border-radius: 12px; border: none; background: #e2e8f0; color: #64748b; font-weight: 700; cursor: pointer;">Cancel</button>
+                <button type="submit" id="ma_submit_btn" style="padding: 10px 24px; border-radius: 12px; border: none; background: #2563eb; color: #fff; font-weight: 800; cursor: pointer;">Save Option</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
+    function openMasterAttrModal(id = null, label = '', values = '', active = 1, price = 0) {
+        const form = document.getElementById('master-attr-form');
+        const methodDiv = document.getElementById('modal-attr-method');
+        const title = document.getElementById('modal-attr-title');
+        
+        form.reset();
+        
+        if (id) {
+            title.innerText = '🔧 Edit Global Option';
+            form.action = '/admin/master-attributes/' + id;
+            methodDiv.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+            document.getElementById('ma_label').value = label;
+            document.getElementById('ma_values').value = values;
+            document.getElementById('ma_price').value = price;
+        } else {
+            title.innerText = '📋 Register Global Option';
+            form.action = '/admin/master-attributes';
+            methodDiv.innerHTML = '';
+            document.getElementById('ma_price').value = 0;
+        }
+        
+        document.getElementById('master-attr-modal').style.display = 'flex';
+    }
+
+    function closeMasterAttrModal() {
+        document.getElementById('master-attr-modal').style.display = 'none';
+    }
+
+    // Auto-switch to Master tab if redirected back after save
+    window.addEventListener('DOMContentLoaded', (event) => {
+        if (window.location.hash === '#master') {
+            switchTab('master-products', document.querySelector('[onclick*="master-products"]'));
+        }
+    });
+
     function switchTab(sectionId, el) {
         // Hide all sections
         document.querySelectorAll('.settings-section').forEach(section => {

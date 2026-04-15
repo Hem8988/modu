@@ -138,12 +138,19 @@
     let rowIndex = {{ $items->count() }};
     const masterCatalog = {!! $products->toJson() !!};
     
+    // Normalize attributes for JS usage
+    masterCatalog.forEach(p => {
+        if (typeof p.attributes === 'string') {
+            try { p.attributes = JSON.parse(p.attributes); } catch(e) {}
+        }
+    });
+
     function addItem() {
-        addRow({ name: '', price: 0, width: '', height: '', qty: 1, id: null });
+        addRow({ name: '', price: 0, qty: 1, id: null });
     }
 
     function addProduct(name, price, id) {
-        addRow({ name, price, width: '', height: '', qty: 1, id });
+        addRow({ name, price, qty: 1, id });
     }
 
     function addRow(data) {
@@ -161,10 +168,14 @@
         row.querySelector('.item-name').value = data.name;
         row.querySelector('.item-price').value = data.price;
         row.querySelector('.item-qty').value = data.qty || 1;
-        row.querySelector('.item-width').value = data.width || '';
-        row.querySelector('.item-height').value = data.height || '';
         row.querySelector('.item-product-id').value = data.id || '';
+        row.querySelector('.item-price').dataset.basePrice = data.price; // Keep original price
         
+        if (data.id) {
+            const product = masterCatalog.find(p => p.id == data.id);
+            if (product) renderTechnicalAttributes(row, product);
+        }
+
         body.appendChild(row);
         rowIndex++;
         calculateTotals();
@@ -185,8 +196,19 @@
         let subtotal = 0;
         document.querySelectorAll('#items-body tr').forEach(row => {
             const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-            const price = parseFloat(row.querySelector('.item-price').value) || 0;
-            const rowTotal = qty * price;
+            
+            // Real-time Unit Rate Calculation (Base + Surcharges)
+            const basePrice = parseFloat(row.querySelector('.item-price').dataset.basePrice) || 0;
+            let surcharges = 0;
+            row.querySelectorAll('.attr-select').forEach(select => {
+                const selectedOption = select.options[select.selectedIndex];
+                surcharges += parseFloat(selectedOption.dataset.price) || 0;
+            });
+            
+            const finalRate = basePrice + surcharges;
+            row.querySelector('.item-price').value = finalRate.toFixed(2);
+            
+            const rowTotal = qty * finalRate;
             
             const totalEl = row.querySelector('.item-row-total');
             if (totalEl) {
@@ -203,6 +225,54 @@
         document.getElementById('tax-display').innerText = '$' + tax.toLocaleString(undefined, {minimumFractionDigits: 2});
         document.getElementById('total-display').innerText = '$' + total.toLocaleString(undefined, {minimumFractionDigits: 2});
         document.getElementById('total-input').value = total.toFixed(2);
+    }
+
+    function renderTechnicalAttributes(row, product) {
+        const wrapper = row.querySelector('.attributes-wrapper');
+        const grid = row.querySelector('.attributes-grid');
+        grid.innerHTML = '';
+        
+        if (!product.attributes || Object.keys(product.attributes).length === 0) {
+            wrapper.style.display = 'none';
+            return;
+        }
+
+        const index = row.querySelector('.item-product-id').name.match(/\d+/)[0];
+
+        Object.entries(product.attributes).forEach(([label, data]) => {
+            const container = document.createElement('div');
+            
+            const labelEl = document.createElement('label');
+            labelEl.style.cssText = 'font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 4px;';
+            labelEl.innerText = label;
+            
+            const select = document.createElement('select');
+            select.name = `items[${index}][options][${label}]`;
+            select.className = 'form-control attr-select';
+            select.style.cssText = 'height: 32px; font-size: 11px; padding: 4px 8px; border-radius: 8px; background: #fff; border: 1px solid #e2e8f0; font-weight: 700; width: 100%;';
+            select.onchange = calculateTotals;
+
+            const valuesStr = typeof data === 'string' ? data : (data.values || '');
+            const surcharge = typeof data === 'object' ? (data.price || 0) : 0;
+            const values = valuesStr.split(',').map(v => v.trim()).filter(v => v);
+            
+            values.unshift('Standard'); // Base option
+            
+            values.forEach((v, i) => {
+                const opt = document.createElement('option');
+                opt.value = v;
+                opt.innerText = v;
+                opt.dataset.price = (i > 0) ? surcharge : 0; 
+                if (i > 0 && surcharge > 0) opt.innerText += ` (+$${surcharge})`;
+                select.appendChild(opt);
+            });
+
+            container.appendChild(labelEl);
+            container.appendChild(select);
+            grid.appendChild(container);
+        });
+
+        wrapper.style.display = 'block';
     }
 
     /**
@@ -246,8 +316,13 @@
         const row = element.closest('tr');
         row.querySelector('.item-name').value = name;
         row.querySelector('.item-price').value = price;
+        row.querySelector('.item-price').dataset.basePrice = price; // Sync base price
         row.querySelector('.item-product-id').value = id;
         
+        // Load configurations
+        const product = masterCatalog.find(p => p.id == id);
+        if (product) renderTechnicalAttributes(row, product);
+
         element.closest('.search-results-dropdown').style.display = 'none';
         calculateTotals();
     }

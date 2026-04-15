@@ -53,10 +53,15 @@
 
     /* Buttons */
     .feature-button {
-      display: flex; align-items: center; gap: 12px; width: 100%; max-width: 100%;
-      padding: 14px 18px; border-radius: 14px; font-family: var(--font-montserrat); font-size: 16px; font-weight: 600;
-      color: var(--white); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.12); box-sizing: border-box; margin: 0;
+      display: flex; flex-direction: row; align-items: center; gap: 12px; width: 100%;
+      padding: 14px 18px; border-radius: 16px; font-family: var(--font-montserrat); font-size: 14px; font-weight: 600;
+      color: var(--white); background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); box-sizing: border-box; margin: 0;
+    }
+    @media (min-width: 768px) {
+      .feature-button { 
+        flex-direction: column; align-items: flex-start; padding: 20px; font-size: 16px; min-height: 130px; gap: 10px;
+      }
     }
     .feature-button .check {
       width: 22px; height: 22px; min-width: 22px; border-radius: 50%; background: #22c55e;
@@ -139,25 +144,60 @@
 
     /* Mobile Responsiveness Overrides */
     @media (max-width: 768px) {
+      body { overflow-x: hidden; }
       .hero-h1, .hero-h2 {
-        font-size: clamp(24px, 7vw, 32px);
+        font-size: clamp(24px, 8vw, 32px);
+        text-align: center;
+      }
+      .hero-p {
+        text-align: center;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
       }
       .section-title, .section-title-inter {
-        font-size: 22px;
+        font-size: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: center;
+        margin-bottom: 12px;
       }
       .form-body {
         padding: 40px 15px 30px;
         min-height: 400px;
       }
       .hero-logo-box {
-        padding: 10px 15px;
-        margin-bottom: 16px;
+        padding: 8px 12px;
+        margin: 0 auto 24px auto;
+        display: block;
+        width: fit-content;
       }
       .hero-logo {
-        width: 180px;
+        width: 150px;
       }
       .survey-q-title {
         font-size: 18px;
+      }
+      .gallery-card {
+        min-height: 280px;
+      }
+      .section-light {
+        padding: 15px 10px;
+      }
+      .crew-caption-wrapper, .gallery-caption-wrapper {
+        text-align: center;
+      }
+      .smart-video-wrap {
+        padding-bottom: 100%;
+      }
+      .hero-subtext {
+        text-align: center;
+      }
+      .badge-img {
+        width: 50px;
+      }
+      .badge-img-lg {
+        width: 110px;
       }
     }
   </style>
@@ -170,10 +210,10 @@
       <video autoPlay loop muted playsInline src="https://storage.googleapis.com/msgsndr/co4WnoqQGUmBzPYPO98e/media/69849f43e169f01b003f3e91.mp4" class="hero-bg"></video>
 
       <!-- Content -->
-      <div class="hero-container pt-8 pb-20 md:pt-10 md:pb-32 pl-4 pr-4 md:pl-10 md:pr-10">
-        <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center md:items-start">
+      <div class="hero-container pt-8 pb-4 md:pt-10 md:pb-32 pl-4 pr-4 md:pl-10 md:pr-10">
+        <div class="flex flex-col md:flex-row gap-4 md:gap-16 items-center md:items-start">
           <!-- Left column -->
-          <div class="w-full md:w-1/2 mb-10 md:mb-0 md:pr-8 flex flex-col justify-center">
+          <div class="w-full md:w-1/2 mb-4 md:mb-0 md:pr-8 flex flex-col justify-center">
             <div class="hero-logo-box">
               <img src="https://assets.cdn.filesafe.space/JZknYcB8Q1gRXfkLUZNS/media/4bc0f5d6-c2f1-41a5-b292-92c4faf5c474.png" alt="MODU SHADE" class="hero-logo" onerror="this.style.display='none'">
             </div>
@@ -190,30 +230,26 @@
               Serving homeowners with tailored design, expert installation, and premium materials for maximum home style and comfort. Licensed &amp; insured. Minimum investment applies.
             </p>
 
-            <div class="flex flex-col gap-2 mb-4">
-              <div class="flex gap-2">
-                <div class="feature-button flex-1">
-                  <span class="check">✓</span>
-                  <span>Free design consultation.</span>
-                </div>
-                <div class="feature-button flex-1">
-                  <span class="check">✓</span>
-                  <span>Installs completed in 1–2 weks.</span>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              <div class="feature-button">
+                <span class="check">✓</span>
+                <span>Free design consultation.</span>
               </div>
-              <div class="flex gap-2">
-                <div class="feature-button flex-1">
-                  <span class="check">✓</span>
-                  <span>1-Year warranty.</span>
-                </div>
-                <div class="feature-button flex-1">
-                  <span class="check">✓</span>
-                  <span>Family-owned, licensed &amp; insured.</span>
-                </div>
+              <div class="feature-button">
+                <span class="check">✓</span>
+                <span>Installs completed in 1–2 weeks.</span>
+              </div>
+              <div class="feature-button">
+                <span class="check">✓</span>
+                <span>1-Year warranty.</span>
+              </div>
+              <div class="feature-button">
+                <span class="check">✓</span>
+                <span>Family-owned, licensed &amp; insured.</span>
               </div>
             </div>
 
-            <div class="mt-20px">
+            <div class="mt-4 text-center">
               <p class="hero-subtext">
                 Trusted by families across Cresskill • Licensed &amp; Insured • Family-Owned
               </p>
@@ -221,7 +257,7 @@
           </div>
 
           <!-- Right column - Survey Form -->
-          <div class="w-full md:w-1/2 md:pl-8 pt-6 md:pt-0 pb-10">
+          <div class="w-full md:w-1/2 md:pl-8 pt-0 md:pt-0 pb-6">
             <div class="form-wrapper">
               <div id="survey-body" class="form-body" style="border-radius: 20px 20px 0 0;">
                 
@@ -397,12 +433,12 @@
     <!-- TrustBadgesSection -->
     <section class="section-light">
       <div class="max-w-10xl mx-auto px-4">
-        <div class="text-center mb-4">
+        <div class="text-center">
           <h2 class="section-title">
             Trusted by Homeowners Across Cresskill
           </h2>
         </div>
-        <div class="flex justify-center items-center gap-4 flex-wrap mb-4">
+        <div class="flex justify-center items-center gap-4 flex-wrap">
           <img src="https://assets.cdn.filesafe.space/JZknYcB8Q1gRXfkLUZNS/media/66ed15a8-2dcb-4169-95dc-2d3f8934b4cb.svg+xml" alt="Google Guaranteed" class="badge-img" onerror="this.style.display='none'">
           <img src="https://assets.cdn.filesafe.space/JZknYcB8Q1gRXfkLUZNS/media/989c84f1-9efe-4398-86a0-4ba629b8f106.webp" alt="Google Guaranteed Badge" class="badge-img-lg" onerror="this.style.display='none'">
           <img src="https://assets.cdn.filesafe.space/JZknYcB8Q1gRXfkLUZNS/media/26c8d1ef-3871-473b-b041-b0db33a2e617.svg+xml" alt="Accredited Business" class="badge-img-lg" onerror="this.style.display='none'">
@@ -413,7 +449,7 @@
     <!-- CrewSection -->
     <section class="section-light">
       <div class="max-w-10xl mx-auto px-4">
-        <h2 class="text-center mb-4 section-title">
+        <h2 class="text-center section-title">
           Our Dedicated Crew at Work
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -565,18 +601,18 @@
         <h2 class="text-center mb-6" style="font-size: 24px; font-weight: 500; font-family: 'Inter', sans-serif; color: #1c1c1c;">
           Why High-End Custom Window Treatments Are a Smart Investment
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div style="background-color: #fff; border: 1px solid rgba(255,255,255,0.46); border-radius: 15px; padding: 30px 20px; box-shadow: 2px 2px 4px 4px rgba(112,112,112,0.17);">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 md:p-8 bg-white border border-white/50 rounded-2xl shadow-lg">
             <p style="font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; color: #000; margin-bottom: 10px;">🏡 Increase Home Value</p>
             <p style="font-size: 16px; font-family: 'Inter', sans-serif; color: #000; line-height: 1.3; margin-bottom: 16px;">Custom window treatments and integrated shading systems elevate your home's value while enhancing aesthetics, comfort, and energy efficiency.</p>
             <button style="background-color: #202020; color: #fff; padding: 2px 8px; border: 1px solid #fff; border-radius: 20px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer;">Premium return on investment</button>
           </div>
-          <div style="background-color: #fff; border: 1px solid rgba(255,255,255,0.46); border-radius: 15px; padding: 30px 20px; box-shadow: 2px 2px 4px 4px rgba(112,112,112,0.17);">
+          <div class="p-6 md:p-8 bg-white border border-white/50 rounded-2xl shadow-lg">
             <p style="font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; color: #000; margin-bottom: 10px;">🪟 Superior Fit, Finish &amp; Function</p>
             <p style="font-size: 16px; font-family: 'Inter', sans-serif; color: #000; line-height: 1.3; margin-bottom: 16px;">Unlike off-the-shelf solutions, our custom shades, shutters, and drapery are precision-measured and expertly installed for a flawless fit and smooth operation.</p>
             <button style="background-color: #202020; color: #fff; padding: 2px 8px; border: 1px solid #fff; border-radius: 20px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer;">Every detail, purpose-built</button>
           </div>
-          <div style="background-color: #fff; border: 1px solid rgba(255,255,255,0.46); border-radius: 15px; padding: 30px 20px; box-shadow: 2px 2px 4px 4px rgba(112,112,112,0.17);">
+          <div class="p-6 md:p-8 bg-white border border-white/50 rounded-2xl shadow-lg">
             <p style="font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; color: #000; margin-bottom: 10px;">🎨 Personalized Design &amp; Materials</p>
             <p style="font-size: 16px; font-family: 'Inter', sans-serif; color: #000; line-height: 1.3; margin-bottom: 16px;">Select from luxury fabrics, finishes, control options, and automation tailored to your space, lifestyle, and design vision.</p>
             <button style="background-color: #202020; color: #fff; padding: 2px 8px; border: 1px solid #fff; border-radius: 20px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer;">Designed exclusively for you</button>
@@ -598,6 +634,155 @@
         </h2>
         <div class="flex flex-col gap-3" id="faq-container">
           <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Exclusive Footer Form -->
+    <section class="block md:hidden py-10" style="background-color: #f7f7f7;">
+      <div class="max-w-[450px] mx-auto px-4">
+        <!-- Exact Reference Design Form -->
+        <div id="footer-survey-body" style="background: #ffffff; border: 1.5px solid #000000; border-radius: 40px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+          
+          <h2 class="text-center mb-8" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 24px; color: #000; line-height: 1.2;">Get a FREE Estimate & Consultation</h2>
+
+          <!-- Error Message Container -->
+          <div id="footer-survey-error" style="display: none; background-color: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; text-align: center; border: 1px solid #fca5a5; font-family: 'Inter', sans-serif;"></div>
+
+          <!-- All Fields Open -->
+          <div id="footer-form-content">
+            
+            <!-- Basic Details -->
+            <div class="mb-5">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 6px; color: #333;">Full Name *</p>
+              <input type="text" id="footer-fullName" placeholder="Full Name" class="footer-input-styled">
+            </div>
+
+            <div class="mb-5">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 6px; color: #333;">Phone Number *</p>
+              <input type="tel" id="footer-phone" placeholder="Phone Number" class="footer-input-styled">
+            </div>
+
+            <div class="mb-5">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 6px; color: #333;">Email Address *</p>
+              <input type="email" id="footer-email" placeholder="Email Address" class="footer-input-styled">
+            </div>
+
+            <div class="mb-5">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 6px; color: #333;">Zip Code *</p>
+              <input type="text" id="footer-postcode" placeholder="Zip Code" class="footer-input-styled">
+            </div>
+
+            <!-- Service Area Visual Selectors -->
+            <div class="mb-8">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 12px; color: #333; line-height: 1.4;">Are you located within our service areas - NYC, Yonkers, Newark, Stamford, or nearby?</p>
+              <div class="flex gap-4">
+                <div id="footer-serviceArea-Yes" class="footer-box-selector" onclick="footerSelectOption('serviceArea', 'Yes')">
+                  <div class="flex flex-col items-center">
+                    <!-- Green Check Icon -->
+                    <div class="w-20 h-20 bg-[#22c55e] rounded-full flex items-center justify-center mb-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div class="footer-box-label" style="background: #000; padding: 4px 25px;">Yes</div>
+                  </div>
+                </div>
+                <div id="footer-serviceArea-No" class="footer-box-selector" onclick="footerSelectOption('serviceArea', 'No')">
+                  <div class="flex flex-col items-center">
+                    <!-- Red X Icon -->
+                    <div class="w-20 h-20 bg-[#ef4444] rounded-full flex items-center justify-center mb-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </div>
+                    <div class="footer-box-label bg-[#666]" style="padding: 4px 25px;">No</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dropdown -->
+            <div class="mb-8">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 10px; color: #333;">Which type of Blinds/Shades you are looking for?</p>
+              <select id="footer-blindsType" class="footer-input-styled appearance-none" style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22m6 9 6 6 6-6%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 15px center; background-size: 15px;">
+                <option value="">Select Blinds/Shades your are looking for</option>
+                <option value="Blackout Shades">Blackout Shades</option>
+                <option value="Curtains / Drapes">Curtains / Drapes</option>
+                <option value="Faux Wood Shutters">Faux Wood Shutters</option>
+                <option value="Honeycomb Shades">Honeycomb Shades</option>
+                <option value="Lutron Shades">Lutron Shades</option>
+                <option value="Motorized or Smart Glass">Motorized or Smart Glass</option>
+                <option value="Outdoor Shades">Outdoor Shades</option>
+                <option value="Roller Shades">Roller Shades</option>
+                <option value="Roman shades">Roman shades</option>
+                <option value="Skylights shades">Skylights shades</option>
+                <option value="Soft Shades">Soft Shades</option>
+                <option value="Vertical Blinds">Vertical Blinds</option>
+                <option value="Zebra / Dual Shades">Zebra / Dual Shades</option>
+                <option value="Zipper shades">Zipper shades</option>
+                <option value="Not Sure - Need Guidance">Not Sure - Need Guidance</option>
+              </select>
+            </div>
+
+            <!-- Radio Lists -->
+            <div class="mb-8">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 15px; color: #333;">How many windows you are looking to cover?</p>
+              <div class="flex flex-col gap-4">
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="1 or 2" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">1 or 2</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="2 to 5" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">2 to 5</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="5 to 10" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">5 to 10</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="10 to 15" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">10 to 15</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="15 and above" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">15 and above</span></label>
+              </div>
+            </div>
+
+            <div class="mb-8">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 15px; color: #333;">What is your estimated investment for this project?</p>
+              <div class="flex flex-col gap-4">
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerInvestment" value="$1,000 – $2,000" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">$1,000 – $2,000</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerInvestment" value="$2,000 – $5,000" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">$2,000 – $5,000</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerInvestment" value="$5,000 +" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">$5,000 +</span></label>
+              </div>
+            </div>
+
+            <div class="mb-8">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 15px; color: #333;">Timeline for your project?</p>
+              <div class="flex flex-col gap-4">
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerTimeline" value="As soon as possible" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">As soon as possible</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerTimeline" value="Within 1 Month" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">Within 1 Month</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerTimeline" value="Within 2 Months" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">Within 2 Months</span></label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerTimeline" value="Just checking for ideas" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">Just checking for ideas</span></label>
+              </div>
+            </div>
+
+            <div class="mb-10">
+              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 8px; color: #333;">Special Message (Optional)</p>
+              <textarea id="footer-message" placeholder="Any message for us / Project Description?" class="footer-input-styled" style="height: 100px; padding-top: 15px; resize: none;"></textarea>
+            </div>
+
+            <button id="footer-submitBtn" onclick="footerSubmitForm()" class="w-full bg-black text-white font-bold py-5 rounded-[15px] shadow-lg active:scale-95 transition-all duration-200" style="font-family: 'Montserrat', sans-serif; font-size: 18px; letter-spacing: 0.5px;">
+              Request A Call back
+            </button>
+
+            <p class="text-center mt-6 text-[13px] opacity-60 font-medium">
+              🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" class="underline hover:text-black transition-colors">Privacy Policy</a>
+            </p>
+          </div>
+
+          <!-- Thank you message -->
+          <div id="footer-survey-thankyou" class="survey-thankyou-box" style="display: none; padding: 60px 20px; text-align: center;">
+            <div class="mb-4 flex justify-center">
+              <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+            <h2 class="thankyou-title" style="color: #000; font-size: 32px; font-weight: 800; margin-bottom: 10px;">Success!</h2>
+            <p class="thankyou-text" style="color: #666; font-size: 18px;">We've received your request and will follow up shortly.</p>
+          </div>
+
         </div>
       </div>
     </section>
@@ -637,7 +822,7 @@
           Serving New York, New Jersey, and nearby areas.
         </p>
         <p style="margin: 0;">
-          <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" rel="noopener noreferrer" style="color: #fff; text-decoration: underline; font-size: 15px; font-family: 'Inter', sans-serif;">
+          <a href="{{ route('privacy-policy') }}" style="color: #fff; text-decoration: underline; font-size: 15px; font-family: 'Inter', sans-serif;">
             Privacy Policy
           </a>
         </p>
@@ -829,6 +1014,94 @@
         showError(error.message);
         submitBtn.disabled = false;
         submitBtn.innerText = 'SUBMIT';
+      });
+    }
+
+    // --- Footer Contact Form Logic (Single Page) ---
+    const footerSurveyData = {};
+
+    function footerSelectOption(key, value) {
+      footerSurveyData[key] = value;
+      if (key === 'serviceArea') {
+        document.getElementById('footer-serviceArea-Yes').classList.toggle('footer-box-active', value === 'Yes');
+        document.getElementById('footer-serviceArea-No').classList.toggle('footer-box-active', value === 'No');
+      }
+    }
+
+    function footerShowError(message) {
+      const errorEl = document.getElementById('footer-survey-error');
+      errorEl.innerText = message;
+      errorEl.style.display = 'block';
+      errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function footerClearError() {
+      const errorEl = document.getElementById('footer-survey-error');
+      errorEl.style.display = 'none';
+      errorEl.innerText = '';
+      const inputs = document.querySelectorAll('#footer-survey-body input, #footer-survey-body select, #footer-survey-body textarea');
+      inputs.forEach(input => input.style.borderColor = '');
+    }
+
+    function footerSubmitForm() {
+      footerClearError();
+      
+      // Gather data
+      const fullName = document.getElementById('footer-fullName').value.trim();
+      const email = document.getElementById('footer-email').value.trim();
+      const phone = document.getElementById('footer-phone').value.trim();
+      const postcode = document.getElementById('footer-postcode').value.trim();
+      const message = document.getElementById('footer-message').value.trim();
+      const blindsType = document.getElementById('footer-blindsType').value;
+      const windowCount = document.querySelector('input[name="footerWindowCount"]:checked')?.value;
+      const timeline = document.querySelector('input[name="footerTimeline"]:checked')?.value;
+
+      // Simple Validation
+      if (!footerSurveyData.serviceArea) return footerShowError('Please select if you are in our service area.');
+      if (!blindsType) return footerShowError('Please select what you are looking for.');
+      if (!windowCount) return footerShowError('Please select the number of windows.');
+      if (!fullName) return footerShowError('Please enter your full name.');
+      if (!email || !email.includes('@')) return footerShowError('Please enter a valid email address.');
+      if (!phone || phone.length < 10) return footerShowError('Please enter a valid phone number.');
+      if (!postcode) return footerShowError('Please enter your postcode.');
+
+      const submitBtn = document.getElementById('footer-submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'SENDING...';
+
+      const payload = {
+        full_name: fullName,
+        email: email,
+        phone: phone,
+        postal_code: postcode,
+        shades_needed: blindsType,
+        windows_count: windowCount,
+        timeline: timeline,
+        message: message
+      };
+
+      fetch('/submit-lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(async response => {
+        if (!response.ok) throw new Error('Submission failed. Please try again.');
+        return response.json();
+      })
+      .then(data => {
+        document.getElementById('footer-form-content').style.display = 'none';
+        document.getElementById('footer-survey-thankyou').style.display = 'block';
+        window.location.href = '/thank-you';
+      })
+      .catch((error) => {
+        footerShowError(error.message);
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'SUBMIT REQUEST';
       });
     }
 

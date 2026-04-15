@@ -16,10 +16,12 @@ use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\MasterAttributeController;
 
 // ── Public ──────────────────────────────────────────────────────────────────
 Route::get('/',          [HomeController::class, 'index'])->name('home');
 Route::get('/thank-you', [HomeController::class, 'thankYou'])->name('thank-you');
+Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::post('/submit-lead', [LeadSubmissionController::class, 'submit'])->name('submit-lead');
 Route::post('/twilio/reply', [App\Http\Controllers\TwilioWebhookController::class, 'handleReply'])->name('twilio.reply');
 
@@ -105,6 +107,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     // Products
     Route::get('/products',               [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create',        [ProductController::class, 'create'])->name('products.create');
+    Route::get('/products/{id}/edit',     [ProductController::class, 'edit'])->name('products.edit');
     Route::post('/products',              [ProductController::class, 'store'])->name('products.store');
     Route::put('/products/{id}',          [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}',       [ProductController::class, 'destroy'])->name('products.destroy');
@@ -120,5 +124,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     // Global Settings
     Route::get('/settings',                       [SettingController::class, 'index'])->name('settings.index');
-    Route::post('/settings',                      [SettingController::class, 'update'])->name('settings.update');
+    Route::post('/settings/update', [SettingController::class, 'update'])->name('settings.update');
+
+    // Master Attributes
+    Route::post('/master-attributes', [MasterAttributeController::class, 'store'])->name('master-attributes.store');
+    Route::put('/master-attributes/{id}', [MasterAttributeController::class, 'update'])->name('master-attributes.update');
+    Route::delete('/master-attributes/{id}', [MasterAttributeController::class, 'destroy'])->name('master-attributes.destroy');
 });

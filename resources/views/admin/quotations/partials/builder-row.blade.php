@@ -14,21 +14,16 @@
             {{-- Dynamic Search Results --}}
             <div class="search-results-dropdown" style="display: none;"></div>
         </div>
-        
-        <div style="display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: flex-end;">
-            {{-- Professional Size Tool --}}
-            <div style="background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
-                <div style="text-align: center;">
-                    <div style="font-size: 9px; font-weight: 800; color: var(--muted); margin-bottom: 2px;">WIDTH</div>
-                    <input type="text" name="items[{{ $index }}][width]" class="form-control-minimal item-width" placeholder="W" value="{{ $item->width ?? '' }}" style="width: 48px; text-align: center; border: none; background: transparent; font-size: 15px; font-weight: 900; color: var(--accent); padding: 0;">
-                </div>
-                <div style="color: var(--border); font-weight: 300; font-size: 20px; line-height: 1;">×</div>
-                <div style="text-align: center;">
-                    <div style="font-size: 9px; font-weight: 800; color: var(--muted); margin-bottom: 2px;">HEIGHT</div>
-                    <input type="text" name="items[{{ $index }}][height]" class="form-control-minimal item-height" placeholder="H" value="{{ $item->height ?? '' }}" style="width: 48px; text-align: center; border: none; background: transparent; font-size: 15px; font-weight: 900; color: var(--accent); padding: 0;">
-                </div>
-                <div style="font-size: 10px; font-weight: 800; color: var(--muted); padding-left: 4px; border-left: 1px solid var(--border);">IN</div>
+
+        {{-- Dynamic Technical Attributes Container --}}
+        <div class="attributes-wrapper" style="display: none; margin-bottom: 12px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
+            <div style="font-size: 9px; font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Technical Configuration</div>
+            <div class="attributes-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+                {{-- Dropdowns injected by JS --}}
             </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr; gap: 16px; align-items: flex-end;">
             
             <div style="flex: 1;">
                 <label style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">INSTALLATION NOTES</label>

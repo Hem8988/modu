@@ -11,7 +11,8 @@ class SettingController extends Controller
     public function index()
     {
         $settings = Setting::getAll();
-        return view('admin.settings.index', compact('settings'));
+        $masterAttributes = \App\Models\MasterAttribute::all();
+        return view('admin.settings.index', compact('settings', 'masterAttributes'));
     }
 
     public function update(Request $request)

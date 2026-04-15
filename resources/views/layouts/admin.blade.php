@@ -142,6 +142,9 @@
         <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products*') ? 'active' : '' }}">
             📦 Product Registry
         </a>
+        <a href="{{ route('admin.products.index') }}#add" class="nav-link" style="padding-left: 40px; font-size: 13px; opacity: 0.8;">
+            ✨ Add New Product
+        </a>
         <a href="{{ route('admin.invoices.index') }}" class="nav-link {{ request()->routeIs('admin.invoices*') ? 'active' : '' }}">
             🧾 Invoices
         </a>
