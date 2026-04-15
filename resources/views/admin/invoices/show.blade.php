@@ -75,7 +75,7 @@
             </div>
             <div class="brand-meta">
                 <div class="brand-name">MODU<span>SHADE</span></div>
-                <div class="brand-sub">CREATE SPACE ON WEB</div>
+                <!-- <div class="brand-sub">CREATE SPACE ON WEB</div> -->
                 <div class="company-details">
                     {{ $globalSettings['company_name'] ?? 'ModuShade Industrial' }}<br>
                     {{ $globalSettings['company_address_1'] ?? '24 Poplar Street' }}, {{ $globalSettings['company_address_2'] ?? 'Creskill, NJ 07626' }}<br>
