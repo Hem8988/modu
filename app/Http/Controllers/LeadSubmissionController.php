@@ -27,7 +27,21 @@ class LeadSubmissionController extends Controller
             'message'      => 'nullable|string',
         ]);
 
+        // Create Enquiry explicitly first, so it shows in Enquiries registry
+        $enquiry = \App\Models\Enquiry::create([
+            'name'    => $data['full_name'],
+            'email'   => $data['email'] ?? null,
+            'phone'   => $data['phone'],
+            'city'    => $data['postal_code'] ?? null,
+            'project' => $data['shades_needed'] ?? null,
+            'budget'  => $data['budget'] ?? null,
+            'message' => $data['message'] ?? null,
+            'source'  => 'Landing Page Form',
+            'status'  => 'converted' // instantly converted since it becomes a lead
+        ]);
+
         $lead = Lead::create([
+            'enquiry_id'    => $enquiry->id,
             'name'          => $data['full_name'],
             'email'         => $data['email'] ?? null,
             'phone'         => $data['phone'],
@@ -38,7 +52,7 @@ class LeadSubmissionController extends Controller
             'budget'        => $data['budget'] ?? null,
             'feedback'      => $data['message'] ?? null,
             'source'        => 'Landing Page',
-            'status'        => 'new',
+            'status'        => 'new_lead', // Match the badge query and UI convention
         ]);
         $lead->lead_score = $lead->calculateScore();
         $lead->save();

@@ -74,13 +74,13 @@
         <!-- SALES HUB -->
         <div class="nav-section">Sales Operations</div>
         <a href="{{ route('admin.enquiries.index') }}" class="nav-link {{ request()->routeIs('admin.enquiries*') ? 'active' : '' }}">
-            <i class="fas fa-inbox"></i> 📝 Enquiries
+            <i class="fas fa-inbox"></i> 📝 Enquiries <span style="margin-left:auto; opacity:0.7">{{ $sidebarCounts['Enquiries'] ?? 0 }}</span>
         </a>
         <a href="{{ route('admin.leads.index') }}" class="nav-link {{ request()->routeIs('admin.leads*') && !request('status') ? 'active' : '' }}">
             <i class="fas fa-bullseye"></i> 🎯 Leads Registry
         </a>
         <a href="{{ route('admin.leads.index', ['status' => 'new_lead']) }}" class="nav-link {{ request('status') == 'new_lead' ? 'active' : '' }}">
-            🎯 New Leads <span style="margin-left:auto; opacity:0.7">{{ $sidebarCounts['New Lead'] ?? 0 }}</span>
+            🎯 New Leads <span style="margin-left:auto; opacity:0.7">{{ $sidebarCounts['New Leads'] ?? 0 }}</span>
         </a>
         <a href="{{ route('admin.leads.index', ['status' => 'contacted']) }}" class="nav-link {{ request('status') == 'contacted' ? 'active' : '' }}">
             📻 Contacted <span style="margin-left:auto; opacity:0.7">{{ $sidebarCounts['Contacted'] ?? 0 }}</span>
