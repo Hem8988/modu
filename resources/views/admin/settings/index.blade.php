@@ -32,6 +32,9 @@
                 <div class="settings-tab" onclick="switchTab('tracking', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
                     <span style="font-size: 20px;">🛠️</span> Tracking Scripts
                 </div>
+                <div class="settings-tab" onclick="switchTab('email', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 20px;">📧</span> Email Configuration
+                </div>
                 <div class="settings-tab" onclick="switchTab('sms', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
                     <span style="font-size: 20px;">📱</span> SMS Automation
                 </div>
@@ -122,6 +125,72 @@
                                    onblur="this.style.borderColor='#f1f5f9'; this.style.background='#f8fafc';"
                                    placeholder="Paste chat widgets or other footer scripts..."><?= ($settings['footer_scripts'] ?? '') ?></textarea>
                             <span style="font-size: 12px; color: #94a3b8; margin-top: 6px; display: block;">These scripts are injected just before the closing &lt;/body&gt; tag.</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Email Card --}}
+                <div id="section-email" class="settings-section" style="display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
+                    <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
+                        SMTP / Email Configuration
+                    </h2>
+
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Mail Mailer</label>
+                                <select name="mail_mailer" style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; background: #fff;">
+                                    <option value="smtp" {{ ($settings['mail_mailer'] ?? 'log') === 'smtp' ? 'selected' : '' }}>SMTP</option>
+                                    <option value="log" {{ ($settings['mail_mailer'] ?? 'log') === 'log' ? 'selected' : '' }}>Log (Testing)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Encryption</label>
+                                <select name="mail_encryption" style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; background: #fff;">
+                                    <option value="tls" {{ ($settings['mail_encryption'] ?? 'tls') === 'tls' ? 'selected' : '' }}>TLS</option>
+                                    <option value="ssl" {{ ($settings['mail_encryption'] ?? 'tls') === 'ssl' ? 'selected' : '' }}>SSL</option>
+                                    <option value="null" {{ ($settings['mail_encryption'] ?? 'tls') === 'null' ? 'selected' : '' }}>None</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Mail Host</label>
+                                <input type="text" name="mail_host" value="{{ $settings['mail_host'] ?? '' }}" placeholder="smtp.mailtrap.io"
+                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Mail Port</label>
+                                <input type="text" name="mail_port" value="{{ $settings['mail_port'] ?? '587' }}" placeholder="587"
+                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Username</label>
+                                <input type="text" name="mail_username" value="{{ $settings['mail_username'] ?? '' }}" 
+                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Password</label>
+                                <input type="password" name="mail_password" value="{{ $settings['mail_password'] ?? '' }}" 
+                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">From Address</label>
+                                <input type="email" name="mail_from_address" value="{{ $settings['mail_from_address'] ?? '' }}" placeholder="hello@modushade.com"
+                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">From Name</label>
+                                <input type="text" name="mail_from_name" value="{{ $settings['mail_from_name'] ?? 'Modu Shade' }}" 
+                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
+                            </div>
                         </div>
                     </div>
                 </div>

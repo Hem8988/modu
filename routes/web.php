@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeadSubmissionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Admin\AppointmentController;
@@ -125,6 +126,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Global Settings
     Route::get('/settings',                       [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/update', [SettingController::class, 'update'])->name('settings.update');
+
+    // Real-time Activities Monitoring
+    Route::get('/activities/latest', [ActivityController::class, 'latest'])->name('activities.latest');
 
     // Master Attributes
     Route::post('/master-attributes', [MasterAttributeController::class, 'store'])->name('master-attributes.store');

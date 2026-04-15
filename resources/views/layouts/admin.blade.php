@@ -200,5 +200,77 @@
         @yield('content')
     </div>
 </div>
+    <!-- Desktop Notification Logic -->
+    <div id="lead-notification-toast" style="position: fixed; bottom: 30px; right: 30px; width: 350px; background: #fff; border-left: 5px solid var(--accent); border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); padding: 24px; z-index: 10000; display: none; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0;">
+        <div style="display: flex; gap: 16px;">
+            <div style="background: rgba(37, 99, 235, 0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🚨</div>
+            <div style="flex: 1;">
+                <h4 style="margin: 0; font-size: 16px; font-weight: 800; color: #0f172a;">New Lead Detected!</h4>
+                <p id="lead-toast-msg" style="margin: 4px 0 0; font-size: 13px; color: var(--muted); line-height: 1.4;"></p>
+                <div style="margin-top: 16px; display: flex; gap: 12px;">
+                    <a id="lead-toast-link" href="#" style="font-size: 12px; font-weight: 800; color: var(--accent); text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px;">View Details →</a>
+                    <button onclick="hideLeadToast()" style="background: none; border: none; font-size: 12px; font-weight: 700; color: #94a3b8; cursor: pointer; text-transform: uppercase;">Dismiss</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let lastActivityId = {{ \App\Models\ActivityLog::max('id') ?: 0 }};
+        const toast = document.getElementById('lead-notification-toast');
+        const toastMsg = document.getElementById('lead-toast-msg');
+        const toastLink = document.getElementById('lead-toast-link');
+
+        function showLeadToast(name, phone, leadId) {
+            toastMsg.innerText = `${name} just submitted a request. (${phone})`;
+            toastLink.href = `/admin/leads/${leadId}`;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Audio cue if possible
+            try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e) {}
+            
+            // Native Browser Notification
+            if (Notification.permission === "granted") {
+                new Notification("New Lead: " + name, {
+                    body: "Interest captured! Phone: " + phone,
+                    icon: "/favicon.ico"
+                });
+            }
+        }
+
+        function hideLeadToast() {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => { toast.style.display = 'none'; }, 300);
+        }
+
+        async function checkNewLeads() {
+            try {
+                const response = await fetch(`/admin/activities/latest?last_id=${lastActivityId}`);
+                const data = await response.json();
+                
+                if (data.count > 0) {
+                    data.activities.forEach(activity => {
+                        showLeadToast(activity.staff_name.split(' (')[0], '', activity.lead_id);
+                    });
+                    lastActivityId = data.latest_id;
+                }
+            } catch (error) {
+                console.error("Monitoring failed:", error);
+            }
+        }
+
+        // Request permission on load
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+
+        // Poll every 30 seconds
+        setInterval(checkNewLeads, 30000);
+    </script>
 </body>
 </html>
