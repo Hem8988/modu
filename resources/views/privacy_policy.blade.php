@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - MODU SHADE LLC</title>
+    <title>{{ \App\Models\Setting::get('seo_title', 'Privacy Policy - MODU SHADE LLC') }}</title>
+    <meta name="description" content="{{ \App\Models\Setting::get('seo_description', '') }}">
+    <meta name="keywords" content="{{ \App\Models\Setting::get('seo_keywords', '') }}">
+
+    {!! \App\Models\Setting::get('header_scripts') !!}
+
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,6 +85,7 @@
     </style>
 </head>
 <body>
+    {!! \App\Models\Setting::get('body_scripts') !!}
     <div class="container">
         <a href="{{ route('home') }}" class="back-link">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -115,5 +121,6 @@
             <p class="text-xs opacity-50 mt-2">This site is not a part of the Facebook website or Facebook Inc. Additionally, This site is NOT endorsed by Facebook in any way. FACEBOOK is a trademark of FACEBOOK, Inc.</p>
         </div>
     </div>
+    {!! \App\Models\Setting::get('footer_scripts') !!}
 </body>
 </html>

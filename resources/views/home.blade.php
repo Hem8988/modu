@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MODU SHADE LLC</title>
+  <title>{{ \App\Models\Setting::get('seo_title', 'MODU SHADE LLC') }}</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <meta name="description" content="At MODU SHADE LLC, we specialize in high-end custom window treatments and smart shading solutions that seamlessly blend design, functionality, and craftsmanship elevating living spaces with precision-crafted results.">
+  <meta name="description" content="{{ \App\Models\Setting::get('seo_description', 'At MODU SHADE LLC, we specialize in high-end custom window treatments and smart shading solutions that seamlessly blend design, functionality, and craftsmanship elevating living spaces with precision-crafted results.') }}">
+  <meta name="keywords" content="{{ \App\Models\Setting::get('seo_keywords', '') }}">
+
+  {!! \App\Models\Setting::get('header_scripts') !!}
+
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -203,6 +207,7 @@
   </style>
 </head>
 <body>
+  {!! \App\Models\Setting::get('body_scripts') !!}
   <main class="mx-auto w-[95%] md:w-[85%] lg:w-[82%] max-w-[1536px]">
     <!-- HeroSection -->
     <section class="hero-bg-wrapper relative bg-[#202020] overflow-hidden p-0">
@@ -288,7 +293,7 @@
                     </div>
                   </div>
                   <p style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" style="color: #188bf6;">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" style="color: #188bf6;">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -313,7 +318,7 @@
                     <option value="Not Sure - Need Guidance">Not Sure - Need Guidance</option>
                   </select>
                   <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" class="survey-link">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -327,7 +332,7 @@
                     <label class="survey-radio-label"><input type="radio" name="windowCount" value="15 and above" class="survey-radio"> 15 and above</label>
                   </div>
                   <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" class="survey-link">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -339,7 +344,7 @@
                     <label class="survey-radio-label"><input type="radio" name="investment" value="$5,000 +" class="survey-radio"> $5,000 +</label>
                   </div>
                   <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" class="survey-link">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -352,7 +357,7 @@
                     <label class="survey-radio-label"><input type="radio" name="timeline" value="Just checking for ideas" class="survey-radio"> Just checking for ideas</label>
                   </div>
                   <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" class="survey-link">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -360,7 +365,7 @@
                   <p class="survey-q-title">Any Special Message?</p>
                   <input type="text" id="message" placeholder="Any message for us / Project Description?" class="survey-input">
                   <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" class="survey-link">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -369,7 +374,7 @@
                   <input type="text" id="postcode" placeholder="eg. 07626" style="width: 100%; padding: 10px 20px; border-radius: 5px; border: 1px solid #a9b3c6; font-size: 14px; font-family: 'Inter', sans-serif; margin-bottom: 8px; box-sizing: border-box;">
                   <p style="text-align: center; font-size: 14px; font-style: italic; font-weight: 700; color: #000; margin-bottom: 16px;">So we can check your postcodes eligibility</p>
                   <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" class="survey-link">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -379,7 +384,7 @@
                   <p class="survey-sub-title">What is your email address?</p>
                   <input type="email" id="email" placeholder="eg. name@company.com" class="survey-input">
                   <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" class="survey-link">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -389,7 +394,7 @@
                   <p class="survey-sub-title">What is your phone number?</p>
                   <input type="tel" id="phone" placeholder="Phone" class="survey-input">
                   <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="https://info.modu-shade.com/privacy-policy-425885" target="_blank" class="survey-link">Privacy Policy</a>
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
@@ -1216,5 +1221,6 @@
   <!-- External Tracking Scripts -->
   <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fmodushade6320back.builtwithrocket.new&_be=https%3A%2F%2Fappanalytics.rocket.new&_v=0.1.18"></script>
   <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2"></script>
+  {!! \App\Models\Setting::get('footer_scripts') !!}
 </body>
 </html>

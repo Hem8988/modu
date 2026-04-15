@@ -221,10 +221,7 @@
                                 <div style="display: flex; gap: 10px;">
                                     <button type="button" onclick='openMasterAttrModal({{ $ma->id }}, "{{ addslashes($ma->label) }}", "{{ addslashes($ma->default_values) }}", {{ $ma->is_active ? 1 : 0 }}, {{ $ma->default_price }})' 
                                             style="background: #fff; border: 1px solid #e2e8f0; color: #64748b; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.color='#2563eb'; this.style.borderColor='#2563eb';">✎</button>
-                                    <form action="{{ route('admin.master-attributes.destroy', $ma->id) }}" method="POST" onsubmit="return confirm('Archive this global option?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" style="background: #fff; border: 1px solid #fee2e2; color: #ef4444; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';">✕</button>
-                                    </form>
+                                    <button type="submit" form="delete-ma-{{ $ma->id }}" style="background: #fff; border: 1px solid #fee2e2; color: #ef4444; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';">✕</button>
                                 </div>
                             </div>
                         @empty
@@ -247,6 +244,13 @@
         </div>
     </form>
 </div>
+
+{{-- Hidden Delete Forms --}}
+@foreach($masterAttributes as $ma)
+    <form id="delete-ma-{{ $ma->id }}" action="{{ route('admin.master-attributes.destroy', $ma->id) }}" method="POST" onsubmit="return confirm('Archive this global option?')">
+        @csrf @method('DELETE')
+    </form>
+@endforeach
 
 {{-- Master Attribute Modal --}}
 <div id="master-attr-modal" style="position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">

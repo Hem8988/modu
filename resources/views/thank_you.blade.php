@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thank You | MODU SHADE LLC</title>
+  <title>{{ \App\Models\Setting::get('seo_title', 'Thank You | MODU SHADE LLC') }}</title>
+  <meta name="description" content="{{ \App\Models\Setting::get('seo_description', '') }}">
+  <meta name="keywords" content="{{ \App\Models\Setting::get('seo_keywords', '') }}">
+
+  {!! \App\Models\Setting::get('header_scripts') !!}
+
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,6 +104,7 @@
   </style>
 </head>
 <body>
+  {!! \App\Models\Setting::get('body_scripts') !!}
   <!-- Background video -->
   <video autoPlay loop muted playsInline src="https://storage.googleapis.com/msgsndr/co4WnoqQGUmBzPYPO98e/media/69849f43e169f01b003f3e91.mp4" class="bg-video"></video>
 
@@ -110,5 +116,6 @@
     <p>We have successfully received your request. Our specialist will contact you shortly to discuss your project.</p>
     <a href="{{ route('home') }}" class="back-btn">Back to Home</a>
   </div>
+  {!! \App\Models\Setting::get('footer_scripts') !!}
 </body>
 </html>
