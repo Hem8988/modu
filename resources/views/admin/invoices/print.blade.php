@@ -71,7 +71,7 @@
             </div>
         </header>
 
-        <section class="contact-grid">
+        <section class="contact-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin-bottom: 50px; font-size: 13px;">
             <div class="company-info">
                 <strong>{{ $globalSettings['company_name'] ?? 'Vellora Shades' }}</strong><br>
                 {{ $globalSettings['company_address_1'] ?? '7002 Boulevard East #20H' }}<br>
@@ -80,22 +80,24 @@
                 {{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}<br>
                 U.S.A
             </div>
-            <div class="bill-to">
-                <div class="section-title">Bill To</div>
+            <div></div>
+            <div class="bill-to" style="text-align: right;">
+                <div class="section-title" style="font-size: 10px; font-weight: 800; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Bill To</div>
                 <strong>{{ $invoice->customer?->name }}</strong><br>
                 {{ $invoice->customer?->address ?: 'No address provided' }}<br>
                 {{ $invoice->customer?->phone ?: 'No phone provided' }}<br>
                 U.S.A
             </div>
-            <div class="dates-grid">
-                <div class="date-row">
-                    <span class="date-label">Invoice Date:</span>
-                    <span>{{ \Carbon\Carbon::parse($invoice->created_at ?? now())->format('d M Y') }}</span>
-                </div>
-                <div class="date-row">
-                    <span class="date-label">Due Date:</span>
-                    <span>{{ \Carbon\Carbon::parse($invoice->due_date ?? now())->format('d M Y') }}</span>
-                </div>
+        </section>
+
+        <section class="dates-registry" style="display: flex; gap: 40px; margin-bottom: 40px; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 15px 0;">
+            <div class="date-item">
+                <span style="display: block; font-size: 10px; font-weight: 800; color: #999; text-transform: uppercase; margin-bottom: 4px;">Invoice Date:</span>
+                <span style="font-weight: 700; font-size: 13px;">{{ \Carbon\Carbon::parse($invoice->created_at ?? now())->format('d M Y') }}</span>
+            </div>
+            <div class="date-item">
+                <span style="display: block; font-size: 10px; font-weight: 800; color: #999; text-transform: uppercase; margin-bottom: 4px;">Due Date:</span>
+                <span style="font-weight: 700; font-size: 13px;">{{ \Carbon\Carbon::parse($invoice->due_date ?? now())->format('d M Y') }}</span>
             </div>
         </section>
 

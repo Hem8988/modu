@@ -269,7 +269,7 @@
             </div>
         </header>
 
-        <section class="address-grid">
+        <section class="address-grid" style="grid-template-columns: 1fr 1fr 1fr;">
             <div class="address-box">
                 <h3>Origin Entity</h3>
                 <div class="address-content">
@@ -279,7 +279,8 @@
                     {{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}
                 </div>
             </div>
-            <div class="address-box">
+            <div></div>
+            <div class="address-box" style="text-align: right;">
                 <h3>Recipient Client</h3>
                 <div class="address-content">
                     <strong>{{ $lead->name }}</strong>

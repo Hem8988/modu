@@ -86,7 +86,7 @@
             </div>
         </div>
 
-        <div class="address-grid">
+        <div class="address-grid" style="grid-template-columns: 1fr 1fr 1fr;">
             <div class="address-box">
                 <h3>{{ $globalSettings['company_name'] ?? 'ModuShade' }}</h3>
                 <div style="font-size:12px; color:var(--muted)">
@@ -96,8 +96,9 @@
                     {{ $globalSettings['company_phone'] ?? '+91 98765 43210' }}
                 </div>
             </div>
-            <div class="address-box">
-                <h3>Bill To</h3>
+            <div></div>
+            <div class="address-box" style="text-align: right;">
+                <h3 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; margin-bottom: 10px;">Bill To</h3>
                 <p>
                     {{ $invoice->customer?->name ?? 'Project Client' }}<br>
                     {{ $invoice->customer?->address ?? 'No address provided' }}<br>
