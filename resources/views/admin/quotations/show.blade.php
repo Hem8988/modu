@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Proposal #{{ $quote->quote_number }} | ModuShade</title>
+    <title>Proposal #{{ $quote->quote_number }} | {{ $globalSettings['company_name'] ?? 'ModuShade' }}</title>
     <style>
         :root {
             --slate-900: #0f172a;
@@ -252,12 +251,12 @@
 
     <div class="page">
         <header class="header-main">
-            <div class="brand-block">
-                <h1>Modu<span>Shade</span></h1>
+                @php $nParts = explode(' ', $globalSettings['company_name'] ?? 'Modu Shade'); $first = array_shift($nParts); $rest = implode(' ', $nParts); @endphp
+                <h1>{{ $first }}<span>{{ $rest }}</span></h1>
                 <p>Digital Industrial Solutions</p>
                 <div style="margin-top: 20px; font-size: 12px; color: var(--slate-600); line-height: 1.5;">
-                    24 Poplar Street, Creskill, NJ 07626<br>
-                    <strong>+1 201 660 5298</strong> | info@modu-shade.com
+                    {{ $globalSettings['company_address_1'] ?? '24 Poplar Street' }}, {{ $globalSettings['company_address_2'] ?? 'Creskill, NJ 07626' }}<br>
+                    <strong>{{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}</strong> | {{ $globalSettings['company_email'] ?? 'info@modu-shade.com' }}
                 </div>
             </div>
             <div class="id-block">
@@ -274,10 +273,10 @@
             <div class="address-box">
                 <h3>Origin Entity</h3>
                 <div class="address-content">
-                    <strong>Vellora Shades</strong>
-                    24 Poplar Street<br>
-                    Creskill, NJ 07626, U.S.A<br>
-                    EIN: 045-1421746
+                    <strong>{{ $globalSettings['company_name'] ?? 'Vellora Shades' }}</strong>
+                    {{ $globalSettings['company_address_1'] ?? '24 Poplar Street' }}<br>
+                    {{ $globalSettings['company_address_2'] ?? 'Creskill, NJ 07626' }}<br>
+                    {{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}
                 </div>
             </div>
             <div class="address-box">
@@ -383,7 +382,7 @@
             <div style="margin-top: 100px; display: flex; justify-content: flex-end; gap: 60px;">
                 <div style="text-align: center; width: 220px;">
                     <div style="height: 60px; border-bottom: 1px solid var(--border); margin-bottom: 8px;"></div>
-                    <div style="font-size: 10px; font-weight: 800; color: var(--slate-400); text-transform: uppercase;">ModuShade Authority</div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--slate-400); text-transform: uppercase;">{{ $globalSettings['company_name'] ?? 'ModuShade' }} Authority</div>
                 </div>
                 <div style="text-align: center; width: 220px;">
                     <div style="height: 60px; border-bottom: 1px solid var(--border); margin-bottom: 8px;"></div>

@@ -41,6 +41,9 @@
                 <div class="settings-tab" onclick="switchTab('master-products', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
                     <span style="font-size: 20px;">📋</span> Master Product Options
                 </div>
+                <div class="settings-tab" onclick="switchTab('company', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 20px;">🏢</span> Company Details
+                </div>
 
 
             </div>
@@ -86,6 +89,60 @@
                                    style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
                                    onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 4px rgba(37,99,235,0.1)';" 
                                    onblur="this.style.borderColor='#f1f5f9'; this.style.boxShadow='none';">
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Company Details Card --}}
+                <div id="section-company" class="settings-section" style="display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
+                    <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
+                        Company Information
+                    </h2>
+                    <p style="color: #64748b; font-size: 13px; margin-top: -20px; margin-bottom: 30px;">These details will heavily appear on client-facing documents like Invoices, Quotes, and System Footers.</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <div class="form-group">
+                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Official Entity Name</label>
+                            <input type="text" name="company_name" value="{{ $settings['company_name'] ?? 'ModuShade Industrial' }}" 
+                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
+                                   onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 4px rgba(37,99,235,0.1)';" 
+                                   onblur="this.style.borderColor='#f1f5f9'; this.style.boxShadow='none';">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Primary Phone</label>
+                                <input type="text" name="company_phone" value="{{ $settings['company_phone'] ?? '+1 201 660 5298' }}" 
+                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
+                                       onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Business Email</label>
+                                <input type="email" name="company_email" value="{{ $settings['company_email'] ?? 'info@modu-shade.com' }}" 
+                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
+                                       onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Company Website</label>
+                            <input type="text" name="company_website" value="{{ $settings['company_website'] ?? 'info.modu-shade.com' }}" 
+                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
+                                   onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
+                        </div>
+
+                        <div class="form-group">
+                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Address Line 1 (Street)</label>
+                            <input type="text" name="company_address_1" value="{{ $settings['company_address_1'] ?? '24 Poplar Street' }}" 
+                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
+                                   onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
+                        </div>
+
+                        <div class="form-group">
+                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Address Line 2 (City, State, Zip)</label>
+                            <input type="text" name="company_address_2" value="{{ $settings['company_address_2'] ?? 'Creskill, NJ 07626' }}" 
+                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
+                                   onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
                         </div>
                     </div>
                 </div>

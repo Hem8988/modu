@@ -61,8 +61,8 @@
 
         <header class="brand-header">
             <div>
-                <h1 class="logo-text">VELLORA</h1>
-                <div style="font-size:14px; font-weight:600; color:#b89b5e; letter-spacing:1px; margin-top:-5px;">SHADES</div>
+                <h1 class="logo-text">{{ strtoupper(explode(' ', $globalSettings['company_name'] ?? 'VELLORA')[0]) }}</h1>
+                <div style="font-size:14px; font-weight:600; color:#b89b5e; letter-spacing:1px; margin-top:-5px;">{{ strtoupper(implode(' ', array_slice(explode(' ', $globalSettings['company_name'] ?? 'VELLORA SHADES'), 1))) }}</div>
                 <div class="tagline">Where Light Meets Control</div>
             </div>
             <div class="doc-type">
@@ -73,12 +73,11 @@
 
         <section class="contact-grid">
             <div class="company-info">
-                <strong>Vellora Shades</strong><br>
-                Company ID: 41-4548470<br>
-                EIN: 0451421746<br>
-                info@vellorashades.com<br>
-                7002 Boulevard East #20H<br>
-                Guttenberg 07093<br>
+                <strong>{{ $globalSettings['company_name'] ?? 'Vellora Shades' }}</strong><br>
+                {{ $globalSettings['company_address_1'] ?? '7002 Boulevard East #20H' }}<br>
+                {{ $globalSettings['company_address_2'] ?? 'Guttenberg 07093' }}<br>
+                {{ $globalSettings['company_email'] ?? 'info@vellorashades.com' }}<br>
+                {{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}<br>
                 U.S.A
             </div>
             <div class="bill-to">
@@ -146,7 +145,7 @@
         <footer class="footer-sections">
             <div style="margin-bottom:24px;">
                 <div class="section-title">Notes</div>
-                <div style="color:#666">Thank you for choosing ModuShade. We appreciate your business!</div>
+                <div style="color:#666">Thank you for choosing {{ $globalSettings['company_name'] ?? 'ModuShade' }}. We appreciate your business!</div>
             </div>
             
             <div>

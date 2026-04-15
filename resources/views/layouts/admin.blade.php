@@ -168,9 +168,9 @@
         <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border)">
             <div style="font-size:17px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px">OFFICIAL REGISTRY</div>
             <div style="font-size:18px; font-weight:600; color:#000; line-height:1.5;">
-                24 Poplar Street<br>
-                Creskill, NJ 07626<br>
-                <div style="color:var(--accent); margin-top:4px; font-weight:800; font-size:20px;">+1 201 660 5298</div>
+                {{ $globalSettings['company_address_1'] ?? '24 Poplar Street' }}<br>
+                {{ $globalSettings['company_address_2'] ?? 'Creskill, NJ 07626' }}<br>
+                <div style="color:var(--accent); margin-top:4px; font-weight:800; font-size:20px;">{{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}</div>
             </div>
         </div>
 

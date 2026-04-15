@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>INVOICE #{{ $invoice->invoice_number }} | ModuShade</title>
+    <title>INVOICE #{{ $invoice->invoice_number }} | {{ $globalSettings['company_name'] ?? 'ModuShade' }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
         :root { --accent: #2563eb; --gold: #b89b5e; --dark: #1e293b; --muted: #64748b; }
@@ -78,23 +77,23 @@
                 <div class="brand-name">MODU<span>SHADE</span></div>
                 <div class="brand-sub">CREATE SPACE ON WEB</div>
                 <div class="company-details">
-                    ModuShade Industrial<br>
-                    24 Poplar Street, Creskill, NJ 07626<br>
-                    Phone: +1 201 660 5298<br>
-                    Email: info@modu-shade.com<br>
-                    Website: info.modu-shade.com
+                    {{ $globalSettings['company_name'] ?? 'ModuShade Industrial' }}<br>
+                    {{ $globalSettings['company_address_1'] ?? '24 Poplar Street' }}, {{ $globalSettings['company_address_2'] ?? 'Creskill, NJ 07626' }}<br>
+                    Phone: {{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}<br>
+                    Email: {{ $globalSettings['company_email'] ?? 'info@modu-shade.com' }}<br>
+                    Website: {{ $globalSettings['company_website'] ?? 'info.modu-shade.com' }}
                 </div>
             </div>
         </div>
 
         <div class="address-grid">
             <div class="address-box">
-                <h3>ModuShade</h3>
+                <h3>{{ $globalSettings['company_name'] ?? 'ModuShade' }}</h3>
                 <div style="font-size:12px; color:var(--muted)">
-                    123 Industrial Parkway<br>
-                    New Delhi, India<br>
-                    info@modu-shade.com<br>
-                    +91 98765 43210
+                    {{ $globalSettings['company_address_1'] ?? '123 Industrial Parkway' }}<br>
+                    {{ $globalSettings['company_address_2'] ?? 'New Delhi, India' }}<br>
+                    {{ $globalSettings['company_email'] ?? 'info@modu-shade.com' }}<br>
+                    {{ $globalSettings['company_phone'] ?? '+91 98765 43210' }}
                 </div>
             </div>
             <div class="address-box">
@@ -183,13 +182,13 @@
 
         <div class="notes-section">
             <h3>Notes</h3>
-            <p>Thank you for choosing Modu-Shade. We look forward to working with you!</p>
+            <p>Thank you for choosing {{ $globalSettings['company_name'] ?? 'ModuShade' }}. We look forward to working with you!</p>
         </div>
 
         <div class="terms-registry">
             <strong>Terms & Conditions:</strong><br>
             A 50% deposit is required to begin the order. Remaining balance due upon Installation. 
-            All industrial components remain property of ModuShade until account is $0.00. 
+            All industrial components remain property of {{ $globalSettings['company_name'] ?? 'ModuShade' }} until account is $0.00. 
             Late payments may result in site commissioning delays.
         </div>
     </div>
