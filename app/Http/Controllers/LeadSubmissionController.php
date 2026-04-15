@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use App\Models\ActivityLog;
+use App\Models\Lead;
 use App\Mail\AdminLeadMail;
 use App\Mail\UserLeadMail;
 use App\Services\TwilioService;
