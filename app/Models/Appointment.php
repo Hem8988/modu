@@ -7,4 +7,11 @@ class Appointment extends Model {
     protected $fillable = ['lead_id','type','date','time','status','notes'];
     protected $casts = ['date' => 'datetime'];
     public function lead() { return $this->belongsTo(Lead::class); }
+
+    protected static function booted()
+    {
+        static::created(function ($appointment) {
+            \App\Services\LeadNotificationService::handleNewAppointment($appointment);
+        });
+    }
 }

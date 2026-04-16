@@ -94,7 +94,7 @@
                         </div>
                     </div>
                     <div class="mt-4 pt-2">
-                        <button class="btn btn-primary fw-bolder w-100 py-3 rounded-3 shadow-sm fs-6" type="submit">Confirm Deposit to Registry</button>
+                        <button class="btn btn-primary fw-bolder w-100 py-2 rounded-3 shadow-sm fs-6" type="submit">Confirm Deposit to Registry</button>
                     </div>
                 </form>
             </div>

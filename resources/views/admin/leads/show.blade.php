@@ -59,34 +59,47 @@
 
 @php
     $visualPipeline = [
-        'new_lead'             => 'New',
-        'contacted'            => 'Contacted',
-        'site_visit_scheduled' => 'Appt',
-        'quotation_sent'       => 'Quote',
-        'invoice_sent'         => 'Invoice',
-        'negotiation'          => 'Negot.',
-        'deal_won'             => 'Won'
+        'new_lead'             => ['label' => 'New',      'color' => '#0d6efd'],
+        'contacted'            => ['label' => 'Contact',  'color' => '#0dcaf0'],
+        'site_visit_scheduled' => ['label' => 'Appt',     'color' => '#8b5cf6'],
+        'quotation_sent'       => ['label' => 'Quote',    'color' => '#f59e0b'],
+        'invoice_sent'         => ['label' => 'Invoice',  'color' => '#3fb950'],
+        'negotiation'          => ['label' => 'Negot.',   'color' => '#6366f1'],
+        'deal_won'             => ['label' => 'Won',      'color' => '#10b981']
     ];
     $visualStagesArr = array_keys($visualPipeline);
     $currentVisualIdx = array_search($lead->status, $visualStagesArr);
 @endphp
-<div class="card" style="padding:16px 20px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:6px; overflow-x:auto;">
-    @foreach($visualPipeline as $key => $label)
-        @php
-            $thisVisualStepIdx = array_search($key, $visualStagesArr);
-            $isActive = $lead->status === $key;
-            $isDone = ($currentVisualIdx !== false && $thisVisualStepIdx < $currentVisualIdx) || ($lead->status === 'deal_won');
-        @endphp
-        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; opacity:{{ ($isActive || $isDone) ? '1' : '0.4' }}">
-            <div style="width:24px; height:24px; border-radius:50%; background:{{ $isDone ? 'var(--success)' : ($isActive ? 'var(--accent)' : 'var(--surface2)') }}; color:{{ ($isActive || $isDone) ? '#fff' : 'var(--muted)' }}; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; border:2px solid {{ $isActive ? 'var(--accent)' : 'transparent' }}">
-                @if($isDone) ✓ @else {{ $loop->iteration }} @endif
-            </div>
-            <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.3px; font-weight:{{ $isActive ? '800' : '600' }}; color:{{ $isActive ? 'var(--accent)' : 'var(--text)' }}">{{ $label }}</span>
+
+<div class="card border-0 shadow-sm p-3 mb-4 overflow-hidden">
+    <div class="table-responsive border-0">
+        <div class="d-flex flex-nowrap align-items-center justify-content-between gap-2 pb-2" style="min-width: 700px;">
+            @foreach($visualPipeline as $key => $data)
+                @php
+                    $thisStepIdx = array_search($key, $visualStagesArr);
+                    $isActive = $lead->status === $key;
+                    $isDone = ($currentVisualIdx !== false && $thisStepIdx < $currentVisualIdx) || ($lead->status === 'deal_won');
+                @endphp
+                <div class="flex-grow-1 text-center px-1">
+                    <div class="d-flex flex-column align-items-center gap-2">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center shadow-sm border" 
+                             style="width: 32px; height: 32px; font-size: 0.75rem; font-weight: 800; 
+                                    background-color: {{ $isDone ? '#10b981' : ($isActive ? $data['color'] : '#f8fafc') }}; 
+                                    color: {{ ($isActive || $isDone) ? '#fff' : '#64748b' }};
+                                    border-color: {{ $isActive ? $data['color'] : 'transparent' }} !important;">
+                            @if($isDone) <i class="fas fa-check"></i> @else {{ $loop->iteration }} @endif
+                        </div>
+                        <div class="fw-bolder text-uppercase" style="font-size: 0.65rem; color: {{ $isActive ? $data['color'] : '#64748b' }}; letter-spacing: 0.5px;">
+                            {{ $data['label'] }}
+                        </div>
+                    </div>
+                </div>
+                @if(!$loop->last)
+                    <div style="flex: 0.5; height: 2px; background: {{ $isDone ? '#10b981' : '#e2e8f0' }}; margin-bottom: 20px;"></div>
+                @endif
+            @endforeach
         </div>
-        @if(!$loop->last)
-            <div style="height:2px; flex:0.3; background:{{ $isDone ? 'var(--success)' : 'var(--surface2)' }}; margin-top:-14px;"></div>
-        @endif
-    @endforeach
+    </div>
 </div>
 
 <div class="grid-2 lead-main-grid">

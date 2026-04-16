@@ -14,7 +14,7 @@
             <p class="text-secondary mt-2 mb-0 fw-semibold">Manage your dynamic product range and technical configurations.</p>
         </div>
         <div>
-            <a href="{{ route('admin.products.create') }}" class="btn btn-warning text-white fw-bold d-inline-flex align-items-center gap-2 px-4 py-3 rounded-4 shadow-sm" style="transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1);">
+            <a href="{{ route('admin.products.create') }}" class="btn btn-warning text-white fw-bold d-inline-flex align-items-center gap-2 px-3 py-2 rounded-4 shadow-sm" style="transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1);">
                 <span>✨</span> Register New Product
             </a>
         </div>

@@ -1,372 +1,299 @@
 @extends('layouts.admin')
 
+@section('title', 'Global Settings')
+
 @section('content')
-<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+<div class="container-fluid px-0 mb-5">
     
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
         <div>
-            <h1 style="font-size: 32px; font-weight: 900; color: #0f172a; letter-spacing: -1px; margin: 0;">Global Settings</h1>
-            <p style="color: #64748b; font-weight: 500; margin-top: 5px;">Configure your system-wide SEO, branding, and tracking integrations.</p>
+            <h1 class="fw-bolder text-dark mb-1" style="font-size: 2rem; letter-spacing: -1px;">Global Settings</h1>
+            <p class="text-secondary fw-semibold mb-0">Configure your system-wide SEO, branding, and tracking integrations.</p>
         </div>
-        <div style="padding: 10px 20px; background: rgba(37,99,235,0.05); border-radius: 12px; border: 1px solid rgba(37,99,235,0.1);">
-            <span style="font-size: 12px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 1px;">System Health: Optimal ⚡</span>
+        <div class="px-3 py-2 bg-primary bg-opacity-10 border border-primary-subtle rounded-3">
+            <span class="text-primary fw-bold text-uppercase small" style="letter-spacing: 1px;">System Health: Optimal ⚡</span>
         </div>
     </div>
 
     @if(session('success'))
-        <div style="background: #ecfdf5; border: 1px solid #10b981; color: #065f46; padding: 16px; border-radius: 12px; margin-bottom: 30px; font-weight: 600;">
-            {{ session('success') }}
+        <div class="alert alert-success d-flex align-items-center fw-semibold rounded-4 shadow-sm border-0 bg-success bg-opacity-10 text-success mb-4">
+            <i class="fas fa-check-circle me-3 fs-5"></i>
+            <div>{{ session('success') }}</div>
         </div>
     @endif
 
     <form action="{{ route('admin.settings.update') }}" method="POST">
         @csrf
         
-        <div style="display: grid; grid-template-columns: 300px 1fr; gap: 40px;">
+        <div class="row g-4">
             
             {{-- Navigation Tabs --}}
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <div class="settings-tab active-tab" onclick="switchTab('seo', this)" style="padding: 15px 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 800; color: #0f172a; cursor: pointer; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                    <span style="font-size: 20px;">🔍</span> SEO & Metadata
+            <div class="col-12 col-xl-3 col-lg-4">
+                <div class="d-flex flex-column gap-2" id="settings-nav">
+                    <div class="settings-tab active bg-white border fw-bold text-dark shadow-sm" onclick="switchTab('seo', this)">
+                        <span class="fs-5">🔍</span> SEO & Metadata
+                    </div>
+                    <div class="settings-tab fw-semibold text-secondary" onclick="switchTab('tracking', this)">
+                        <span class="fs-5">🛠️</span> Tracking Scripts
+                    </div>
+                    <div class="settings-tab fw-semibold text-secondary" onclick="switchTab('email', this)">
+                        <span class="fs-5">📧</span> Email Config
+                    </div>
+                    <div class="settings-tab fw-semibold text-secondary" onclick="switchTab('sms', this)">
+                        <span class="fs-5">📱</span> SMS Automation
+                    </div>
+                    <div class="settings-tab fw-semibold text-secondary" onclick="switchTab('master-products', this)">
+                        <span class="fs-5">📋</span> Master Options
+                    </div>
+                    <div class="settings-tab fw-semibold text-secondary" onclick="switchTab('company', this)">
+                        <span class="fs-5">🏢</span> Company Details
+                    </div>
                 </div>
-                <div class="settings-tab" onclick="switchTab('tracking', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 20px;">🛠️</span> Tracking Scripts
-                </div>
-                <div class="settings-tab" onclick="switchTab('email', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 20px;">📧</span> Email Configuration
-                </div>
-                <div class="settings-tab" onclick="switchTab('sms', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 20px;">📱</span> SMS Automation
-                </div>
-                <div class="settings-tab" onclick="switchTab('master-products', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 20px;">📋</span> Master Product Options
-                </div>
-                <div class="settings-tab" onclick="switchTab('company', this)" style="padding: 15px 20px; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 20px;">🏢</span> Company Details
-                </div>
-
-
             </div>
 
             {{-- Settings Content --}}
-            <div style="display: flex; flex-direction: column; gap: 30px;">
+            <div class="col-12 col-xl-9 col-lg-8">
                 
                 {{-- SEO Card --}}
-                <div id="section-seo" class="settings-section" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
-                    <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
-                        SEO Configuration
-                    </h2>
+                <div id="section-seo" class="settings-section card border-0 shadow-sm rounded-4 p-4 p-md-5">
+                    <h4 class="fw-bolder text-dark mb-4 d-flex align-items-center gap-2">SEO Configuration</h4>
 
-                    <div style="display: flex; flex-direction: column; gap: 24px;">
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Application / Site Name</label>
-                            <input type="text" name="site_name" value="{{ $settings['site_name'] ?? 'ModuShade CRM' }}" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 4px rgba(37,99,235,0.1)';" 
-                                   onblur="this.style.borderColor='#f1f5f9'; this.style.boxShadow='none';">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Application / Site Name</label>
+                            <input type="text" name="site_name" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['site_name'] ?? 'ModuShade CRM' }}">
                         </div>
 
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Meta Title Pattern</label>
-                            <input type="text" name="seo_title" value="{{ $settings['seo_title'] ?? 'ModuShade - Industrial Shade Solutions' }}" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 4px rgba(37,99,235,0.1)';" 
-                                   onblur="this.style.borderColor='#f1f5f9'; this.style.boxShadow='none';">
-                            <span style="font-size: 12px; color: #94a3b8; margin-top: 6px; display: block;">Default title used when no specific page title is set.</span>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Meta Title Pattern</label>
+                            <input type="text" name="seo_title" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['seo_title'] ?? 'ModuShade - Industrial Shade Solutions' }}">
+                            <div class="form-text text-secondary mt-2 small">Default title used when no specific page title is set.</div>
                         </div>
 
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Global Meta Description</label>
-                            <textarea name="seo_description" rows="3" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s; resize: vertical;" 
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 4px rgba(37,99,235,0.1)';" 
-                                   onblur="this.style.borderColor='#f1f5f9'; this.style.boxShadow='none';">{{ $settings['seo_description'] ?? '' }}</textarea>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Global Meta Description</label>
+                            <textarea name="seo_description" rows="3" class="form-control bg-light fw-bold py-2 custom-input">{{ $settings['seo_description'] ?? '' }}</textarea>
                         </div>
 
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Focus Keywords</label>
-                            <input type="text" name="seo_keywords" value="{{ $settings['seo_keywords'] ?? 'CRM, Industrial Shade, ModuShade' }}" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 4px rgba(37,99,235,0.1)';" 
-                                   onblur="this.style.borderColor='#f1f5f9'; this.style.boxShadow='none';">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Focus Keywords</label>
+                            <input type="text" name="seo_keywords" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['seo_keywords'] ?? 'CRM, Industrial Shade, ModuShade' }}">
                         </div>
                     </div>
                 </div>
 
                 {{-- Company Details Card --}}
-                <div id="section-company" class="settings-section" style="display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
-                    <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
-                        Company Information
-                    </h2>
-                    <p style="color: #64748b; font-size: 13px; margin-top: -20px; margin-bottom: 30px;">These details will heavily appear on client-facing documents like Invoices, Quotes, and System Footers.</p>
+                <div id="section-company" class="settings-section card border-0 shadow-sm rounded-4 p-4 p-md-5" style="display: none;">
+                    <h4 class="fw-bolder text-dark mb-1 d-flex align-items-center gap-2">Company Information</h4>
+                    <p class="text-secondary small fw-semibold mb-4">These details will heavily appear on client-facing documents like Invoices, Quotes, and System Footers.</p>
 
-                    <div style="display: flex; flex-direction: column; gap: 24px;">
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Official Entity Name</label>
-                            <input type="text" name="company_name" value="{{ $settings['company_name'] ?? 'ModuShade Industrial' }}" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 4px rgba(37,99,235,0.1)';" 
-                                   onblur="this.style.borderColor='#f1f5f9'; this.style.boxShadow='none';">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Official Entity Name</label>
+                            <input type="text" name="company_name" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['company_name'] ?? 'ModuShade Industrial' }}">
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Primary Phone</label>
-                                <input type="text" name="company_phone" value="{{ $settings['company_phone'] ?? '+1 201 660 5298' }}" 
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                       onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Business Email</label>
-                                <input type="email" name="company_email" value="{{ $settings['company_email'] ?? 'info@modu-shade.com' }}" 
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                       onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
-                            </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Primary Phone</label>
+                            <input type="text" name="company_phone" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['company_phone'] ?? '+1 201 660 5298' }}">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Business Email</label>
+                            <input type="email" name="company_email" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['company_email'] ?? 'info@modu-shade.com' }}">
                         </div>
 
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Company Website</label>
-                            <input type="text" name="company_website" value="{{ $settings['company_website'] ?? 'info.modu-shade.com' }}" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                   onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Company Website</label>
+                            <input type="text" name="company_website" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['company_website'] ?? 'info.modu-shade.com' }}">
                         </div>
 
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Address Line 1 (Street)</label>
-                            <input type="text" name="company_address_1" value="{{ $settings['company_address_1'] ?? '24 Poplar Street' }}" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                   onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Address Line 1</label>
+                            <input type="text" name="company_address_1" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['company_address_1'] ?? '24 Poplar Street' }}">
                         </div>
-
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Address Line 2 (City, State, Zip)</label>
-                            <input type="text" name="company_address_2" value="{{ $settings['company_address_2'] ?? 'Creskill, NJ 07626' }}" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s;" 
-                                   onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Address Line 2</label>
+                            <input type="text" name="company_address_2" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['company_address_2'] ?? 'Creskill, NJ 07626' }}">
                         </div>
                     </div>
                 </div>
 
-                {{-- Tracking Card --}}
-                <div id="section-tracking" class="settings-section" style="display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
-                    <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
-                        Custom Scripts & Tracking
-                    </h2>
+                {{-- Tracking Scripts Card --}}
+                <div id="section-tracking" class="settings-section card border-0 shadow-sm rounded-4 p-4 p-md-5" style="display: none;">
+                    <h4 class="fw-bolder text-dark mb-4 d-flex align-items-center gap-2">Custom Scripts & Tracking</h4>
 
-                    <div style="display: flex; flex-direction: column; gap: 24px;">
-                        <div style="margin-bottom: 24px;">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Header Scripts (Pixel, Analytics)</label>
-                            <textarea name="header_scripts" rows="6" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 500; font-family: 'Courier New', monospace; font-size: 13px; outline: none; transition: all 0.2s; resize: vertical; background: #f8fafc;" 
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.background='#fff';" 
-                                   onblur="this.style.borderColor='#f1f5f9'; this.style.background='#f8fafc';"
-                                   placeholder="Paste Google Analytics, FB Pixel, etc. here..."><?= ($settings['header_scripts'] ?? '') ?></textarea>
-                            <span style="font-size: 12px; color: #94a3b8; margin-top: 6px; display: block;">These scripts are injected into the &lt;head&gt; section.</span>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Header Scripts (Pixel, Analytics)</label>
+                            <textarea name="header_scripts" rows="6" class="form-control bg-light fw-semibold text-monospace custom-input" placeholder="Paste Google Analytics, FB Pixel, etc. here..."><?= ($settings['header_scripts'] ?? '') ?></textarea>
+                            <div class="form-text text-secondary mt-2 small">Injected into the &lt;head&gt; section.</div>
                         </div>
 
-                        <div style="margin-bottom: 24px;">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Body Scripts (After Open Body Tag)</label>
-                            <textarea name="body_scripts" rows="6" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 500; font-family: 'Courier New', monospace; font-size: 13px; outline: none; transition: all 0.2s; resize: vertical; background: #f8fafc;" 
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.background='#fff';" 
-                                   onblur="this.style.borderColor='#f1f5f9'; this.style.background='#f8fafc';"
-                                   placeholder="Paste GTM noscript or other body opening scripts..."><?= ($settings['body_scripts'] ?? '') ?></textarea>
-                            <span style="font-size: 12px; color: #94a3b8; margin-top: 6px; display: block;">These scripts are injected immediately after the opening &lt;body&gt; tag.</span>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Body Scripts (After Open Body Tag)</label>
+                            <textarea name="body_scripts" rows="6" class="form-control bg-light fw-semibold text-monospace custom-input" placeholder="Paste GTM noscript or other body opening scripts..."><?= ($settings['body_scripts'] ?? '') ?></textarea>
+                            <div class="form-text text-secondary mt-2 small">Injected immediately after the opening &lt;body&gt; tag.</div>
                         </div>
 
-                        <div>
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Footer Scripts (Before Close Body Tag)</label>
-                            <textarea name="footer_scripts" rows="6" 
-                                   style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 500; font-family: 'Courier New', monospace; font-size: 13px; outline: none; transition: all 0.2s; resize: vertical; background: #f8fafc;" 
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.background='#fff';" 
-                                   onblur="this.style.borderColor='#f1f5f9'; this.style.background='#f8fafc';"
-                                   placeholder="Paste chat widgets or other footer scripts..."><?= ($settings['footer_scripts'] ?? '') ?></textarea>
-                            <span style="font-size: 12px; color: #94a3b8; margin-top: 6px; display: block;">These scripts are injected just before the closing &lt;/body&gt; tag.</span>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Footer Scripts (Before Close Body Tag)</label>
+                            <textarea name="footer_scripts" rows="6" class="form-control bg-light fw-semibold text-monospace custom-input" placeholder="Paste chat widgets or other footer scripts..."><?= ($settings['footer_scripts'] ?? '') ?></textarea>
+                            <div class="form-text text-secondary mt-2 small">Injected just before the closing &lt;/body&gt; tag.</div>
                         </div>
                     </div>
                 </div>
 
-                {{-- Email Card --}}
-                <div id="section-email" class="settings-section" style="display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
-                    <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
-                        SMTP / Email Configuration
-                    </h2>
+                {{-- Email Configuration Card --}}
+                <div id="section-email" class="settings-section card border-0 shadow-sm rounded-4 p-4 p-md-5" style="display: none;">
+                    <h4 class="fw-bolder text-dark mb-4 d-flex align-items-center gap-2">SMTP / Email Configuration</h4>
 
-                    <div style="display: flex; flex-direction: column; gap: 24px;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Mail Mailer</label>
-                                <select name="mail_mailer" style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; background: #fff;">
-                                    <option value="smtp" {{ ($settings['mail_mailer'] ?? 'log') === 'smtp' ? 'selected' : '' }}>SMTP</option>
-                                    <option value="log" {{ ($settings['mail_mailer'] ?? 'log') === 'log' ? 'selected' : '' }}>Log (Testing)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Encryption</label>
-                                <select name="mail_encryption" style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; background: #fff;">
-                                    <option value="tls" {{ ($settings['mail_encryption'] ?? 'tls') === 'tls' ? 'selected' : '' }}>TLS</option>
-                                    <option value="ssl" {{ ($settings['mail_encryption'] ?? 'tls') === 'ssl' ? 'selected' : '' }}>SSL</option>
-                                    <option value="null" {{ ($settings['mail_encryption'] ?? 'tls') === 'null' ? 'selected' : '' }}>None</option>
-                                </select>
-                            </div>
+                    <div class="row g-4">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Mail Mailer</label>
+                            <select name="mail_mailer" class="form-select bg-light fw-bold py-2 custom-input">
+                                <option value="smtp" {{ ($settings['mail_mailer'] ?? 'log') === 'smtp' ? 'selected' : '' }}>SMTP</option>
+                                <option value="log" {{ ($settings['mail_mailer'] ?? 'log') === 'log' ? 'selected' : '' }}>Log (Testing)</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Encryption</label>
+                            <select name="mail_encryption" class="form-select bg-light fw-bold py-2 custom-input">
+                                <option value="tls" {{ ($settings['mail_encryption'] ?? 'tls') === 'tls' ? 'selected' : '' }}>TLS</option>
+                                <option value="ssl" {{ ($settings['mail_encryption'] ?? 'tls') === 'ssl' ? 'selected' : '' }}>SSL</option>
+                                <option value="null" {{ ($settings['mail_encryption'] ?? 'tls') === 'null' ? 'selected' : '' }}>None</option>
+                            </select>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Mail Host</label>
-                                <input type="text" name="mail_host" value="{{ $settings['mail_host'] ?? '' }}" placeholder="smtp.mailtrap.io"
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Mail Port</label>
-                                <input type="text" name="mail_port" value="{{ $settings['mail_port'] ?? '587' }}" placeholder="587"
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
-                            </div>
+                        <div class="col-12 col-md-8">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Mail Host</label>
+                            <input type="text" name="mail_host" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['mail_host'] ?? '' }}" placeholder="smtp.mailtrap.io">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Mail Port</label>
+                            <input type="text" name="mail_port" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['mail_port'] ?? '587' }}" placeholder="587">
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Username</label>
-                                <input type="text" name="mail_username" value="{{ $settings['mail_username'] ?? '' }}" 
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Password</label>
-                                <input type="password" name="mail_password" value="{{ $settings['mail_password'] ?? '' }}" 
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
-                            </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Username</label>
+                            <input type="text" name="mail_username" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['mail_username'] ?? '' }}">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Password</label>
+                            <input type="password" name="mail_password" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['mail_password'] ?? '' }}">
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">From Address</label>
-                                <input type="email" name="mail_from_address" value="{{ $settings['mail_from_address'] ?? '' }}" placeholder="hello@modushade.com"
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">From Name</label>
-                                <input type="text" name="mail_from_name" value="{{ $settings['mail_from_name'] ?? 'Modu Shade' }}" 
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
-                            </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">From Address</label>
+                            <input type="email" name="mail_from_address" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['mail_from_address'] ?? '' }}" placeholder="hello@modushade.com">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">From Name</label>
+                            <input type="text" name="mail_from_name" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['mail_from_name'] ?? 'Modu Shade' }}">
                         </div>
                     </div>
                 </div>
 
                 {{-- SMS Card --}}
-                <div id="section-sms" class="settings-section" style="display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
-                    <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
-                        SMS Lead Automation
-                    </h2>
+                <div id="section-sms" class="settings-section card border-0 shadow-sm rounded-4 p-4 p-md-5" style="display: none;">
+                    <h4 class="fw-bolder text-dark mb-4 d-flex align-items-center gap-2">SMS Lead Automation</h4>
 
-                    <div style="display: flex; flex-direction: column; gap: 24px;">
-                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px; background: #f8fafc; border-radius: 16px; border: 2px solid #f1f5f9;">
-                            <div>
-                                <h4 style="margin: 0; font-size: 14px; font-weight: 800; color: #0f172a;">Enable First-Touch Automation</h4>
-                                <p style="margin: 5px 0 0; font-size: 13px; color: #64748b;">Automatically send a text message when a new lead arrives.</p>
-                            </div>
-                            <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 26px;">
-                                <input type="checkbox" name="sms_enabled" {{ ($settings['sms_enabled'] ?? 'off') === 'on' ? 'checked' : '' }} style="opacity: 0; width: 0; height: 0; position: absolute;">
-                                <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px;"></span>
-                            </label>
+                    <div class="d-flex align-items-center justify-content-between bg-light p-4 rounded-4 border mb-4">
+                        <div>
+                            <h5 class="fw-bolder text-dark mb-1">Enable First-Touch Automation</h5>
+                            <p class="text-secondary small fw-semibold mb-0">Automatically send a text message when a new lead arrives.</p>
                         </div>
-
-                        <div id="sms-sequence-container" style="display: flex; flex-direction: column; gap: 24px;">
-                            {{-- Steps will be injected here by JS --}}
+                        <div class="form-check form-switch ms-3">
+                            <input class="form-check-input fs-3 custom-switch" type="checkbox" name="sms_enabled" {{ ($settings['sms_enabled'] ?? 'off') === 'on' ? 'checked' : '' }}>
                         </div>
+                    </div>
 
-                        <button type="button" onclick="addStep()" style="width: 100%; padding: 16px; border: 2px dashed #e2e8f0; border-radius: 16px; background: #f8fafc; color: #64748b; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;" onmouseover="this.style.borderColor='#2563eb'; this.style.color='#2563eb';" onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#64748b';">
-                            <span>➕</span> Add New Follow-up Step
-                        </button>
+                    <div id="sms-sequence-container" class="d-flex flex-column gap-4 mb-4">
+                        {{-- Steps will be injected here by JS --}}
+                    </div>
+
+                    <button type="button" onclick="addStep()" class="btn btn-light fw-bold border border-secondary-subtle border-2 text-primary w-100 py-2 rounded-4 custom-hover-dash">
+                        <i class="fas fa-plus me-2"></i> Add New Follow-up Step
+                    </button>
+                    
+                    <input type="hidden" name="sms_sequence" id="sms_sequence_input">
+                    
+                    <div class="mt-5 pt-4 border-top border-secondary-subtle border-dashed">
+                        <h5 class="fw-bolder text-dark mb-4 d-flex align-items-center gap-2">
+                            <span class="text-primary fs-5"><i class="fas fa-key"></i></span> Advanced Connectivity (Twilio API)
+                        </h5>
                         
-                        <input type="hidden" name="sms_sequence" id="sms_sequence_input">
-                        
-                        <div style="margin-top: 20px; padding-top: 30px; border-top: 1px dashed #e2e8f0;">
-                            <h4 style="margin: 0 0 20px; font-size: 14px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 18px;">🔑</span> Advanced Connectivity (Twilio API)
-                            </h4>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                                <div class="form-group">
-                                    <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Twilio Account SID</label>
-                                    <input type="text" name="twilio_sid" value="{{ $settings['twilio_sid'] ?? '' }}" 
-                                           style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; transition: 0.2s;" 
-                                           onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';"
-                                           placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxx">
-                                </div>
-                                <div class="form-group">
-                                    <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Twilio Auth Token</label>
-                                    <input type="password" name="twilio_token" value="{{ $settings['twilio_token'] ?? '' }}" 
-                                           style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; transition: 0.2s;" 
-                                           onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';"
-                                           placeholder="••••••••••••••••••••••••">
-                                </div>
+                        <div class="row g-4 mb-4">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Twilio Account SID</label>
+                                <input type="text" name="twilio_sid" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['twilio_sid'] ?? '' }}" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxx">
                             </div>
-                            
-                            <div class="form-group">
-                                <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Twilio Sender Number (From)</label>
-                                <input type="text" name="twilio_from" value="{{ $settings['twilio_from'] ?? '' }}" 
-                                       style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; transition: 0.2s;" 
-                                       onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';"
-                                       placeholder="+1234567890">
-                                <span style="font-size: 12px; color: #94a3b8; margin-top: 6px; display: block;">Your verified Twilio phone number or Messaging Service SID.</span>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Twilio Auth Token</label>
+                                <input type="password" name="twilio_token" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['twilio_token'] ?? '' }}" placeholder="••••••••••••••••••••••••">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Twilio Sender Number (From)</label>
+                                <input type="text" name="twilio_from" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['twilio_from'] ?? '' }}" placeholder="+1234567890">
+                                <div class="form-text text-secondary mt-1 small">Your verified Twilio phone number or Messaging Service SID.</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
                 {{-- Master Product Options Card --}}
-                <div id="section-master-products" class="settings-section" style="display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 30px; gap: 20px;">
+                <div id="section-master-products" class="settings-section card border-0 shadow-sm rounded-4 p-4 p-md-5" style="display: none;">
+                    <div class="d-flex flex-wrap justify-content-between align-items-md-center gap-3 mb-4">
                         <div>
-                            <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 12px;">
-                                Global Attribute Registry
-                            </h2>
-                            <p style="color: #64748b; font-size: 14px; margin-top: 8px;">These options will appear as "Quick Add" buttons when you manage products in the Catalog.</p>
+                            <h4 class="fw-bolder text-dark mb-1 d-flex align-items-center gap-2">Global Attribute Registry</h4>
+                            <p class="text-secondary small fw-semibold mb-0">These options will appear as "Quick Add" buttons when you manage products in the Catalog.</p>
                         </div>
-                        <button type="button" onclick="openMasterAttrModal()" style="background: var(--gold); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(184, 155, 94, 0.2); white-space: nowrap;">
+                        <button type="button" onclick="openMasterAttrModal()" class="btn btn-warning text-white fw-bold shadow-sm px-3 py-2 rounded-3 text-nowrap">
                             + Add Global Option
                         </button>
                     </div>
 
-                    <div style="display: grid; gap: 16px;">
+                    <div class="d-flex flex-column gap-3">
                         @forelse($masterAttributes as $ma)
-                            <div style="background: #f8fafc; border: 1px solid #f1f5f9; padding: 20px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s;" onmouseover="this.style.borderColor='#e2e8f0'; this.style.background='#fff';">
+                            <div class="bg-light border border-secondary-subtle p-3 p-md-4 rounded-4 d-flex flex-wrap justify-content-between align-items-center gap-3 custom-hover-card">
                                 <div>
-                                    <div style="font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 10px; font-size: 16px;">
+                                    <div class="fw-bolder text-dark fs-5 d-flex align-items-center gap-2 mb-1">
                                         {{ $ma->label }}
-                                        @if(!$ma->is_active) <span style="font-size: 10px; background: #fee2e2; color: #ef4444; padding: 3px 8px; border-radius: 6px; font-weight: 900; text-transform: uppercase;">Inactive</span> @endif
+                                        @if(!$ma->is_active) <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle ms-2 px-2 py-1 text-uppercase small">Inactive</span> @endif
                                     </div>
-                                    <div style="font-size: 13px; color: #64748b; margin-top: 6px; font-weight: 500; display: flex; gap: 15px;">
-                                        <span><span style="color: #94a3b8; font-weight: 700;">Values:</span> {{ $ma->default_values ?: '(Custom)' }}</span>
+                                    <div class="d-flex flex-wrap gap-3 small fw-semibold text-secondary">
+                                        <span><span class="text-primary me-1">Values:</span> {{ $ma->default_values ?: '(Custom)' }}</span>
                                         @if($ma->default_price > 0)
-                                            <span style="color: #10b981; font-weight: 700;">+ ${{ number_format($ma->default_price, 2) }}</span>
+                                            <span class="text-success fw-bold">+ ${{ number_format($ma->default_price, 2) }}</span>
                                         @endif
                                     </div>
                                 </div>
-                                <div style="display: flex; gap: 10px;">
+                                <div class="d-flex gap-2">
                                     <button type="button" onclick='openMasterAttrModal({{ $ma->id }}, "{{ addslashes($ma->label) }}", "{{ addslashes($ma->default_values) }}", {{ $ma->is_active ? 1 : 0 }}, {{ $ma->default_price }})' 
-                                            style="background: #fff; border: 1px solid #e2e8f0; color: #64748b; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.color='#2563eb'; this.style.borderColor='#2563eb';">✎</button>
-                                    <button type="submit" form="delete-ma-{{ $ma->id }}" style="background: #fff; border: 1px solid #fee2e2; color: #ef4444; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';">✕</button>
+                                            class="btn btn-light border text-secondary d-flex align-items-center justify-content-center p-2 rounded-3 hover-text-primary" style="width:40px; height:40px;">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                    <button type="submit" form="delete-ma-{{ $ma->id }}" 
+                                            class="btn btn-light border border-danger-subtle bg-danger bg-opacity-10 text-danger d-flex align-items-center justify-content-center p-2 rounded-3 hover-bg-danger" style="width:40px; height:40px;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
                             </div>
                         @empty
-                            <div style="text-align: center; padding: 60px; border: 2px dashed #f1f5f9; border-radius: 20px;">
-                                <div style="font-size: 40px; margin-bottom: 16px; opacity: 0.3;">📋</div>
-                                <h4 style="color: #64748b; margin: 0;">No Master Options Defined</h4>
-                                <p style="color: #94a3b8; font-size: 13px; margin-top: 5px;">Add global options to speed up your product cataloging.</p>
+                            <div class="text-center py-5 border border-dashed rounded-4 bg-light">
+                                <div class="fs-1 opacity-25 mb-3">📋</div>
+                                <h5 class="fw-bolder text-secondary mb-1">No Master Options Defined</h5>
+                                <p class="text-secondary small fw-semibold">Add global options to speed up your product cataloging.</p>
                             </div>
                         @endforelse
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 16px; padding-bottom: 40px;">
-                    <button type="reset" style="padding: 14px 28px; border-radius: 12px; border: 1px solid #e2e8f0; background: #fff; font-weight: 800; color: #64748b; cursor: pointer;">Discard Changes</button>
-                    <button type="submit" style="padding: 14px 40px; border-radius: 12px; border: none; background: #2563eb; color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(37,99,235,0.25);">Save Settings ➔</button>
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 pb-5">
+                    <button type="reset" class="btn btn-light border fw-bold text-secondary px-3 py-2 rounded-3 shadow-sm">Discard Changes</button>
+                    <button type="submit" class="btn btn-primary fw-bolder px-4 py-2 rounded-3 shadow-sm">Save Settings <i class="fas fa-arrow-right ms-2"></i></button>
                 </div>
 
             </div>
-
         </div>
     </form>
 </div>
@@ -379,43 +306,45 @@
 @endforeach
 
 {{-- Master Attribute Modal --}}
-<div id="master-attr-modal" style="position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
-    <div style="background: #fff; width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden;">
-        <div style="padding: 24px 28px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
-            <h3 id="modal-attr-title" style="margin: 0; font-size: 18px; font-weight: 900; color: #0f172a;">📋 Configure Global Option</h3>
-            <button onclick="closeMasterAttrModal()" style="background: none; border: none; font-size: 24px; color: #64748b; cursor: pointer;">&times;</button>
+<div class="modal fade" id="master-attr-modal" tabindex="-1" aria-hidden="true" style="backdrop-filter: blur(5px);">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-header border-bottom-0 pt-4 px-4">
+                <h4 class="modal-title fw-bolder" id="modal-attr-title">📋 Configure Global Option</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <form id="master-attr-form" method="POST">
+                    @csrf
+                    <div id="modal-attr-method"></div>
+                    <div class="p-4">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Option Label</label>
+                                <input type="text" name="label" id="ma_label" required placeholder="e.g. Fabric Type" class="form-control bg-light fw-bold py-2 custom-input">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Default Surcharge ($)</label>
+                                <input type="number" step="0.01" name="default_price" id="ma_price" placeholder="0.00" class="form-control bg-light fw-bold py-2 custom-input">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Default Multi-Selection Values</label>
+                                <textarea name="default_values" id="ma_values" rows="3" placeholder="e.g. Scala, Deco, Silk (Separate by comma)" class="form-control bg-light fw-bold py-2 custom-input" style="resize:none;"></textarea>
+                                <div class="form-text text-secondary mt-2 small">Separate values with a comma. These will be clickable shortcuts.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-light p-4 border-top d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-light border fw-bold text-secondary px-4 py-2 rounded-3" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" id="ma_submit_btn" class="btn btn-primary fw-bolder px-4 py-2 rounded-3 shadow-sm">Save Option</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form id="master-attr-form" method="POST">
-            @csrf
-            <div id="modal-attr-method"></div>
-            <div style="padding: 28px;">
-                <div style="display: grid; gap: 20px;">
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Option Label</label>
-                        <input type="text" name="label" id="ma_label" required placeholder="e.g. Fabric Type" 
-                               style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
-                    </div>
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Default Surcharge ($)</label>
-                        <input type="number" step="0.01" name="default_price" id="ma_price" placeholder="0.00" 
-                               style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none;">
-                    </div>
-                    <div>
-                        <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Default Multi-Selection Values</label>
-                        <textarea name="default_values" id="ma_values" rows="3" placeholder="e.g. Scala, Deco, Silk (Separate by comma)" 
-                                  style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; resize: none;"></textarea>
-                        <span style="font-size: 12px; color: #94a3b8; margin-top: 6px; display: block;">Separate values with a comma. These will be clickable shortcuts.</span>
-                    </div>
-                </div>
-            </div>
-            <div style="padding: 20px 28px; background: #fafafa; border-top: 1px solid #e2e8f0; text-align: right; display: flex; justify-content: flex-end; gap: 12px;">
-                <button type="button" onclick="closeMasterAttrModal()" style="padding: 10px 20px; border-radius: 12px; border: none; background: #e2e8f0; color: #64748b; font-weight: 700; cursor: pointer;">Cancel</button>
-                <button type="submit" id="ma_submit_btn" style="padding: 10px 24px; border-radius: 12px; border: none; background: #2563eb; color: #fff; font-weight: 800; cursor: pointer;">Save Option</button>
-            </div>
-        </form>
     </div>
 </div>
 
+@push('scripts')
 <script>
     function openMasterAttrModal(id = null, label = '', values = '', active = 1, price = 0) {
         const form = document.getElementById('master-attr-form');
@@ -438,21 +367,27 @@
             document.getElementById('ma_price').value = 0;
         }
         
-        document.getElementById('master-attr-modal').style.display = 'flex';
+        const modal = new bootstrap.Modal(document.getElementById('master-attr-modal'));
+        modal.show();
     }
 
-    function closeMasterAttrModal() {
-        document.getElementById('master-attr-modal').style.display = 'none';
-    }
+    // Replace the custom modal close
+    window.closeMasterAttrModal = function() {
+        const modalEl = document.getElementById('master-attr-modal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if(modal) modal.hide();
+    };
 
-    // Auto-switch to Master tab if redirected back after save
+    // Auto-switch to Master tab
     window.addEventListener('DOMContentLoaded', (event) => {
         if (window.location.hash === '#master') {
-            switchTab('master-products', document.querySelector('[onclick*="master-products"]'));
+            const tabs = Array.from(document.querySelectorAll('.settings-tab'));
+            const targetTab = tabs.find(t => t.textContent.includes('Master Options'));
+            if(targetTab) switchTab('master-products', targetTab);
         }
     });
 
-    function switchTab(sectionId, el) {
+    window.switchTab = function(sectionId, el) {
         // Hide all sections
         document.querySelectorAll('.settings-section').forEach(section => {
             section.style.display = 'none';
@@ -463,57 +398,45 @@
 
         // Update tab styles
         document.querySelectorAll('.settings-tab').forEach(tab => {
-            tab.style.background = 'transparent';
-            tab.style.border = 'none';
-            tab.style.boxShadow = 'none';
-            tab.style.color = '#64748b';
-            tab.style.fontWeight = '600';
+            tab.classList.remove('active', 'bg-white', 'border', 'shadow-sm', 'text-dark');
+            tab.classList.add('text-secondary');
         });
 
         // Set active tab style
-        el.style.background = '#fff';
-        el.style.border = '1px solid #e2e8f0';
-        el.style.borderRadius = '12px';
-        el.style.fontWeight = '800';
-        el.style.color = '#0f172a';
-        el.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.05)';
-    }
+        el.classList.add('active', 'bg-white', 'border', 'shadow-sm', 'text-dark');
+        el.classList.remove('text-secondary');
+    };
 
     // Multi-step SMS Sequence Logic
     let sequenceData = {!! $settings['sms_sequence'] ?? '[]' !!};
-
-
     const container = document.getElementById('sms-sequence-container');
 
-    function renderSequence() {
+    window.renderSequence = function() {
         container.innerHTML = '';
         if (sequenceData.length === 0) {
-            container.innerHTML = '<p style="text-align: center; color: #94a3b8; font-style: italic; padding: 20px;">No automation steps configured yet. Click the button below to start.</p>';
+            container.innerHTML = '<p class="text-center text-secondary small fst-italic py-4 w-100 mb-0 border border-dashed rounded-3 bg-white">No automation steps configured yet. Click the button below to start.</p>';
             return;
         }
 
         sequenceData.forEach((step, index) => {
             const stepHtml = `
-                <div class="sequence-step" style="background: #fff; border: 2px solid #f1f5f9; border-radius: 20px; padding: 24px; position: relative;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                <div class="card border-0 shadow-sm rounded-4 border-start border-primary border-4 p-4 position-relative">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
                         <div>
-                            <span style="display: inline-block; padding: 4px 12px; background: #2563eb; color: #fff; border-radius: 20px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Step ${index + 1}</span>
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 800; color: #0f172a;">Follow-up Message</h4>
+                            <span class="badge bg-primary rounded-pill mb-2">Step ${index + 1}</span>
+                            <h5 class="fw-bolder m-0">Follow-up Message</h5>
                         </div>
-                        <button type="button" onclick="removeStep(${index})" style="background: #fff; border: 1px solid #fee2e2; color: #ef4444; width: 32px; height: 32px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px;" title="Remove Step">×</button>
+                        <button type="button" onclick="removeStep(${index})" class="btn btn-light border border-danger-subtle bg-danger bg-opacity-10 text-danger rounded-3 d-flex align-items-center justify-content-center p-0" style="width:32px; height:32px;" title="Remove Step"><i class="fas fa-times"></i></button>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Wait After Previous Message</label>
-                            <input type="number" onchange="updateStep(${index}, 'delay_value', this.value)" value="${step.delay_value || 0}" 
-                                   style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; transition: 0.2s;" 
-                                   onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';">
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Wait After Previous</label>
+                            <input type="number" onchange="updateStep(${index}, 'delay_value', this.value)" value="${step.delay_value || 0}" class="form-control bg-light fw-bold py-2 custom-input">
                         </div>
-                        <div class="form-group">
-                            <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Time Unit</label>
-                            <select onchange="updateStep(${index}, 'delay_unit', this.value)" 
-                                    style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; outline: none; background: #fff;">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Time Unit</label>
+                            <select onchange="updateStep(${index}, 'delay_unit', this.value)" class="form-select bg-light fw-bold py-2 custom-input">
                                 <option value="minutes" ${step.delay_unit === 'minutes' ? 'selected' : ''}>Minutes</option>
                                 <option value="hours" ${step.delay_unit === 'hours' ? 'selected' : ''}>Hours</option>
                                 <option value="days" ${step.delay_unit === 'days' ? 'selected' : ''}>Days</option>
@@ -521,16 +444,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label style="display: block; font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Message Template</label>
-                        <textarea onchange="updateStep(${index}, 'template', this.value)" rows="3" 
-                               style="width: 100%; padding: 14px 20px; border-radius: 12px; border: 2px solid #f1f5f9; font-weight: 600; font-family: inherit; outline: none; transition: all 0.2s; resize: vertical;" 
-                               onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#f1f5f9';"
-                               placeholder="Enter SMS content...">${step.template || ''}</textarea>
-                        <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <span style="font-size: 10px; background: #e2e8f0; padding: 4px 8px; border-radius: 6px; color: #475569; cursor: pointer;" onclick="insertTagAtStep(${index}, '@{{name}}')">@{{name}}</span>
-                            <span style="font-size: 10px; background: #e2e8f0; padding: 4px 8px; border-radius: 6px; color: #475569; cursor: pointer;" onclick="insertTagAtStep(${index}, '@{{product_type}}')">@{{product_type}}</span>
-                            <span style="font-size: 10px; background: #e2e8f0; padding: 4px 8px; border-radius: 6px; color: #475569; cursor: pointer;" onclick="insertTagAtStep(${index}, '@{{windows_count}}')">@{{windows_count}}</span>
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Message Template</label>
+                        <textarea onchange="updateStep(${index}, 'template', this.value)" rows="3" class="form-control bg-light fw-bold custom-input" style="resize:vertical;" placeholder="Enter SMS content...">${step.template || ''}</textarea>
+                        <div class="d-flex flex-wrap gap-2 mt-2">
+                            <span class="badge bg-light border text-secondary border-secondary-subtle font-monospace px-2 py-1 shadow-sm rounded-2 cursor-pointer action-tag" onclick="insertTagAtStep(${index}, '@{{name}}')">@{{name}}</span>
+                            <span class="badge bg-light border text-secondary border-secondary-subtle font-monospace px-2 py-1 shadow-sm rounded-2 cursor-pointer action-tag" onclick="insertTagAtStep(${index}, '@{{product_type}}')">@{{product_type}}</span>
+                            <span class="badge bg-light border text-secondary border-secondary-subtle font-monospace px-2 py-1 shadow-sm rounded-2 cursor-pointer action-tag" onclick="insertTagAtStep(${index}, '@{{windows_count}}')">@{{windows_count}}</span>
                         </div>
                     </div>
                 </div>
@@ -542,7 +462,7 @@
         document.getElementById('sms_sequence_input').value = JSON.stringify(sequenceData);
     }
 
-    function addStep() {
+    window.addStep = function() {
         sequenceData.push({
             delay_value: 2,
             delay_unit: 'minutes',
@@ -551,19 +471,19 @@
         renderSequence();
     }
 
-    function removeStep(index) {
+    window.removeStep = function(index) {
         if(confirm('Are you sure you want to remove this automation step?')) {
             sequenceData.splice(index, 1);
             renderSequence();
         }
     }
 
-    function updateStep(index, field, value) {
+    window.updateStep = function(index, field, value) {
         sequenceData[index][field] = value;
         document.getElementById('sms_sequence_input').value = JSON.stringify(sequenceData);
     }
 
-    function insertTagAtStep(index, tag) {
+    window.insertTagAtStep = function(index, tag) {
         const textareas = container.querySelectorAll('textarea');
         const textarea = textareas[index];
         const start = textarea.selectionStart;
@@ -579,12 +499,24 @@
 </script>
 
 <style>
-    /* Switch Slider Styling */
-    .switch input:checked + .slider { background-color: #2563eb; }
-    .switch input:checked + .slider:before { transform: translateX(24px); }
-    .slider:before {
-        position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
-        background-color: white; transition: .4s; border-radius: 50%;
-    }
+    .settings-tab { padding: 1rem 1.25rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.75rem; }
+    .settings-tab:hover { background-color: #f8fafc; }
+    .settings-tab.active { background-color: #fff; cursor: default; }
+
+    .custom-input { transition: all 0.2s; border: 2px solid #f1f5f9; }
+    .custom-input:focus { border-color: #0d6efd; box-shadow: 0 0 0 4px rgba(13,110,253,0.1); background-color: #fff !important; }
+    
+    .border-dashed { border-style: dashed !important; }
+    
+    .cursor-pointer { cursor: pointer; }
+    .action-tag:hover { border-color: #0d6efd !important; color: #0d6efd !important; }
+    
+    .custom-hover-dash:hover { border-color: #0d6efd !important; background-color: rgba(13,110,253,0.05) !important; }
+    .custom-hover-card { transition: all 0.2s; }
+    .custom-hover-card:hover { border-color: #cbd5e1 !important; background: #fff !important; box-shadow: 0 .125rem .25rem rgba(0,0,0,.075); transform: translateY(-1px); }
+    
+    .hover-text-primary:hover { color: #0d6efd !important; border-color: #0d6efd !important; }
+    .hover-bg-danger:hover { background-color: #dc3545 !important; color: white !important; }
 </style>
+@endpush
 @endsection

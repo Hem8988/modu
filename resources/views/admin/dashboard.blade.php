@@ -160,35 +160,52 @@
 </div>
 
 {{-- World-Class 8-Stage Funnel Registry --}}
-<div class="card border-0 shadow-sm p-4 mb-4">
+<div class="card border-0 shadow-sm p-4 mb-4 overflow-hidden">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fs-6 fw-bold text-secondary text-uppercase m-0">Industrial Pipeline Funnel</h3>
-        <span class="badge bg-light text-primary border border-primary-subtle p-2">Real-time Ops</span>
+        <div>
+            <h3 class="fs-6 fw-bold text-secondary text-uppercase m-0">Operations Pipeline Velocity</h3>
+            <p class="text-secondary small mb-0">Live flow from Enquiry to Acquisition</p>
+        </div>
+        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle p-2 px-3 rounded-pill fw-bold">Real-time Ops ⚡</span>
     </div>
-    <div class="d-flex justify-content-between position-relative overflow-x-auto pb-2 gap-2">
-        @php
-            $funnelOrder = ['Enquiry', 'New Lead', 'Contacted', 'Appt Scheduled', 'Quotation Sent', 'Negotiations', 'Invoice Sent', 'Converted', 'Lost'];
-            $stgColors = ['#94a3b8', '#58a6ff', '#58a6ff', '#a371f7', '#d29922', '#f85149', '#3fb950', '#10b981', '#f85149'];
-        @endphp
-        @foreach($funnelOrder as $index => $stageName)
-            <div class="flex-grow-1 text-center position-relative px-1" style="min-width: 90px;">
-                <div class="fw-bold text-dark mb-2 text-truncate" style="font-size: 0.7rem;">{{ $stageName == 'Appt Scheduled' ? 'Site Visit' : $stageName }}</div>
-                <div class="progress mb-2 bg-secondary bg-opacity-10" style="height: 6px;">
-                    <div class="progress-bar" style="width: 100%; background-color: {{ $stgColors[$index] }};"></div>
-                </div>
-                <div class="fs-5 fw-bold text-dark">{{ $sidebarCounts[$stageName] ?? 0 }}</div>
-                <div class="fw-bold text-secondary mt-1" style="font-size: 0.6rem;">
-                    @php
-                        $totalBaseline = max(1, $sidebarCounts['Enquiry'] ?? 1);
-                        $countValue = $sidebarCounts[$stageName] ?? 0;
-                    @endphp
-                    {{ round(($countValue / $totalBaseline) * 100, 1) }}% Conv.
+    
+    <div class="table-responsive border-0">
+        <div class="d-flex flex-nowrap gap-3 pb-3" style="min-width: 800px;">
+            @php
+                $funnelOrder = [
+                    'Enquiries'      => ['label' => 'Enquiry',   'color' => '#64748b'],
+                    'New Lead'       => ['label' => 'New Lead',  'color' => '#0d6efd'],
+                    'Contacted'      => ['label' => 'Contacted', 'color' => '#0dcaf0'],
+                    'Appt Scheduled' => ['label' => 'Site Visit', 'color' => '#8b5cf6'],
+                    'Negotiation'    => ['label' => 'Negotiate', 'color' => '#f59e0b'],
+                    'Won'            => ['label' => 'Closed Won','color' => '#10b981'],
+                    'Lost'           => ['label' => 'Lost',      'color' => '#ef4444'],
+                ];
+                $totalEnquiries = max(1, $sidebarCounts['Enquiries'] ?? 1);
+            @endphp
+            
+            @foreach($funnelOrder as $key => $data)
+                <div class="flex-grow-1 text-center">
+                    <div class="card bg-light border-0 p-3 h-100 rounded-4 transition-hover">
+                        <div class="text-uppercase fw-bold text-secondary mb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">{{ $data['label'] }}</div>
+                        <div class="fs-4 fw-black text-dark mb-1">{{ $sidebarCounts[$key] ?? 0 }}</div>
+                        
+                        <div class="progress mb-2 bg-white rounded-pill" style="height: 6px;">
+                            <div class="progress-bar rounded-pill" style="width: 100%; background-color: {{ $data['color'] }};"></div>
+                        </div>
+                        
+                        <div class="fw-bold text-secondary" style="font-size: 0.6rem;">
+                            {{ round((($sidebarCounts[$key] ?? 0) / $totalEnquiries) * 100, 0) }}% Conv.
+                        </div>
+                    </div>
                 </div>
                 @if(!$loop->last)
-                    <div class="position-absolute text-secondary opacity-50" style="right: -8px; top: 25px; font-size: 0.7rem;"><i class="fas fa-chevron-right"></i></div>
+                    <div class="d-flex align-items-center text-secondary opacity-25 px-1">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
                 @endif
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
 </div>
 

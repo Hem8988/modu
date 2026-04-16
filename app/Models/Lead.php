@@ -5,6 +5,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lead extends Model
 {
+    protected static function booted()
+    {
+        static::created(function ($lead) {
+            \App\Services\LeadNotificationService::handleNewLead($lead);
+        });
+
+        static::updated(function ($lead) {
+            if ($lead->isDirty('assigned_to') && $lead->assigned_to) {
+                \App\Services\LeadNotificationService::handleLeadAssigned($lead);
+            }
+        });
+    }
+
     protected $fillable = [
         'enquiry_id','name','email','phone','zip_code','city','budget','address',
         'shades_needed','feedback','windows_count','timeline','status','lead_score',
