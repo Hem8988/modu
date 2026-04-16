@@ -51,7 +51,19 @@
         @media print { 
             .print-btn { display: none; } 
             body { background: #fff; padding: 0; } 
-            .page { margin: 0; box-shadow: none; width: 100%; max-width: 100%; }
+            .page { margin: 0; box-shadow: none; width: 100%; max-width: 100%; padding: 40px 0; }
+        }
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .page { padding: 24px; margin: 0; }
+            .brand-header { flex-direction: column; }
+            .doc-type { text-align: left; margin-top: 20px; }
+            .contact-grid { grid-template-columns: 1fr !important; gap: 20px; }
+            .bill-to { text-align: left !important; }
+            .dates-registry { flex-wrap: wrap; gap: 20px; }
+            .table-responsive { width: 100%; overflow-x: auto; }
+            .financial-summary { display: flex; justify-content: flex-start; }
+            .summary-box { width: 100%; margin-top: 20px; }
         }
     </style>
 </head>
@@ -59,7 +71,7 @@
     <div class="page">
         <button class="print-btn" onclick="window.print()" style="position:fixed; top:20px; right:20px; background:#1a1a1a; color:#fff; border:none; padding:10px 20px; cursor:pointer; border-radius:4px; font-weight:700;">⎙ Print Document</button>
 
-        <header class="brand-header">
+        <header class="brand-header" style="display:flex; justify-content:space-between; margin-bottom:60px;">
             <div>
                 <h1 class="logo-text">{{ strtoupper(explode(' ', $globalSettings['company_name'] ?? 'VELLORA')[0]) }}</h1>
                 <div style="font-size:14px; font-weight:600; color:#b89b5e; letter-spacing:1px; margin-top:-5px;">{{ strtoupper(implode(' ', array_slice(explode(' ', $globalSettings['company_name'] ?? 'VELLORA SHADES'), 1))) }}</div>
@@ -101,6 +113,7 @@
             </div>
         </section>
 
+        <div class="table-responsive">
         <table>
             <thead>
                 <tr>
@@ -126,9 +139,10 @@
                 </tr>
             </tbody>
         </table>
+        </div>
 
-        <div class="financial-summary">
-            <div class="summary-box">
+        <div class="financial-summary" style="display: flex; justify-content: flex-end; margin-top: 40px;">
+            <div class="summary-box" style="width: 280px;">
                 <div class="summary-row">
                     <span class="date-label">Sub Total</span>
                     <span>${{ number_format($subtotal, 2) }}</span>

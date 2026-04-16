@@ -10,8 +10,8 @@
                 <span style="background: var(--accent); color: white; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">Drafting Proposal</span>
                 <span style="color: var(--muted); font-size: 13px; font-weight: 600;">Client Snapshot</span>
             </div>
-            <h1 style="font-size: 32px; font-weight: 950; color: var(--text); letter-spacing: -1px; line-height: 1;">{{ $lead->name }}</h1>
-            <div style="display: flex; gap: 20px; margin-top: 12px; font-size: 14px; font-weight: 600; color: var(--muted);">
+            <h1 style="font-size: 32px; font-weight: 950; color: var(--text); letter-spacing: -1px; line-height: 1; margin-bottom: 12px;">{{ $lead->name }}</h1>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 12px; font-size: 14px; font-weight: 600; color: var(--muted);">
                 <span style="display: flex; align-items: center; gap: 6px;">📱 {{ $lead->phone }}</span>
                 <span style="display: flex; align-items: center; gap: 6px;">📍 {{ $lead->city ?: 'Project Site' }}</span>
                 <span style="display: flex; align-items: center; gap: 6px;">🕒 {{ date('M d, Y') }}</span>
@@ -29,7 +29,12 @@
         <input type="hidden" name="quote_id" value="{{ $existingQuote->id ?? '' }}">
         <input type="hidden" name="quote_number" value="{{ $quoteNumber }}">
 
-        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: flex-start;">
+        <div class="grid-2 builder-main-grid">
+<style>
+    @media (min-width: 901px) {
+        .builder-main-grid { grid-template-columns: 1fr 380px; gap: 32px; align-items: flex-start; }
+    }
+</style>
             
             {{-- Primary Workspace --}}
             <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -47,7 +52,7 @@
                         </button>
                     </div>
 
-                    <div style="width: 100%; overflow-x: auto;">
+                    <div class="table-responsive" style="border:none; margin-bottom:0; width: 100%;">
                         <table id="items-table" style="width: 100%; border-collapse: separate; border-spacing: 0;">
                             <thead>
                                 <tr style="background: var(--surface2);">

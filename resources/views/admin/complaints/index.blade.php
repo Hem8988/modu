@@ -3,7 +3,12 @@
 @section('content')
 
 {{-- 1. Executive Intelligence Hub (6 Metrics) --}}
-<div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:15px; margin-bottom:25px">
+<div class="grid-6 complaints-grid" style="margin-bottom:25px">
+<style>
+    .complaints-grid { display: grid; gap: 15px; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 768px) { .complaints-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1024px) { .complaints-grid { grid-template-columns: repeat(6, 1fr); } }
+</style>
     <div class="card" style="margin-bottom:0; text-align:center; padding:15px">
         <div style="font-size:20px; font-weight:800; color:var(--text)">{{ $stats['total_feedback'] }}</div>
         <div style="font-size:9px; color:var(--muted); text-transform:uppercase; font-weight:800">Total Feedbacks</div>
@@ -42,6 +47,7 @@
 
     {{-- A. Complaints Registry --}}
     <div id="content-complaints" class="tab-content active">
+        <div class="table-responsive">
         <table style="width:100%">
             <thead><tr><th>Client / Project</th><th>Priority</th><th>Staff</th><th>Status pulse</th><th>Actions</th></tr></thead>
             <tbody>
@@ -74,10 +80,12 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 
     {{-- B. Feedback registry --}}
     <div id="content-feedback" class="tab-content">
+        <div class="table-responsive">
         <table style="width:100%">
             <thead><tr><th>Customer pulse</th><th>Rating</th><th>Type</th><th>Comments pulse</th></tr></thead>
             <tbody>
@@ -96,10 +104,12 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 
     {{-- C. Service Requests --}}
     <div id="content-service" class="tab-content">
+        <div class="table-responsive">
         <table style="width:100%">
             <thead><tr><th>Lead Client</th><th>Issue Registry</th><th>Technician</th><th>Schedule</th></tr></thead>
             <tbody>
@@ -113,10 +123,12 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 
     {{-- D. Resolution tracker --}}
     <div id="content-resolutions" class="tab-content">
+        <div class="table-responsive">
         <table style="width:100%">
             <thead><tr><th>Resolution ID</th><th>Action pulse</th><th>Registry Logic</th><th>Finalized</th></tr></thead>
             <tbody>
@@ -130,6 +142,7 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

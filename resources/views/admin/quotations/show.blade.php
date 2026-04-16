@@ -242,6 +242,16 @@
             .page { padding: 40px 0; border: none; max-width: 100%; box-shadow: none; }
             .page::before { opacity: 0.05; }
         }
+        @media (max-width: 768px) {
+            .header-main { flex-direction: column !important; }
+            .id-block { text-align: left; margin-top: 20px; }
+            .address-grid { grid-template-columns: 1fr !important; gap: 20px; }
+            .address-box { text-align: left !important; }
+            .page { padding: 20px; }
+            .table-responsive { width: 100%; overflow-x: auto; }
+            .signature-block { flex-direction: column; }
+            .sig-meta { width: auto; border-right: none; border-bottom: 1.5px solid var(--slate-900); }
+        }
     </style>
 </head>
 <body onload="window.print()">
@@ -291,6 +301,7 @@
             </div>
         </section>
 
+        <div class="table-responsive">
         <table>
             <thead>
                 <tr>
@@ -327,6 +338,7 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
 
         <div class="financial-container">
             <div class="ledger-box">

@@ -1,0 +1,427 @@
+/* ============================================================================
+   Mobile Responsive Global Styles
+   Complete mobile-first responsive design for the entire application
+   ============================================================================ */
+
+:root {
+    --safe-area-inset-top: 0;
+    --safe-area-inset-right: 0;
+    --safe-area-inset-bottom: 0;
+    --safe-area-inset-left: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* ============================================================================
+   Base Typography - Mobile First
+   ============================================================================ */
+
+body {
+    font-size: 14px;
+}
+
+@media (min-width: 640px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+    margin-top: 0;
+}
+
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; }
+h4 { font-size: 16px; }
+h5 { font-size: 14px; }
+h6 { font-size: 12px; }
+
+@media (min-width: 640px) {
+    h1 { font-size: 32px; }
+    h2 { font-size: 28px; }
+    h3 { font-size: 24px; }
+    h4 { font-size: 20px; }
+    h5 { font-size: 16px; }
+    h6 { font-size: 14px; }
+}
+
+/* ============================================================================
+   Touch-Friendly Interactive Elements
+   Minimum 44x44px for touch targets per accessibility standards
+   ============================================================================ */
+
+a, button, input[type="button"], input[type="submit"], input[type="checkbox"], 
+input[type="radio"], select, textarea, [role="button"] {
+    min-height: 40px;
+    min-width: 40px;
+    touch-action: manipulation;
+}
+
+@media (min-width: 640px) {
+    a, button, input[type="button"], input[type="submit"], [role="button"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* ============================================================================
+   Form Elements - Mobile Optimized
+   ============================================================================ */
+
+input, textarea, select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1.5px solid #e0e0e0;
+    transition: all 0.2s ease;
+}
+
+@media (min-width: 640px) {
+    input, textarea, select {
+        padding: 10px 14px;
+        border-radius: 8px;
+    }
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+input[type="checkbox"], input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 32px;
+    background-size: 12px;
+}
+
+/* ============================================================================
+   Tables - Responsive Design
+   ============================================================================ */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+@media (min-width: 640px) {
+    table {
+        font-size: 14px;
+    }
+}
+
+th {
+    background-color: #f8f9fa;
+    padding: 10px 8px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #e0e0e0;
+    white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+    th {
+        padding: 12px 12px;
+    }
+}
+
+td {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+@media (min-width: 640px) {
+    td {
+        padding: 10px 12px;
+    }
+}
+
+tr:hover td {
+    background-color: rgba(37, 99, 235, 0.02);
+}
+
+/* Stack tables vertically on mobile */
+@media (max-width: 640px) {
+    table.stack-mobile thead {
+        display: none;
+    }
+
+    table.stack-mobile tbody, 
+    table.stack-mobile tr, 
+    table.stack-mobile td {
+        display: block;
+        width: 100%;
+    }
+
+    table.stack-mobile tr {
+        margin-bottom: 8px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 8px 0;
+    }
+
+    table.stack-mobile td {
+        padding: 8px 12px;
+        text-align: right;
+        position: relative;
+        padding-left: 40%;
+        border: none;
+    }
+
+    table.stack-mobile td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        font-weight: 600;
+        text-align: left;
+    }
+}
+
+/* ============================================================================
+   Grid & Layout Systems
+   ============================================================================ */
+
+.grid-1 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.grid-4 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.grid-5 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.grid-auto { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+@media (min-width: 640px) {
+    .grid-2 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-5 { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .grid-auto { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
+}
+
+@media (min-width: 1024px) {
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-5 { grid-template-columns: repeat(5, 1fr); }
+}
+
+@media (min-width: 1400px) {
+    .grid-auto { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+}
+
+/* ============================================================================
+   Cards & Panels
+   ============================================================================ */
+
+.card, [class*="panel"], [class*="container"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
+    margin-bottom: 12px;
+}
+
+@media (min-width: 640px) {
+    .card, [class*="panel"] {
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+    }
+}
+
+/* ============================================================================
+   Modals & Overlays
+   ============================================================================ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 32px);
+    max-width: 500px;
+    background: white;
+    border-radius: 12px;
+    z-index: 1000;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 640px) {
+    .modal {
+        width: calc(100% - 24px);
+        max-width: none;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: none;
+        border-radius: 12px 12px 0 0;
+    }
+}
+
+/* ============================================================================
+   Navigation & Menus
+   ============================================================================ */
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-link:active {
+    background-color: rgba(37, 99, 235, 0.1);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    z-index: 1000;
+}
+
+.dropdown-menu a, .dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-menu a:hover, .dropdown-menu button:hover {
+    background-color: #f8f9fa;
+}
+
+/* ============================================================================
+   Utility Classes
+   ============================================================================ */
+
+.hide-on-mobile { display: none; }
+
+@media (min-width: 640px) {
+    .hide-on-mobile { display: block; }
+}
+
+.show-on-mobile { display: block; }
+
+@media (min-width: 640px) {
+    .show-on-mobile { display: none; }
+}
+
+.container-mobile {
+    padding: 0 12px;
+}
+
+@media (min-width: 640px) {
+    .container-mobile {
+        padding: 0 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-mobile {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 32px;
+    }
+}
+
+/* ============================================================================
+   Touch & Pointer Devices
+   ============================================================================ */
+
+@media (hover: hover) {
+    button:hover, a:hover, [role="button"]:hover {
+        transform: translateY(-1px);
+    }
+}
+
+@media (hover: none) {
+    button:active, a:active, [role="button"]:active {
+        opacity: 0.8;
+    }
+}
+
+/* ============================================================================
+   Orientation Changes
+   ============================================================================ */
+
+@media (max-height: 500px) {
+    header, nav {
+        max-height: 40px;
+    }
+
+    .spacing-vertical {
+        margin: 4px 0;
+        padding: 4px 0;
+    }
+}
+
+/* ============================================================================
+   Print Styles
+   ============================================================================ */
+
+@media print {
+    nav, [class*="mobile-menu"], .no-print {
+        display: none !important;
+    }
+
+    body {
+        font-size: 12pt;
+        background: white;
+    }
+}

@@ -5,7 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 {{-- Professional Header with Stats and Actions --}}
-<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; gap:20px;">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; margin-bottom:24px; gap:20px;">
     <div style="flex:1">
         <h2 style="font-size:22px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:10px;">
             {{ $lead->name }} 
@@ -70,7 +70,7 @@
     $visualStagesArr = array_keys($visualPipeline);
     $currentVisualIdx = array_search($lead->status, $visualStagesArr);
 @endphp
-<div class="card" style="padding:16px 20px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:6px;">
+<div class="card" style="padding:16px 20px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:6px; overflow-x:auto;">
     @foreach($visualPipeline as $key => $label)
         @php
             $thisVisualStepIdx = array_search($key, $visualStagesArr);
@@ -89,8 +89,13 @@
     @endforeach
 </div>
 
-<div style="display:flex; gap:20px; align-items:flex-start">
-    <div style="flex:2">
+<div class="grid-2 lead-main-grid">
+<style>
+    @media (min-width: 901px) {
+        .lead-main-grid { grid-template-columns: 2fr 1fr; gap: 20px; }
+    }
+</style>
+    <div>
         {{-- Professional Tabs Header --}}
         <div style="display:flex; flex-wrap:wrap; gap:10px; border-bottom:1px solid var(--border); margin-bottom:20px;">
             <button onclick="switchTab('basic')" id="tab-btn-basic" class="tab-btn active-tab">👤 Info</button>
@@ -106,7 +111,7 @@
             <form method="POST" action="{{ route('admin.leads.update',$lead->id) }}">
                 @csrf @method('PUT')
                 <div class="card" style="padding:24px;">
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                    <div class="grid-2">
                         <div><label class="form-label">Name</label><input class="form-control" name="name" value="{{ $lead->name }}"></div>
                         <div><label class="form-label">Phone</label><input class="form-control" name="phone" value="{{ $lead->phone }}"></div>
                         <div><label class="form-label">Email</label><input class="form-control" name="email" value="{{ $lead->email }}"></div>
@@ -133,7 +138,7 @@
                 </h3>
                 
                 {{-- Sleek Action Bar --}}
-                <form method="POST" action="{{ route('admin.leads.action', $lead->id) }}" style="display:grid; grid-template-columns:1.2fr 1fr 2fr auto; gap:12px; margin-bottom:32px; background:var(--surface2); padding:20px; border-radius:15px; border:1px solid var(--border); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                <form method="POST" action="{{ route('admin.leads.action', $lead->id) }}" class="grid-4" style="gap:12px; margin-bottom:32px; background:var(--surface2); padding:20px; border-radius:15px; border:1px solid var(--border); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
                     @csrf <input type="hidden" name="action_type" value="follow_up">
                     <div><label class="form-label">When?</label><input class="form-control date-picker" type="text" name="date" required placeholder="Select date & time..."></div>
                     <div><label class="form-label">Channel</label>
@@ -155,7 +160,7 @@
                                 @if($f->type == 'call') 📞 @elseif($f->type == 'whatsapp') 💬 @else ✉ @endif
                             </div>
                             <div class="timeline-content">
-                                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+                                <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; margin-bottom:4px; gap:8px;">
                                     <div>
                                         <span style="font-weight:800; color:var(--text); font-size:14px;">{{ ucfirst($f->type) }} Outreach</span>
                                         <span style="color:var(--muted); font-size:12px; margin-left:8px;">{{ date('M d, h:i A', strtotime($f->date)) }}</span>
@@ -197,7 +202,7 @@
                 </h3>
                 
                 {{-- Sleek Action Bar --}}
-                <form method="POST" action="{{ route('admin.leads.action', $lead->id) }}" style="display:grid; grid-template-columns:1.2fr 1fr 2fr auto; gap:12px; margin-bottom:32px; background:var(--surface2); padding:20px; border-radius:15px; border:1px solid var(--border); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                <form method="POST" action="{{ route('admin.leads.action', $lead->id) }}" class="grid-4" style="gap:12px; margin-bottom:32px; background:var(--surface2); padding:20px; border-radius:15px; border:1px solid var(--border); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
                     @csrf <input type="hidden" name="action_type" value="appointment">
                     <div><label class="form-label">When?</label><input class="form-control date-picker" type="text" name="date" required placeholder="Select date & time..."></div>
                     <div><label class="form-label">Purpose</label>
@@ -219,7 +224,7 @@
                                 @if($a->type == 'measurement') 📏 @elseif($a->type == 'consultation') 🤝 @else ⚒ @endif
                             </div>
                             <div class="timeline-content">
-                                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+                                <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; margin-bottom:4px; gap:8px;">
                                     <div>
                                         <span style="font-weight:800; color:var(--text); font-size:14px;">{{ ucfirst($a->type) }} Visit</span>
                                         <span style="color:var(--muted); font-size:12px; margin-left:8px;">{{ date('M d, h:i A', strtotime($a->date.' '.$a->time)) }}</span>
@@ -255,7 +260,7 @@
                 </h3>
                 
                 {{-- Sleek Action Bar --}}
-                <form method="POST" action="{{ route('admin.leads.action', $lead->id) }}" style="display:grid; grid-template-columns:1.2fr 1.2fr 2fr auto; gap:12px; margin-bottom:32px; background:var(--surface2); padding:20px; border-radius:15px; border:1px solid var(--border); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                <form method="POST" action="{{ route('admin.leads.action', $lead->id) }}" class="grid-4" style="gap:12px; margin-bottom:32px; background:var(--surface2); padding:20px; border-radius:15px; border:1px solid var(--border); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
                     @csrf <input type="hidden" name="action_type" value="installation">
                     <div><label class="form-label">When?</label><input class="form-control date-picker-no-time" type="text" name="date" required placeholder="Pick a date..."></div>
                     <div><label class="form-label">Assigned Team</label><input class="form-control" name="team" placeholder="Crew Name"></div>
@@ -275,7 +280,7 @@
                                 ⚒
                             </div>
                             <div class="timeline-content">
-                                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+                                <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; margin-bottom:4px; gap:8px;">
                                     <div>
                                         <span style="font-weight:800; color:var(--text); font-size:14px;">Site Implementation</span>
                                         <span style="color:var(--success); font-weight:700; font-size:11px; margin-left:12px;">TEAM: {{ strtoupper($i->team ?: 'GENERAL') }}</span>
@@ -312,7 +317,7 @@
                 </h3>
 
                 {{-- Action Grid --}}
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px;">
+                <div class="grid-2" style="margin-bottom:32px;">
                     <a href="{{ route('admin.quotations.builder', $lead->id) }}" class="btn" style="background:rgba(163,113,247,0.1); color:#7c3aed; border:1px solid rgba(163,113,247,0.2); padding:16px; border-radius:15px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:12px; transition:all 0.3s;">
                         <span style="font-size:20px;">📂</span> Add New Quotation
                     </a>
@@ -326,7 +331,7 @@
                     <div style="font-size:12px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:20px; display:flex; align-items:center; gap:10px;">
                         <span style="width:8px; height:2px; background:var(--accent);"></span> Proposal History
                     </div>
-                    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:16px; overflow:hidden;">
+                    <div class="table-responsive" style="background:var(--surface2); border:1px solid var(--border); overflow:hidden;">
                         <table style="width:100%; border-collapse:collapse; font-size:13px;">
                             <thead>
                                 <tr style="background:rgba(0,0,0,0.02); border-bottom:1px solid var(--border);">
@@ -389,7 +394,7 @@
                         <span style="width:8px; height:2px; background:var(--gold);"></span> Ledger Management
                     </div>
 
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px;">
+                    <div class="grid-2" style="margin-bottom:24px;">
                         <div>
                             <label class="form-label">Budget Range</label>
                             <input class="form-control" name="budget" value="{{ $lead->budget }}" placeholder="e.g. 5k - 10k">
@@ -433,7 +438,7 @@
     </div>
 
     {{-- Side Widgets (Meta Data) --}}
-    <div style="flex:1; display:flex; flex-direction:column; gap:16px;">
+    <div style="display:flex; flex-direction:column; gap:16px;">
         <div class="card" style="padding:24px; border:1px solid var(--border); box-shadow:0 10px 15px -3px rgba(0,0,0,0.02);">
             <h3 style="font-size:12px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between;">
                 <div style="display:flex; align-items:center; gap:8px;">

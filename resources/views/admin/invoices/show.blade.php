@@ -59,6 +59,18 @@
             .invoice-card { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
             .print-fab { display: none; }
         }
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .invoice-card { padding: 24px; }
+            .invoice-header { flex-direction: column; margin-bottom: 30px; }
+            .brand-meta { text-align: left; margin-top: 20px; }
+            .address-grid { grid-template-columns: 1fr !important; gap: 20px; margin-bottom: 30px; }
+            .address-box { text-align: left !important; }
+            .date-registry { flex-wrap: wrap; gap: 20px; }
+            .table-responsive { width: 100%; overflow-x: auto; }
+            .totals-section { justify-content: flex-start; }
+            .totals-box { width: 100%; margin-top: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -123,6 +135,7 @@
             </div>
         </div>
 
+        <div class="table-responsive">
         <table>
             <thead>
                 <tr>
@@ -153,6 +166,7 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
 
         <div class="totals-section">
             <div class="totals-box">

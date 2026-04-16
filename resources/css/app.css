@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Import mobile-responsive utilities */
+@import './mobile-responsive.css';
+
+/* Additional responsive utilities */
+@layer utilities {
+    /* Touch-friendly spacing */
+    .touch-p-safe { padding: max(var(--safe-area-inset-top), 1rem) max(var(--safe-area-inset-right), 1rem) max(var(--safe-area-inset-bottom), 1rem) max(var(--safe-area-inset-left), 1rem); }
+    
+    /* Responsive text sizes */
+    .text-responsive { font-size: clamp(0.875rem, 2.5vw, 1rem); }
+    .text-responsive-lg { font-size: clamp(1rem, 3vw, 1.25rem); }
+    .text-responsive-xl { font-size: clamp(1.25rem, 4vw, 1.5rem); }
+
+    /* Responsive spacing */
+    .p-responsive { padding: clamp(0.5rem, 5vw, 1rem); }
+    .m-responsive { margin: clamp(0.5rem, 5vw, 1rem); }
+
+    /* Minimum touch target size */
+    .touch-min { min-width: 44px; min-height: 44px; }
+    .touch-min-sm { min-width: 40px; min-height: 40px; }
+
+    /* Flex utilities for mobile-first */
+    .flex-col-mobile { @apply flex flex-col; }
+    .flex-row-mobile { @apply flex flex-col; }
+
+    @media (min-width: 640px) {
+        .flex-row-mobile { @apply flex-row; }
+    }
+
+    /* Responsive container */
+    .container-responsive { @apply px-4 sm:px-6 lg:px-8 mx-auto w-full; }
+}
+

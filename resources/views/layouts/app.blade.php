@@ -21,16 +21,26 @@
             <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
 
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
+            <main class="min-h-screen">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
+        <style>
+            /* Mobile-first responsive adjustments */
+            @media (max-width: 640px) {
+                body { font-size: 14px; }
+                header { padding: 0.75rem 0; }
+                main { padding: 0.5rem; }
+            }
+        </style>
     </body>
 </html>

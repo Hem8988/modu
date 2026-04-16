@@ -4,7 +4,7 @@ ok @extends('layouts.admin')
 
 <div style="max-width: 1400px; margin: 0 auto;">
     {{-- High-End Header --}}
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1.5px solid var(--border);">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1.5px solid var(--border); gap: 16px;">
         <div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
                 <span style="background: var(--accent); color: white; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">Official Bids</span>
@@ -21,6 +21,7 @@ ok @extends('layouts.admin')
 
     {{-- Main Registry Table --}}
     <div class="card" style="padding: 0; overflow: hidden; border: 1.5px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); background: #fff;">
+        <div class="table-responsive" style="border:none; margin-bottom:0;">
         <table style="width: 100%; border-collapse: separate; border-spacing: 0;">
             <thead>
                 <tr style="background: var(--surface2);">
@@ -120,6 +121,7 @@ ok @extends('layouts.admin')
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 

@@ -43,6 +43,7 @@
     </form>
 
 <div class="card" style="padding:0;overflow:hidden">
+    <div class="table-responsive">
     <table>
         <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Shades</th><th>Source</th><th>Score</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
         <tbody>
@@ -95,15 +96,16 @@
         @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 <div style="margin-top:12px">{{ $leads->links() }}</div>
 
 {{-- Add Lead Modal --}}
 <div id="addLeadModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;width:480px;max-height:90vh;overflow-y:auto">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;width:90%;max-width:480px;max-height:90vh;overflow-y:auto">
         <h3 style="margin-bottom:20px">Add New Lead</h3>
         <form method="POST" action="{{ route('admin.leads.store') }}">@csrf
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="grid-2" style="row-gap: 12px; column-gap: 12px;">
                 <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Name</label><input class="form-control" name="name" required></div>
                 <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Phone</label><input class="form-control" name="phone" required></div>
                 <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Email</label><input class="form-control" name="email" type="email"></div>
@@ -130,7 +132,7 @@
 </div>
     {{-- SMS Quick Send Modal --}}
     <div id="smsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;align-items:center;justify-content:center">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;width:380px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;width:90%;max-width:380px">
             <h3 id="sms_name" style="margin-bottom:12px">Send SMS</h3>
             <p id="sms_phone" style="font-size:13px;color:var(--muted);margin-bottom:16px"></p>
             <form id="smsForm" method="POST">
