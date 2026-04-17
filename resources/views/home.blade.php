@@ -94,19 +94,30 @@
     .survey-nav-btn { background-color: var(--primary); color: var(--black); border: none; height: 50px; padding: 0 20px; border-radius: 0 0 20px 0; cursor: pointer; font-family: var(--font-montserrat); font-size: 16px; font-weight: 500; }
     .survey-footer-bar { background-color: var(--black); border-radius: 0 0 20px 20px; height: 50px; display: flex; align-items: center; justify-content: flex-end; box-shadow: 0px 10px 33px 3px rgba(255,255,255,0.29); }
     .option-card {
-      padding: 12px;
-      border: 1px solid var(--border-active);
+      padding: 12px 16px;
+      border: 1.5px solid #eee;
       border-radius: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       transition: all 0.2s ease;
       background: white;
+      font-family: var(--font-inter);
     }
     .option-card:hover { border-color: var(--black); background: #fafafa; }
-    .option-card input[type="radio"] { width: 18px; height: 18px; accent-color: var(--black); }
     .option-card.selected { border-color: var(--black); background: #f0fdf4; border-width: 2px; }
+    .option-card input[type="radio"] { width: 18px; height: 18px; accent-color: var(--black); }
+
+    /* Premium Form Styling */
+    .premium-label { font-weight: 600; font-size: 15px; font-family: var(--font-inter); margin-bottom: 8px; color: #333; display: none; }
+    @media (max-width: 768px) {
+      .premium-label { display: block; }
+      .header-form-mobile { border: 1.5px solid #000 !important; border-radius: 40px !important; padding: 30px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important; background: #fff !important; }
+      .survey-input, .survey-select { border: 1.5px solid #000 !important; border-radius: 15px !important; padding: 15px 20px !important; font-size: 16px !important; }
+      .option-card { border: 1.5px solid #eee !important; border-radius: 15px !important; padding: 15px !important; }
+      .option-card.selected { border-color: #000 !important; border-width: 2px !important; }
+    }
 
 
     /* Image Gallery & Crew Grids */
@@ -279,10 +290,10 @@
           <!-- Right column - Survey Form -->
           <div class="w-full md:w-1/2 md:pl-8 pt-0 md:pt-0 pb-6">
             <div class="form-wrapper">
-              <div id="survey-body" class="form-body" style="border-radius: 20px 20px 0 0;">
+              <div id="survey-body" class="form-body header-form-mobile" style="border-radius: 20px 20px 0 0;">
                 
                 <!-- Progress bar -->
-                <div class="progress-wrapper">
+                <div class="progress-wrapper md:block hidden">
                   <div id="progress-text" class="progress-text-abs">Progress: 50%</div>
                   <div id="progress-bar-fill" class="progress-fill" style="width: 50%;"></div>
                 </div>
@@ -291,35 +302,37 @@
                 <div id="survey-error" style="display: none; background-color: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; text-align: center; border: 1px solid #fca5a5; font-family: 'Inter', sans-serif;"></div>
 
                 <!-- Steps -->
-                <div id="step-1">
-                  <p class="survey-q-title">Contact Information</p>
-                  
-                  <div class="mb-3">
-                    <input type="text" id="fullName" placeholder="Full Name" class="survey-input" style="margin-bottom: 8px;">
-                  </div>
-                  <div class="mb-3">
-                    <input type="email" id="email" placeholder="Email Address" class="survey-input" style="margin-bottom: 8px;">
-                  </div>
-                  <div class="mb-3">
-                    <input type="tel" id="phone" placeholder="Phone Number" class="survey-input" style="margin-bottom: 8px;">
-                  </div>
-                  <div class="mb-3">
-                    <input type="text" id="postcode" placeholder="Zip/Postcode" class="survey-input" style="margin-bottom: 8px;">
-                  </div>
-                  <div class="mb-3">
-                    <textarea id="message" placeholder="Special Message (Optional)" class="survey-input" style="height: 80px; padding-top: 10px;"></textarea>
-                  </div>
-
-                  <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
-                  </p>
-                </div>
-
-                <div id="step-2" style="display: none;">
-                  <p class="survey-q-title">Tell us about your project</p>
+                <div id="step-1" class="md:block">
+                  <p class="survey-q-title md:block hidden">Contact Information</p>
                   
                   <div class="mb-4">
-                    <p class="survey-sub-title">Which type of Blinds/Shades are you looking for?</p>
+                    <p class="premium-label">Full Name *</p>
+                    <input type="text" id="fullName" placeholder="Full Name" class="survey-input" style="margin-bottom: 0;">
+                  </div>
+                  <div class="mb-4">
+                    <p class="premium-label">Email Address *</p>
+                    <input type="email" id="email" placeholder="Email Address" class="survey-input" style="margin-bottom: 0;">
+                  </div>
+                  <div class="mb-4">
+                    <p class="premium-label">Phone Number *</p>
+                    <input type="tel" id="phone" placeholder="Phone Number" class="survey-input" style="margin-bottom: 0;">
+                  </div>
+                  <div class="mb-4">
+                    <p class="premium-label">Zip Code *</p>
+                    <input type="text" id="postcode" placeholder="Zip Code" class="survey-input" style="margin-bottom: 0;">
+                  </div>
+                  <div class="mb-4">
+                    <p class="premium-label">Special Message (Optional)</p>
+                    <textarea id="message" placeholder="Special Message (Optional)" class="survey-input" style="height: 100px; padding-top: 15px; margin-bottom: 0;"></textarea>
+                  </div>
+                </div>
+
+                <div id="step-2" class="md:hidden block">
+                  <p class="survey-q-title md:block hidden">Tell us about your project</p>
+                  
+                  <div class="mb-6">
+                    <p class="premium-label">Which type of Blinds/Shades you are looking for?</p>
+                    <p class="survey-sub-title md:block hidden">Which type of Blinds/Shades are you looking for?</p>
                     <select id="blindsType" class="survey-select">
                       <option value="">Select Blinds/Shades</option>
                       <option value="Blackout Shades">Blackout Shades</option>
@@ -340,8 +353,9 @@
                     </select>
                   </div>
 
-                  <div class="mb-4">
-                    <p class="survey-sub-title">How many windows?</p>
+                  <div class="mb-6">
+                    <p class="premium-label">How many windows you are looking to cover?</p>
+                    <p class="survey-sub-title md:block hidden">How many windows?</p>
                     <div class="grid grid-cols-2 gap-2">
                        <label class="option-card"><input type="radio" name="windowCount" value="1 or 2"> 1-2</label>
                        <label class="option-card"><input type="radio" name="windowCount" value="2 to 5"> 2-5</label>
@@ -350,15 +364,21 @@
                     </div>
                   </div>
 
-                  <div class="mb-4">
-                    <p class="survey-sub-title">Project Timeline?</p>
+                  <div class="mb-6">
+                    <p class="premium-label">Timeline for your project?</p>
+                    <p class="survey-sub-title md:block hidden">Project Timeline?</p>
                     <div class="grid grid-cols-2 gap-2">
                       <label class="option-card"><input type="radio" name="timeline" value="As soon as possible"> ASAP</label>
                       <label class="option-card"><input type="radio" name="timeline" value="Within 1 Month"> < 1 Month</label>
                     </div>
                   </div>
 
-                  <p class="survey-footer-text">
+                  <!-- Mobile Integrated Submit Button -->
+                  <button onclick="submitForm()" class="w-full bg-black text-white font-bold py-5 rounded-[15px] shadow-lg md:hidden block mt-6" style="font-family: 'Montserrat', sans-serif; font-size: 18px;">
+                    Request A Call back
+                  </button>
+
+                  <p class="survey-footer-text mt-6">
                     🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
@@ -372,7 +392,7 @@
               </div>
 
               <!-- Footer with NEXT button -->
-              <div id="survey-footer" class="survey-footer-bar">
+              <div id="survey-footer" class="survey-footer-bar md:flex hidden">
                 <button id="prevBtn" onclick="prevStep()" class="survey-nav-btn" style="display: none; background-color: #666; border-radius: 0 0 0 20px; border-right: 1px solid rgba(255,255,255,0.1);">
                   BACK
                 </button>
@@ -627,58 +647,30 @@
             
             <!-- Basic Details -->
             <div class="mb-5">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 6px; color: #333;">Full Name *</p>
-              <input type="text" id="footer-fullName" placeholder="Full Name" class="footer-input-styled">
+              <p class="premium-label" style="display: block;">Full Name *</p>
+              <input type="text" id="footer-fullName" placeholder="Full Name" class="survey-input footer-input-styled">
             </div>
 
             <div class="mb-5">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 6px; color: #333;">Phone Number *</p>
-              <input type="tel" id="footer-phone" placeholder="Phone Number" class="footer-input-styled">
+              <p class="premium-label" style="display: block;">Phone Number *</p>
+              <input type="tel" id="footer-phone" placeholder="Phone Number" class="survey-input footer-input-styled">
             </div>
 
             <div class="mb-5">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 6px; color: #333;">Email Address *</p>
-              <input type="email" id="footer-email" placeholder="Email Address" class="footer-input-styled">
+              <p class="premium-label" style="display: block;">Email Address *</p>
+              <input type="email" id="footer-email" placeholder="Email Address" class="survey-input footer-input-styled">
             </div>
 
             <div class="mb-5">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 6px; color: #333;">Zip Code *</p>
-              <input type="text" id="footer-postcode" placeholder="Zip Code" class="footer-input-styled">
+              <p class="premium-label" style="display: block;">Zip Code *</p>
+              <input type="text" id="footer-postcode" placeholder="Zip Code" class="survey-input footer-input-styled">
             </div>
 
-            <!-- Service Area Visual Selectors -->
-            <div class="mb-8">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 12px; color: #333; line-height: 1.4;">Are you located within our service areas - NYC, Yonkers, Newark, Stamford, or nearby?</p>
-              <div class="flex gap-4">
-                <div id="footer-serviceArea-Yes" class="footer-box-selector" onclick="footerSelectOption('serviceArea', 'Yes')">
-                  <div class="flex flex-col items-center">
-                    <!-- Green Check Icon -->
-                    <div class="w-20 h-20 bg-[#22c55e] rounded-full flex items-center justify-center mb-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div class="footer-box-label" style="background: #000; padding: 4px 25px;">Yes</div>
-                  </div>
-                </div>
-                <div id="footer-serviceArea-No" class="footer-box-selector" onclick="footerSelectOption('serviceArea', 'No')">
-                  <div class="flex flex-col items-center">
-                    <!-- Red X Icon -->
-                    <div class="w-20 h-20 bg-[#ef4444] rounded-full flex items-center justify-center mb-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </div>
-                    <div class="footer-box-label bg-[#666]" style="padding: 4px 25px;">No</div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <!-- Dropdown -->
             <div class="mb-8">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 10px; color: #333;">Which type of Blinds/Shades you are looking for?</p>
-              <select id="footer-blindsType" class="footer-input-styled appearance-none" style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22m6 9 6 6 6-6%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 15px center; background-size: 15px;">
+              <p class="premium-label" style="display: block;">Which type of Blinds/Shades you are looking for?</p>
+              <select id="footer-blindsType" class="survey-select footer-input-styled appearance-none" style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22m6 9 6 6 6-6%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 15px center; background-size: 15px;">
                 <option value="">Select Blinds/Shades your are looking for</option>
                 <option value="Blackout Shades">Blackout Shades</option>
                 <option value="Curtains / Drapes">Curtains / Drapes</option>
@@ -700,30 +692,30 @@
 
             <!-- Radio Lists -->
             <div class="mb-8">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 15px; color: #333;">How many windows you are looking to cover?</p>
-              <div class="flex flex-col gap-4">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="1 or 2" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">1 or 2</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="2 to 5" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">2 to 5</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="5 to 10" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">5 to 10</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="10 to 15" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">10 to 15</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerWindowCount" value="15 and above" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">15 and above</span></label>
+              <p class="premium-label" style="display: block;">How many windows you are looking to cover?</p>
+              <div class="flex flex-col gap-3">
+                <label class="option-card"><input type="radio" name="footerWindowCount" value="1 or 2"> <span>1 or 2</span></label>
+                <label class="option-card"><input type="radio" name="footerWindowCount" value="2 to 5"> <span>2 to 5</span></label>
+                <label class="option-card"><input type="radio" name="footerWindowCount" value="5 to 10"> <span>5 to 10</span></label>
+                <label class="option-card"><input type="radio" name="footerWindowCount" value="10 to 15"> <span>10 to 15</span></label>
+                <label class="option-card"><input type="radio" name="footerWindowCount" value="15 and above"> <span>15 and above</span></label>
               </div>
             </div>
 
 
             <div class="mb-8">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 15px; color: #333;">Timeline for your project?</p>
-              <div class="flex flex-col gap-4">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerTimeline" value="As soon as possible" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">As soon as possible</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerTimeline" value="Within 1 Month" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">Within 1 Month</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerTimeline" value="Within 2 Months" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">Within 2 Months</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerTimeline" value="Just checking for ideas" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">Just checking for ideas</span></label>
+              <p class="premium-label" style="display: block;">Timeline for your project?</p>
+              <div class="flex flex-col gap-3">
+                <label class="option-card"><input type="radio" name="footerTimeline" value="As soon as possible"> <span>As soon as possible</span></label>
+                <label class="option-card"><input type="radio" name="footerTimeline" value="Within 1 Month"> <span>Within 1 Month</span></label>
+                <label class="option-card"><input type="radio" name="footerTimeline" value="Within 2 Months"> <span>Within 2 Months</span></label>
+                <label class="option-card"><input type="radio" name="footerTimeline" value="Just checking for ideas"> <span>Just checking for ideas</span></label>
               </div>
             </div>
 
             <div class="mb-10">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 8px; color: #333;">Special Message (Optional)</p>
-              <textarea id="footer-message" placeholder="Any message for us / Project Description?" class="footer-input-styled" style="height: 100px; padding-top: 15px; resize: none;"></textarea>
+              <p class="premium-label" style="display: block;">Special Message (Optional)</p>
+              <textarea id="footer-message" placeholder="Any message for us / Project Description?" class="survey-input footer-input-styled" style="height: 100px; padding-top: 15px; resize: none;"></textarea>
             </div>
 
             <button id="footer-submitBtn" onclick="footerSubmitForm()" class="w-full bg-black text-white font-bold py-5 rounded-[15px] shadow-lg active:scale-95 transition-all duration-200" style="font-family: 'Montserrat', sans-serif; font-size: 18px; letter-spacing: 0.5px;">
@@ -803,7 +795,8 @@
     const surveyData = {};
 
     document.addEventListener('change', (e) => {
-      if (e.target.name === 'windowCount' || e.target.name === 'timeline') {
+      if (e.target.name === 'windowCount' || e.target.name === 'timeline' || 
+          e.target.name === 'footerWindowCount' || e.target.name === 'footerTimeline') {
         const parent = e.target.closest('.option-card');
         const group = document.querySelectorAll(`input[name="${e.target.name}"]`);
         group.forEach(input => input.closest('.option-card')?.classList.remove('selected'));
@@ -1018,7 +1011,6 @@
       const timeline = document.querySelector('input[name="footerTimeline"]:checked')?.value;
 
       // Simple Validation
-      if (!footerSurveyData.serviceArea) return footerShowError('Please select if you are in our service area.');
       if (!blindsType) return footerShowError('Please select what you are looking for.');
       if (!windowCount) return footerShowError('Please select the number of windows.');
       if (!fullName) return footerShowError('Please enter your full name.');
