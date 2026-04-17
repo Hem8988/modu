@@ -20,10 +20,10 @@ class LeadSubmissionController extends Controller
             'email'        => 'required|email:rfc,dns',
             'phone'        => 'required|string|min:10|max:20',
             'postal_code'  => 'required|string|max:10',
-            'shades_needed'=> 'required|string',
-            'windows_count'=> 'required|string',
-            'timeline'     => 'required|string',
-            'budget'       => 'required|string',
+            'shades_needed'=> 'nullable|string',
+            'windows_count'=> 'nullable|string',
+            'timeline'     => 'nullable|string',
+            'budget'       => 'nullable|string',
             'message'      => 'nullable|string',
         ]);
 

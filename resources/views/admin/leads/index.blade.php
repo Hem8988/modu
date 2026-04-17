@@ -1,9 +1,20 @@
 @extends('layouts.admin')
 @section('title','Leads')
 @section('content')
+<style>
+    .glass-card { background: rgba(255, 255, 255, 0.7) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2) !important; }
+    .btn-premium { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; transition: all 0.3s; }
+    .btn-premium:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2); }
+    .form-label-sm { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 4px; display: block; letter-spacing: 0.5px; }
+    .form-input-premium { background: #fff !important; border: 1.5px solid #e2e8f0 !important; border-radius: 8px !important; padding: 10px 14px !important; transition: all 0.2s !important; }
+    .form-input-premium:focus { border-color: #0d6efd !important; box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1) !important; }
+</style>
+
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
     <h2 style="font-size:18px;font-weight:600">Lead Management</h2>
-    <button onclick="document.getElementById('addLeadModal').style.display='flex'" class="btn btn-primary">+ Add Lead</button>
+    <button type="button" data-bs-toggle="modal" data-bs-target="#addLeadModal" class="btn btn-primary btn-premium">
+        <i class="fas fa-plus-circle"></i> Add New Lead
+    </button>
 </div>
 
     {{-- Funnel Tabs --}}
@@ -100,34 +111,78 @@
 </div>
 <div style="margin-top:12px">{{ $leads->links() }}</div>
 
-{{-- Add Lead Modal --}}
-<div id="addLeadModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;width:90%;max-width:480px;max-height:90vh;overflow-y:auto">
-        <h3 style="margin-bottom:20px">Add New Lead</h3>
-        <form method="POST" action="{{ route('admin.leads.store') }}">@csrf
-            <div class="grid-2" style="row-gap: 12px; column-gap: 12px;">
-                <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Name</label><input class="form-control" name="name" required></div>
-                <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Phone</label><input class="form-control" name="phone" required></div>
-                <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Email</label><input class="form-control" name="email" type="email"></div>
-                <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">City</label><input class="form-control" name="city"></div>
-                <div style="grid-column: span 2;"><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Project Interested</label><input class="form-control" name="shades_needed"></div>
-                <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Budget</label><input class="form-control" name="budget"></div>
-                <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Campaign Name</label><input class="form-control" name="campaign"></div>
-                <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Source</label>
-                    <select class="form-control" name="source">
-                        <option>Landing Page Form</option>
-                        <option>Meta Lead Form (Facebook / Instagram)</option>
-                        <option>Manual Entry (Admin / Staff)</option>
-                        <option>Other Sources (Google Ads / Referral)</option>
-                    </select>
-                </div>
-                <div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Address</label><input class="form-control" name="address"></div>
+{{-- Add Lead Modal (Bootstrap Native) --}}
+<div class="modal fade" id="addLeadModal" tabindex="-1" aria-labelledby="addLeadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content glass-card border-0" style="border-radius:16px; overflow:hidden;">
+            <div class="modal-header border-0 pt-4 px-4 pb-0" style="background:transparent;">
+                <h3 class="modal-title fw-800" id="addLeadModalLabel" style="color:#1e293b">Create New Lead</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div style="display:flex;gap:10px;margin-top:20px">
-                <button class="btn btn-primary" type="submit">Save Lead</button>
-                <button type="button" onclick="document.getElementById('addLeadModal').style.display='none'" class="btn" style="background:var(--surface2);color:var(--muted)">Cancel</button>
+            
+            <div class="modal-body p-4">
+                <form method="POST" action="{{ route('admin.leads.store') }}">@csrf
+                    <div class="grid-2" style="row-gap: 16px; column-gap: 16px;">
+                        <div>
+                            <label class="form-label-sm">Full Name</label>
+                            <input class="form-control form-input-premium" name="name" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label class="form-label-sm">Phone Number</label>
+                            <input class="form-control form-input-premium" name="phone" placeholder="+1..." required>
+                        </div>
+                        <div>
+                            <label class="form-label-sm">Email Address</label>
+                            <input class="form-control form-input-premium" name="email" type="email" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label class="form-label-sm">City</label>
+                            <input class="form-control form-input-premium" name="city" placeholder="City name">
+                        </div>
+                        <div>
+                            <label class="form-label-sm">Zip Code</label>
+                            <input class="form-control form-input-premium" name="zip_code" placeholder="12345">
+                        </div>
+                        <div>
+                            <label class="form-label-sm">Windows Count</label>
+                            <input class="form-control form-input-premium" name="windows_count" type="number" placeholder="5">
+                        </div>
+                        <div style="grid-column: span 2;">
+                            <label class="form-label-sm">Project / Product Interest</label>
+                            <input class="form-control form-input-premium" name="shades_needed" placeholder="e.g. Roller Shades, Motorized Blinds">
+                        </div>
+                        <div>
+                            <label class="form-label-sm">Budget Estimate</label>
+                            <input class="form-control form-input-premium" name="budget" placeholder="e.g. $2000">
+                        </div>
+                        <div>
+                            <label class="form-label-sm">Campaign Name</label>
+                            <input class="form-control form-input-premium" name="campaign" placeholder="Optional">
+                        </div>
+                        <div>
+                            <label class="form-label-sm">Lead Source</label>
+                            <select class="form-control form-input-premium" name="source">
+                                <option value="Manual Entry (Admin / Staff)">Manual Entry (Admin / Staff)</option>
+                                <option value="Landing Page Form">Landing Page Form</option>
+                                <option value="Meta Lead Form (Facebook / Instagram)">Meta Lead Form (Facebook / Instagram)</option>
+                                <option value="Other Sources (Google Ads / Referral)">Other Sources (Google Ads / Referral)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label-sm">Full Address</label>
+                            <input class="form-control form-input-premium" name="address" placeholder="Street layout">
+                        </div>
+                    </div>
+                    
+                    <div style="display:flex;gap:12px;margin-top:32px">
+                        <button class="btn btn-primary btn-premium py-2" type="submit" style="flex:1;justify-content:center">
+                            <i class="fas fa-check-circle"></i> Save Lead Record
+                        </button>
+                        <button type="button" class="btn py-2" data-bs-dismiss="modal" style="background:#f1f5f9;color:#64748b;font-weight:600">Cancel</button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
     {{-- SMS Quick Send Modal --}}

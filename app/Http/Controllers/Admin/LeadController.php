@@ -61,6 +61,11 @@ class LeadController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+        ]);
+
         $data = $request->only(['name','email','phone','zip_code','shades_needed','windows_count','budget','amount','service','source','city','address','campaign']);
         $data['status'] = 'new_lead';
         $data['source'] = $data['source'] ?? 'Manual Entry';

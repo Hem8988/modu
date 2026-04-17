@@ -93,6 +93,21 @@
     .survey-link { color: #188bf6; }
     .survey-nav-btn { background-color: var(--primary); color: var(--black); border: none; height: 50px; padding: 0 20px; border-radius: 0 0 20px 0; cursor: pointer; font-family: var(--font-montserrat); font-size: 16px; font-weight: 500; }
     .survey-footer-bar { background-color: var(--black); border-radius: 0 0 20px 20px; height: 50px; display: flex; align-items: center; justify-content: flex-end; box-shadow: 0px 10px 33px 3px rgba(255,255,255,0.29); }
+    .option-card {
+      padding: 12px;
+      border: 1px solid var(--border-active);
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      background: white;
+    }
+    .option-card:hover { border-color: var(--black); background: #fafafa; }
+    .option-card input[type="radio"] { width: 18px; height: 18px; accent-color: var(--black); }
+    .option-card.selected { border-color: var(--black); background: #f0fdf4; border-width: 2px; }
+
 
     /* Image Gallery & Crew Grids */
     .gallery-card { position: relative; border-radius: 13px; overflow: hidden; min-height: 500px; background-color: var(--black); }
@@ -268,8 +283,8 @@
                 
                 <!-- Progress bar -->
                 <div class="progress-wrapper">
-                  <div id="progress-text" class="progress-text-abs">Progress: 12%</div>
-                  <div id="progress-bar-fill" class="progress-fill" style="width: 12%;"></div>
+                  <div id="progress-text" class="progress-text-abs">Progress: 50%</div>
+                  <div id="progress-bar-fill" class="progress-fill" style="width: 50%;"></div>
                 </div>
 
                 <!-- Error Message Container -->
@@ -277,122 +292,72 @@
 
                 <!-- Steps -->
                 <div id="step-1">
-                  <p style="font-weight: 500; font-size: 20px; font-family: 'Montserrat', sans-serif; margin-bottom: 16px;">Are you located within our service areas - NYC, Yonkers, Newark, Stamford, or nearby?</p>
-                  <div class="survey-options-wrapper">
-                    <div style="cursor: pointer; text-align: center;" onclick="selectOption('serviceArea', 'Yes'); nextStep();">
-                      <div id="serviceArea-Yes" class="survey-option-box">
-                        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FJZknYcB8Q1gRXfkLUZNS%2Fcustom-field-store%2F60697a16-ab81-4dc3-880f-8f46889cdffe.webp?alt=media&token=440f78e1-7499-4782-bc54-80ffa3c2840f" alt="Yes" class="survey-option-img" onerror="this.style.display='none'">
-                        <div class="survey-option-label">Yes</div>
-                      </div>
-                    </div>
-                    <div style="cursor: pointer; text-align: center;" onclick="selectOption('serviceArea', 'No'); nextStep();">
-                      <div id="serviceArea-No" class="survey-option-box">
-                        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FJZknYcB8Q1gRXfkLUZNS%2Fcustom-field-store%2F3f816785-460e-4d86-a61d-974d2bb5f95c.webp?alt=media&token=9c7da90a-eb43-41cc-ba19-6a1c5ce6b263" alt="No" class="survey-option-img" onerror="this.style.display='none'">
-                        <div class="survey-option-label">No</div>
-                      </div>
-                    </div>
+                  <p class="survey-q-title">Contact Information</p>
+                  
+                  <div class="mb-3">
+                    <input type="text" id="fullName" placeholder="Full Name" class="survey-input" style="margin-bottom: 8px;">
                   </div>
-                  <p style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" style="color: #188bf6;">Privacy Policy</a>
+                  <div class="mb-3">
+                    <input type="email" id="email" placeholder="Email Address" class="survey-input" style="margin-bottom: 8px;">
+                  </div>
+                  <div class="mb-3">
+                    <input type="tel" id="phone" placeholder="Phone Number" class="survey-input" style="margin-bottom: 8px;">
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" id="postcode" placeholder="Zip/Postcode" class="survey-input" style="margin-bottom: 8px;">
+                  </div>
+                  <div class="mb-3">
+                    <textarea id="message" placeholder="Special Message (Optional)" class="survey-input" style="height: 80px; padding-top: 10px;"></textarea>
+                  </div>
+
+                  <p class="survey-footer-text">
+                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
                 </div>
 
                 <div id="step-2" style="display: none;">
-                  <p style="font-weight: 500; font-size: 20px; font-family: 'Montserrat', sans-serif; margin-bottom: 16px;">Which type of Blinds/Shades you are looking for?</p>
-                  <select id="blindsType" class="survey-select">
-                    <option value="">Select Blinds/Shades you are looking for</option>
-                    <option value="Blackout Shades">Blackout Shades</option>
-                    <option value="Curtains / Drapes">Curtains / Drapes</option>
-                    <option value="Faux Wood Shutters">Faux Wood Shutters</option>
-                    <option value="Honeycomb Shades">Honeycomb Shades</option>
-                    <option value="Lutron Shades">Lutron Shades</option>
-                    <option value="Motorized or Smart Glass">Motorized or Smart Glass</option>
-                    <option value="Outdoor Shades">Outdoor Shades</option>
-                    <option value="Roller Shades">Roller Shades</option>
-                    <option value="Roman shades">Roman shades</option>
-                    <option value="Skylights shades">Skylights shades</option>
-                    <option value="Soft Shades">Soft Shades</option>
-                    <option value="Vertical Blinds">Vertical Blinds</option>
-                    <option value="Zebra / Dual Shades">Zebra / Dual Shades</option>
-                    <option value="Zipper shades">Zipper shades</option>
-                    <option value="Not Sure - Need Guidance">Not Sure - Need Guidance</option>
-                  </select>
-                  <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
-                  </p>
-                </div>
-
-                <div id="step-3" style="display: none;">
-                  <p class="survey-q-title">How many windows you are looking to cover?</p>
-                  <div class="survey-radio-group">
-                    <label class="survey-radio-label"><input type="radio" name="windowCount" value="1 or 2" class="survey-radio"> 1 or 2</label>
-                    <label class="survey-radio-label"><input type="radio" name="windowCount" value="2 to 5" class="survey-radio"> 2 to 5</label>
-                    <label class="survey-radio-label"><input type="radio" name="windowCount" value="5 to 10" class="survey-radio"> 5 to 10</label>
-                    <label class="survey-radio-label"><input type="radio" name="windowCount" value="10 to 15" class="survey-radio"> 10 to 15</label>
-                    <label class="survey-radio-label"><input type="radio" name="windowCount" value="15 and above" class="survey-radio"> 15 and above</label>
+                  <p class="survey-q-title">Tell us about your project</p>
+                  
+                  <div class="mb-4">
+                    <p class="survey-sub-title">Which type of Blinds/Shades are you looking for?</p>
+                    <select id="blindsType" class="survey-select">
+                      <option value="">Select Blinds/Shades</option>
+                      <option value="Blackout Shades">Blackout Shades</option>
+                      <option value="Curtains / Drapes">Curtains / Drapes</option>
+                      <option value="Faux Wood Shutters">Faux Wood Shutters</option>
+                      <option value="Honeycomb Shades">Honeycomb Shades</option>
+                      <option value="Lutron Shades">Lutron Shades</option>
+                      <option value="Motorized or Smart Glass">Motorized or Smart Glass</option>
+                      <option value="Outdoor Shades">Outdoor Shades</option>
+                      <option value="Roller Shades">Roller Shades</option>
+                      <option value="Roman shades">Roman shades</option>
+                      <option value="Skylights shades">Skylights shades</option>
+                      <option value="Soft Shades">Soft Shades</option>
+                      <option value="Vertical Blinds">Vertical Blinds</option>
+                      <option value="Zebra / Dual Shades">Zebra / Dual Shades</option>
+                      <option value="Zipper shades">Zipper shades</option>
+                      <option value="Not Sure - Need Guidance">Not Sure - Need Guidance</option>
+                    </select>
                   </div>
-                  <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
-                  </p>
-                </div>
 
-                <div id="step-4" style="display: none;">
-                  <p class="survey-q-title">What is your estimated investment for this project?</p>
-                  <div class="survey-radio-group">
-                    <label class="survey-radio-label"><input type="radio" name="investment" value="$1,000 – $2,000" class="survey-radio"> $1,000 – $2,000</label>
-                    <label class="survey-radio-label"><input type="radio" name="investment" value="$2,000 – $5,000" class="survey-radio"> $2,000 – $5,000</label>
-                    <label class="survey-radio-label"><input type="radio" name="investment" value="$5,000 +" class="survey-radio"> $5,000 +</label>
+                  <div class="mb-4">
+                    <p class="survey-sub-title">How many windows?</p>
+                    <div class="grid grid-cols-2 gap-2">
+                       <label class="option-card"><input type="radio" name="windowCount" value="1 or 2"> 1-2</label>
+                       <label class="option-card"><input type="radio" name="windowCount" value="2 to 5"> 2-5</label>
+                       <label class="option-card"><input type="radio" name="windowCount" value="5 to 10"> 5-10</label>
+                       <label class="option-card"><input type="radio" name="windowCount" value="10 to 15"> 10-15</label>
+                    </div>
                   </div>
-                  <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
-                  </p>
-                </div>
 
-                <div id="step-5" style="display: none;">
-                  <p class="survey-q-title">Timeline for your project?</p>
-                  <div class="survey-radio-group">
-                    <label class="survey-radio-label"><input type="radio" name="timeline" value="As soon as possible" class="survey-radio"> As soon as possible</label>
-                    <label class="survey-radio-label"><input type="radio" name="timeline" value="Within 1 Month" class="survey-radio"> Within 1 Month</label>
-                    <label class="survey-radio-label"><input type="radio" name="timeline" value="Within 2 Months" class="survey-radio"> Within 2 Months</label>
-                    <label class="survey-radio-label"><input type="radio" name="timeline" value="Just checking for ideas" class="survey-radio"> Just checking for ideas</label>
+                  <div class="mb-4">
+                    <p class="survey-sub-title">Project Timeline?</p>
+                    <div class="grid grid-cols-2 gap-2">
+                      <label class="option-card"><input type="radio" name="timeline" value="As soon as possible"> ASAP</label>
+                      <label class="option-card"><input type="radio" name="timeline" value="Within 1 Month"> < 1 Month</label>
+                    </div>
                   </div>
-                  <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
-                  </p>
-                </div>
 
-                <div id="step-6" style="display: none;">
-                  <p class="survey-q-title">Any Special Message?</p>
-                  <input type="text" id="message" placeholder="Any message for us / Project Description?" class="survey-input">
-                  <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
-                  </p>
-                </div>
-
-                <div id="step-7" style="display: none;">
-                  <p class="survey-q-title">What is your postcode?</p>
-                  <input type="text" id="postcode" placeholder="eg. 07626" style="width: 100%; padding: 10px 20px; border-radius: 5px; border: 1px solid #a9b3c6; font-size: 14px; font-family: 'Inter', sans-serif; margin-bottom: 8px; box-sizing: border-box;">
-                  <p style="text-align: center; font-size: 14px; font-style: italic; font-weight: 700; color: #000; margin-bottom: 16px;">So we can check your postcodes eligibility</p>
-                  <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
-                  </p>
-                </div>
-
-                <div id="step-8" style="display: none;">
-                  <p class="survey-q-title">What is your Full Name?</p>
-                  <input type="text" id="fullName" placeholder="Eg. John Doe" class="survey-input">
-                  <p class="survey-sub-title">What is your email address?</p>
-                  <input type="email" id="email" placeholder="eg. name@company.com" class="survey-input">
-                  <p class="survey-footer-text">
-                    🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
-                  </p>
-                </div>
-
-                <div id="step-9" style="display: none;">
-                  <p class="survey-success-title">Good News!</p>
-                  <p class="survey-success-sub">We can help you. Where should we send you the details?</p>
-                  <p class="survey-sub-title">What is your phone number?</p>
-                  <input type="tel" id="phone" placeholder="Phone" class="survey-input">
                   <p class="survey-footer-text">
                     🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
                   </p>
@@ -408,6 +373,9 @@
 
               <!-- Footer with NEXT button -->
               <div id="survey-footer" class="survey-footer-bar">
+                <button id="prevBtn" onclick="prevStep()" class="survey-nav-btn" style="display: none; background-color: #666; border-radius: 0 0 0 20px; border-right: 1px solid rgba(255,255,255,0.1);">
+                  BACK
+                </button>
                 <button id="nextBtn" onclick="nextStep()" class="survey-nav-btn" style="display: flex; align-items: center; gap: 4px;">
                   NEXT
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -742,14 +710,6 @@
               </div>
             </div>
 
-            <div class="mb-8">
-              <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 15px; color: #333;">What is your estimated investment for this project?</p>
-              <div class="flex flex-col gap-4">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerInvestment" value="$1,000 – $2,000" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">$1,000 – $2,000</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerInvestment" value="$2,000 – $5,000" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">$2,000 – $5,000</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="footerInvestment" value="$5,000 +" class="w-5 h-5 accent-black"> <span class="text-base text-[#333]">$5,000 +</span></label>
-              </div>
-            </div>
 
             <div class="mb-8">
               <p style="font-weight: 600; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 15px; color: #333;">Timeline for your project?</p>
@@ -837,33 +797,54 @@
 
   <script>
     // --- Survey Form Logic ---
+    // --- Survey Form Logic ---
     let currentStep = 1;
-    const progressMap = {1: 12, 2: 18, 3: 27, 4: 32, 5: 40, 6: 49, 7: 61, 8: 81, 9: 97};
+    const progressMap = {1: 50, 2: 95};
     const surveyData = {};
+
+    document.addEventListener('change', (e) => {
+      if (e.target.name === 'windowCount' || e.target.name === 'timeline') {
+        const parent = e.target.closest('.option-card');
+        const group = document.querySelectorAll(`input[name="${e.target.name}"]`);
+        group.forEach(input => input.closest('.option-card')?.classList.remove('selected'));
+        if (parent) parent.classList.add('selected');
+      }
+    });
 
     function selectOption(key, value) {
       surveyData[key] = value;
-      // Visual feedback for Step 1
-      if (key === 'serviceArea') {
-        document.getElementById('serviceArea-Yes').style.border = value === 'Yes' ? '2px solid #000' : '1px solid #ccc';
-        document.getElementById('serviceArea-No').style.border = value === 'No' ? '2px solid #000' : '1px solid #ccc';
-      }
     }
 
     function nextStep() {
       if (!validateStep(currentStep)) return;
 
-      if (currentStep < 9) {
+      if (currentStep < 2) {
         document.getElementById(`step-${currentStep}`).style.display = 'none';
         currentStep++;
         document.getElementById(`step-${currentStep}`).style.display = 'block';
         updateProgress();
         clearError();
-        if (currentStep === 9) {
-          document.getElementById('nextBtn').style.display = 'none';
-          document.getElementById('submitBtn').style.display = 'flex';
-          document.getElementById('submitBtn').style.alignItems = 'center';
-        }
+        
+        // Button visibility
+        document.getElementById('prevBtn').style.display = 'block';
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('submitBtn').style.display = 'flex';
+        document.getElementById('submitBtn').style.alignItems = 'center';
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        document.getElementById(`step-${currentStep}`).style.display = 'none';
+        currentStep--;
+        document.getElementById(`step-${currentStep}`).style.display = 'block';
+        updateProgress();
+        clearError();
+
+        // Button visibility
+        document.getElementById('prevBtn').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'flex';
+        document.getElementById('submitBtn').style.display = 'none';
       }
     }
 
@@ -879,7 +860,6 @@
       errorEl.style.display = 'none';
       errorEl.innerText = '';
       
-      // Clear red borders
       const inputs = document.querySelectorAll('.survey-input, .survey-select');
       inputs.forEach(input => input.style.borderColor = '');
     }
@@ -889,59 +869,37 @@
       let isValid = true;
 
       if (step === 1) {
-        if (!surveyData.serviceArea) {
-          showError('Please select if you are in our service area.');
-          isValid = false;
-        }
-      } else if (step === 2) {
-        const val = document.getElementById('blindsType').value;
-        if (!val) {
-          showError('Please select what you are looking for.');
-          document.getElementById('blindsType').style.borderColor = '#b91c1c';
-          isValid = false;
-        }
-      } else if (step === 3) {
-        const checked = document.querySelector('input[name="windowCount"]:checked');
-        if (!checked) {
-          showError('Please select the number of windows.');
-          isValid = false;
-        }
-      } else if (step === 4) {
-        const checked = document.querySelector('input[name="investment"]:checked');
-        if (!checked) {
-          showError('Please select your estimated investment.');
-          isValid = false;
-        }
-      } else if (step === 5) {
-        const checked = document.querySelector('input[name="timeline"]:checked');
-        if (!checked) {
-          showError('Please select your project timeline.');
-          isValid = false;
-        }
-      } else if (step === 7) {
-        const val = document.getElementById('postcode').value.trim();
-        if (!val) {
-          showError('Please enter your postcode.');
-          document.getElementById('postcode').style.borderColor = '#b91c1c';
-          isValid = false;
-        }
-      } else if (step === 8) {
         const name = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const postcode = document.getElementById('postcode').value.trim();
+
         if (!name) {
           showError('Please enter your full name.');
-          document.getElementById('fullName').style.borderColor = '#b91c1c';
           isValid = false;
         } else if (!email || !email.includes('@')) {
           showError('Please enter a valid email address.');
-          document.getElementById('email').style.borderColor = '#b91c1c';
+          isValid = false;
+        } else if (!phone || phone.length < 10) {
+          showError('Please enter a valid phone number.');
+          isValid = false;
+        } else if (!postcode) {
+          showError('Please enter your postcode.');
           isValid = false;
         }
-      } else if (step === 9) {
-        const phone = document.getElementById('phone').value.trim();
-        if (!phone || phone.length < 10) {
-          showError('Please enter a valid phone number.');
-          document.getElementById('phone').style.borderColor = '#b91c1c';
+      } else if (step === 2) {
+        const blinds = document.getElementById('blindsType').value;
+        const windows = document.querySelector('input[name="windowCount"]:checked');
+        const timeline = document.querySelector('input[name="timeline"]:checked');
+
+        if (!blinds) {
+          showError('Please select the type of Blinds/Shades.');
+          isValid = false;
+        } else if (!windows) {
+          showError('Please select how many windows.');
+          isValid = false;
+        } else if (!timeline) {
+          showError('Please select your timeline.');
           isValid = false;
         }
       }
@@ -953,7 +911,7 @@
       const p = progressMap[currentStep];
       const bar = document.getElementById('progress-bar-fill');
       bar.style.width = p + '%';
-      bar.style.backgroundColor = p >= 60 ? 'lightgreen' : 'orange';
+      bar.style.backgroundColor = p >= 80 ? 'lightgreen' : 'orange';
       document.getElementById('progress-text').innerText = `Progress: ${p}%`;
     }
 
@@ -961,7 +919,6 @@
       // Gather data
       surveyData.blindsType = document.getElementById('blindsType')?.value;
       surveyData.windowCount = document.querySelector('input[name="windowCount"]:checked')?.value;
-      surveyData.investment = document.querySelector('input[name="investment"]:checked')?.value;
       surveyData.timeline = document.querySelector('input[name="timeline"]:checked')?.value;
       surveyData.message = document.getElementById('message')?.value;
       surveyData.postcode = document.getElementById('postcode')?.value;
@@ -984,7 +941,6 @@
         shades_needed: surveyData.blindsType,
         windows_count: surveyData.windowCount,
         timeline: surveyData.timeline,
-        budget: surveyData.investment,
         message: surveyData.message
       };
 
