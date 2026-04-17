@@ -261,7 +261,7 @@
               Serving homeowners with tailored design, expert installation, and premium materials for maximum home style and comfort. Licensed &amp; insured. Minimum investment applies.
             </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 hidden md:grid">
               <div class="feature-button">
                 <span class="check">✓</span>
                 <span>Free design consultation.</span>
@@ -280,7 +280,7 @@
               </div>
             </div>
 
-            <div class="mt-4 text-center">
+            <div class="mt-4 text-center hidden md:block">
               <p class="hero-subtext">
                 Trusted by families across Cresskill • Licensed &amp; Insured • Family-Owned
               </p>
@@ -292,6 +292,19 @@
             <div class="form-wrapper">
               <div id="survey-body" class="form-body" style="border-radius: 20px 20px 0 0;">
                 
+                <div class="text-center mb-6">
+                  <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; font-family: var(--font-inter); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Trusted Experts
+                  </span>
+                  <h2 style="font-family: var(--font-montserrat); font-weight: 800; font-size: 28px; color: #111; line-height: 1.2; letter-spacing: -0.5px; margin: 0 0 6px 0;">
+                    Schedule a Free Call
+                  </h2>
+                  <p style="font-family: var(--font-inter); font-size: 15px; color: #666; margin: 0; padding: 0 10px;">
+                    Discuss your project with our design experts today.
+                  </p>
+                </div>
+
                 <!-- Progress bar -->
                 <div class="progress-wrapper">
                   <div id="progress-text" class="progress-text-abs">Progress: 50%</div>
@@ -387,6 +400,57 @@
                 </button>
               </div>
             </div>
+
+            <!-- Mobile Features (Moved Below Form) -->
+            <style>
+              .mobile-carousel::-webkit-scrollbar { display: none; }
+            </style>
+            <div class="flex overflow-x-auto mobile-carousel gap-3 mt-8 md:hidden snap-x snap-mandatory pb-2" style="-ms-overflow-style: none; scrollbar-width: none;">
+              <div class="feature-button shrink-0 w-[85%] snap-center">
+                <span class="check">✓</span>
+                <span>Free design consultation.</span>
+              </div>
+              <div class="feature-button shrink-0 w-[85%] snap-center">
+                <span class="check">✓</span>
+                <span>Installs completed in 1–2 weeks.</span>
+              </div>
+              <div class="feature-button shrink-0 w-[85%] snap-center">
+                <span class="check">✓</span>
+                <span>1-Year warranty.</span>
+              </div>
+              <div class="feature-button shrink-0 w-[85%] snap-center">
+                <span class="check">✓</span>
+                <span>Family-owned, licensed &amp; insured.</span>
+              </div>
+            </div>
+            
+            <script>
+              document.addEventListener('DOMContentLoaded', () => {
+                const carousel = document.querySelector('.mobile-carousel');
+                if (carousel) {
+                  let isScrolling;
+                  // Stop auto-play when user is touching/swiping
+                  carousel.addEventListener('touchstart', () => clearInterval(autoScroll));
+                  
+                  const autoScroll = setInterval(() => {
+                    if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 20) {
+                      carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                      const itemWidth = carousel.querySelector('.feature-button').offsetWidth;
+                      const gap = 12; // gap-3 = 12px
+                      carousel.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
+                    }
+                  }, 3000);
+                }
+              });
+            </script>
+
+            <div class="mt-4 text-center md:hidden">
+              <p class="hero-subtext">
+                Trusted by families across Cresskill • Licensed &amp; Insured • Family-Owned
+              </p>
+            </div>
+            
           </div>
         </div>
       </div>
@@ -791,14 +855,73 @@
     function nextStep() {
       if (!validateStep(currentStep)) return;
 
-      if (currentStep < 2) {
+      if (currentStep === 1) {
+        const nextBtn = document.getElementById('nextBtn');
+        const originalText = nextBtn.innerHTML;
+        nextBtn.innerHTML = 'SAVING...';
+        nextBtn.disabled = true;
+
+        const payload = {
+          full_name: document.getElementById('fullName').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          postal_code: document.getElementById('postcode').value.trim()
+        };
+
+        if (surveyData.lead_id) {
+          payload.lead_id = surveyData.lead_id;
+        }
+
+        fetch('/submit-lead', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(async response => {
+          const isJson = response.headers.get('content-type')?.includes('application/json');
+          const data = isJson ? await response.json() : null;
+
+          if (!response.ok) {
+            if (response.status === 422 && data && data.errors) {
+              const firstError = Object.values(data.errors)[0][0];
+              throw new Error(firstError);
+            }
+            throw new Error('Something went wrong. Please try again.');
+          }
+          return data;
+        })
+        .then(data => {
+          surveyData.lead_id = data.lead_id;
+          
+          document.getElementById(`step-${currentStep}`).style.display = 'none';
+          currentStep++;
+          document.getElementById(`step-${currentStep}`).style.display = 'block';
+          updateProgress();
+          clearError();
+          
+          document.getElementById('prevBtn').style.display = 'block';
+          document.getElementById('nextBtn').style.display = 'none';
+          document.getElementById('submitBtn').style.display = 'flex';
+          document.getElementById('submitBtn').style.alignItems = 'center';
+        })
+        .catch(error => {
+          showError(error.message);
+        })
+        .finally(() => {
+          nextBtn.innerHTML = originalText;
+          nextBtn.disabled = false;
+        });
+      } else if (currentStep < 2) {
         document.getElementById(`step-${currentStep}`).style.display = 'none';
         currentStep++;
         document.getElementById(`step-${currentStep}`).style.display = 'block';
         updateProgress();
         clearError();
         
-        // Button visibility
         document.getElementById('prevBtn').style.display = 'block';
         document.getElementById('nextBtn').style.display = 'none';
         document.getElementById('submitBtn').style.display = 'flex';
@@ -916,6 +1039,10 @@
         timeline: surveyData.timeline,
         message: surveyData.message
       };
+
+      if (surveyData.lead_id) {
+        payload.lead_id = surveyData.lead_id;
+      }
 
       fetch('/submit-lead', {
         method: 'POST',

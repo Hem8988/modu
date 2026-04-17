@@ -16,6 +16,7 @@ class LeadSubmissionController extends Controller
     public function submit(Request $request, TwilioService $twilio)
     {
         $data = $request->validate([
+            'lead_id'      => 'nullable|integer|exists:leads,id',
             'full_name'    => 'required|string|max:255',
             'email'        => 'required|email:rfc,dns',
             'phone'        => 'required|string|min:10|max:20',
@@ -27,38 +28,71 @@ class LeadSubmissionController extends Controller
             'message'      => 'nullable|string',
         ]);
 
-        // Create Enquiry explicitly first, so it shows in Enquiries registry
-        $enquiry = \App\Models\Enquiry::create([
-            'name'    => $data['full_name'],
-            'email'   => $data['email'] ?? null,
-            'phone'   => $data['phone'],
-            'city'    => $data['postal_code'] ?? null,
-            'project' => $data['shades_needed'] ?? null,
-            'budget'  => $data['budget'] ?? null,
-            'message' => $data['message'] ?? null,
-            'source'  => 'Landing Page Form',
-            'status'  => 'converted' // instantly converted since it becomes a lead
-        ]);
+        if (isset($data['lead_id'])) {
+            $lead = Lead::findOrFail($data['lead_id']);
+            $lead->update([
+                'name'          => $data['full_name'],
+                'email'         => $data['email'] ?? null,
+                'phone'         => $data['phone'],
+                'zip_code'      => $data['postal_code'] ?? null,
+                'shades_needed' => $data['shades_needed'] ?? $lead->shades_needed,
+                'windows_count' => $data['windows_count'] ?? $lead->windows_count,
+                'timeline'      => $data['timeline'] ?? $lead->timeline,
+                'budget'        => $data['budget'] ?? $lead->budget,
+                'feedback'      => $data['message'] ?? $lead->feedback,
+            ]);
+            $lead->lead_score = $lead->calculateScore();
+            $lead->save();
 
-        $lead = Lead::create([
-            'enquiry_id'    => $enquiry->id,
-            'name'          => $data['full_name'],
-            'email'         => $data['email'] ?? null,
-            'phone'         => $data['phone'],
-            'zip_code'      => $data['postal_code'] ?? null,
-            'shades_needed' => $data['shades_needed'] ?? null,
-            'windows_count' => $data['windows_count'] ?? 0,
-            'timeline'      => $data['timeline'] ?? null,
-            'budget'        => $data['budget'] ?? null,
-            'feedback'      => $data['message'] ?? null,
-            'source'        => 'Landing Page',
-            'status'        => 'new_lead', // Match the badge query and UI convention
-        ]);
-        $lead->lead_score = $lead->calculateScore();
-        $lead->save();
+            if ($lead->enquiry_id) {
+                $enquiry = \App\Models\Enquiry::find($lead->enquiry_id);
+                if ($enquiry) {
+                    $enquiry->update([
+                        'name'    => $data['full_name'],
+                        'email'   => $data['email'] ?? null,
+                        'phone'   => $data['phone'],
+                        'city'    => $data['postal_code'] ?? null,
+                        'project' => $data['shades_needed'] ?? $enquiry->project,
+                        'budget'  => $data['budget'] ?? $enquiry->budget,
+                        'message' => $data['message'] ?? $enquiry->message,
+                    ]);
+                }
+            }
+            ActivityLog::log($lead->id, 'Lead Updated', "Lead {$lead->name} provided additional info.");
+            $messageStr = 'Lead updated successfully';
 
-        // 📝 Log Activity
-        ActivityLog::log($lead->id, 'New Lead Submitted', "Lead from Landing Page: {$lead->name} ({$lead->phone})");
+        } else {
+            $enquiry = \App\Models\Enquiry::create([
+                'name'    => $data['full_name'],
+                'email'   => $data['email'] ?? null,
+                'phone'   => $data['phone'],
+                'city'    => $data['postal_code'] ?? null,
+                'project' => $data['shades_needed'] ?? null,
+                'budget'  => $data['budget'] ?? null,
+                'message' => $data['message'] ?? null,
+                'source'  => 'Landing Page Form',
+                'status'  => 'converted'
+            ]);
+
+            $lead = Lead::create([
+                'enquiry_id'    => $enquiry->id,
+                'name'          => $data['full_name'],
+                'email'         => $data['email'] ?? null,
+                'phone'         => $data['phone'],
+                'zip_code'      => $data['postal_code'] ?? null,
+                'shades_needed' => $data['shades_needed'] ?? null,
+                'windows_count' => $data['windows_count'] ?? 0,
+                'timeline'      => $data['timeline'] ?? null,
+                'budget'        => $data['budget'] ?? null,
+                'feedback'      => $data['message'] ?? null,
+                'source'        => 'Landing Page',
+                'status'        => 'new_lead',
+            ]);
+            $lead->lead_score = $lead->calculateScore();
+            $lead->save();
+            ActivityLog::log($lead->id, 'New Lead Submitted', "Lead from Landing Page: {$lead->name} ({$lead->phone})");
+            $messageStr = 'Lead created and notifications sent';
+        }
 
         if ($request->expectsJson() || $request->is('api/*') || $request->ajax()) {
             return response()->json([
