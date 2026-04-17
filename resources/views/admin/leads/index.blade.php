@@ -122,44 +122,44 @@
             
             <div class="modal-body p-4">
                 <form method="POST" action="{{ route('admin.leads.store') }}">@csrf
-                    <div class="grid-2" style="row-gap: 16px; column-gap: 16px;">
-                        <div>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Full Name</label>
                             <input class="form-control form-input-premium" name="name" placeholder="John Doe" required>
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Phone Number</label>
                             <input class="form-control form-input-premium" name="phone" placeholder="+1..." required>
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Email Address</label>
                             <input class="form-control form-input-premium" name="email" type="email" placeholder="john@example.com">
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">City</label>
                             <input class="form-control form-input-premium" name="city" placeholder="City name">
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Zip Code</label>
                             <input class="form-control form-input-premium" name="zip_code" placeholder="12345">
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Windows Count</label>
                             <input class="form-control form-input-premium" name="windows_count" type="number" placeholder="5">
                         </div>
-                        <div style="grid-column: span 2;">
+                        <div class="col-12">
                             <label class="form-label-sm">Project / Product Interest</label>
                             <input class="form-control form-input-premium" name="shades_needed" placeholder="e.g. Roller Shades, Motorized Blinds">
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Budget Estimate</label>
                             <input class="form-control form-input-premium" name="budget" placeholder="e.g. $2000">
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Campaign Name</label>
                             <input class="form-control form-input-premium" name="campaign" placeholder="Optional">
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Lead Source</label>
                             <select class="form-control form-input-premium" name="source">
                                 <option value="Manual Entry (Admin / Staff)">Manual Entry (Admin / Staff)</option>
@@ -168,7 +168,7 @@
                                 <option value="Other Sources (Google Ads / Referral)">Other Sources (Google Ads / Referral)</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="col-12 col-md-6">
                             <label class="form-label-sm">Full Address</label>
                             <input class="form-control form-input-premium" name="address" placeholder="Street layout">
                         </div>
