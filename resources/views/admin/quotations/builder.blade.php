@@ -4,23 +4,23 @@
 
 <div style="max-width: 100%; margin: 0 auto;">
     {{-- High-End Header --}}
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1.5px solid var(--border);">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 pb-4" style="border-bottom: 1.5px solid #e2e8f0; gap: 20px;">
         <div>
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                <span style="background: var(--accent); color: white; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">Drafting Proposal</span>
-                <span style="color: var(--muted); font-size: 13px; font-weight: 600;">Client Snapshot</span>
+                <span style="background: #2563eb; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">Drafting Proposal</span>
+                <span style="color: #64748b; font-size: 13px; font-weight: 600;">Client Snapshot</span>
             </div>
-            <h1 style="font-size: 32px; font-weight: 950; color: var(--text); letter-spacing: -1px; line-height: 1; margin-bottom: 12px;">{{ $lead->name }}</h1>
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 12px; font-size: 14px; font-weight: 600; color: var(--muted);">
-                <span style="display: flex; align-items: center; gap: 6px;">📱 {{ $lead->phone }}</span>
-                <span style="display: flex; align-items: center; gap: 6px;">📍 {{ $lead->city ?: 'Project Site' }}</span>
-                <span style="display: flex; align-items: center; gap: 6px;">🕒 {{ date('M d, Y') }}</span>
+            <h1 style="font-size: 32px; font-weight: 950; color: #0f172a; letter-spacing: -1px; line-height: 1; margin-bottom: 12px;">{{ $lead->name }}</h1>
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 14px; font-weight: 600; color: #475569;">
+                <span style="display: flex; align-items: center; gap: 6px;"><i class="fas fa-phone-alt" style="color:#2563eb;"></i> {{ $lead->phone }}</span>
+                <span style="display: flex; align-items: center; gap: 6px;"><i class="fas fa-map-marker-alt" style="color:#2563eb;"></i> {{ $lead->city ?: 'Project Site' }}</span>
+                <span style="display: flex; align-items: center; gap: 6px;"><i class="far fa-calendar-alt" style="color:#2563eb;"></i> {{ date('M d, Y') }}</span>
             </div>
         </div>
         
-        <div style="text-align: right; background: #fff; padding: 16px 24px; border-radius: 16px; border: 1.5px solid var(--border); box-shadow: var(--shadow);">
-            <div style="font-size: 10px; font-weight: 800; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;">Official Proposal ID</div>
-            <div style="font-size: 22px; font-weight: 900; color: var(--accent); letter-spacing: -0.5px;">#{{ $quoteNumber }}</div>
+        <div style="text-align: right; background: #fff; padding: 16px 24px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); min-width: 200px;">
+            <div style="font-size: 10px; font-weight: 800; color: #64748b; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;">Official Proposal ID</div>
+            <div style="font-size: 22px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">#{{ $quoteNumber }}</div>
         </div>
     </div>
 
@@ -29,26 +29,21 @@
         <input type="hidden" name="quote_id" value="{{ $existingQuote->id ?? '' }}">
         <input type="hidden" name="quote_number" value="{{ $quoteNumber }}">
 
-        <div class="grid-2 builder-main-grid">
-<style>
-    @media (min-width: 901px) {
-        .builder-main-grid { grid-template-columns: 1fr 380px; gap: 32px; align-items: flex-start; }
-    }
-</style>
+        <div class="row g-4 align-items-start">
             
             {{-- Primary Workspace --}}
-            <div style="display: flex; flex-direction: column; gap: 24px;">
-                <div class="card" style="padding: 0; overflow: hidden; border: 1.5px solid var(--border); border-radius: 20px; background: #fff;">
-                    <div style="padding: 24px; background: var(--surface); border-bottom: 1.5px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div class="col-12 col-xl-8" style="display: flex; flex-direction: column; gap: 24px;">
+                <div style="padding: 0; overflow: hidden; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
+                    <div style="padding: 24px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
                         <div>
-                            <h3 style="font-size: 16px; font-weight: 900; color: var(--text); display: flex; align-items: center; gap: 10px;">
-                                <span style="background: var(--gold); width: 8px; height: 16px; border-radius: 2px;"></span>
+                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 10px; margin: 0;">
+                                <span style="background: #eab308; width: 6px; height: 18px; border-radius: 4px;"></span>
                                 Project Line Items
                             </h3>
-                            <p style="font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 2px;">Define custom dimensions and installation requirements.</p>
+                            <p style="font-size: 13px; color: #64748b; font-weight: 500; margin-top: 4px; margin-bottom: 0;">Define custom dimensions and installation requirements.</p>
                         </div>
-                        <button type="button" onclick="addItem()" class="btn btn-primary" style="padding: 10px 24px; border-radius: 12px; font-size: 13px;">
-                            ✨ Add Custom Unit
+                        <button type="button" onclick="addItem()" class="btn btn-primary" style="background: #2563eb; border: none; padding: 10px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; box-shadow: 0 4px 6px rgba(37,99,235,0.2);">
+                            <i class="fas fa-plus"></i> Add Custom Unit
                         </button>
                     </div>
 
@@ -85,12 +80,16 @@
             </div>
 
             {{-- Sidebar Tools --}}
-            <div style="position: sticky; top: 100px; display: flex; flex-direction: column; gap: 24px;">
-                
+            <div class="col-12 col-xl-4 sidebar-tools-container" style="display: flex; flex-direction: column; gap: 24px;">
+                <style>
+                    @media (min-width: 1200px) {
+                        .sidebar-tools-container { position: sticky; top: 20px; }
+                    }
+                </style>
                 {{-- Quick Catalog --}}
-                <div class="card" style="padding: 24px; border: 1.5px solid var(--border); border-radius: 20px; background: #fff; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);">
-                    <h3 style="font-size: 12px; font-weight: 900; margin-bottom: 20px; color: var(--text); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
-                        🏢 Product Catalog
+                <div style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
+                    <h3 style="font-size: 13px; font-weight: 900; margin-bottom: 20px; color: #0f172a; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-box-open" style="color: #2563eb;"></i> Product Catalog
                     </h3>
                     <div style="display: grid; gap: 10px;">
                         @foreach($products as $p)
@@ -103,10 +102,10 @@
                 </div>
 
                 {{-- Financial Summary --}}
-                <div class="card" style="background: var(--text); border: none; padding: 32px; border-radius: 24px; color: white; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative; overflow: hidden;">
-                    <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: var(--accent); filter: blur(100px); opacity: 0.3;"></div>
+                <div style="background: #0f172a; border: none; padding: 32px; border-radius: 24px; color: #ffffff; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: #2563eb; filter: blur(100px); opacity: 0.4;"></div>
                     
-                    <h3 style="font-size: 11px; font-weight: 900; margin-bottom: 32px; opacity: 0.5; letter-spacing: 1.5px; text-transform: uppercase;">Financial Summary</h3>
+                    <h3 style="font-size: 11px; font-weight: 900; margin-bottom: 32px; color: rgba(255,255,255,0.5); letter-spacing: 1.5px; text-transform: uppercase;">Financial Summary</h3>
                     
                     <div style="display: grid; gap: 20px; font-size: 15px; font-weight: 600;">
                         <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
