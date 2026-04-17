@@ -290,10 +290,10 @@
           <!-- Right column - Survey Form -->
           <div class="w-full md:w-1/2 md:pl-8 pt-0 md:pt-0 pb-6">
             <div class="form-wrapper">
-              <div id="survey-body" class="form-body header-form-mobile" style="border-radius: 20px 20px 0 0;">
+              <div id="survey-body" class="form-body" style="border-radius: 20px 20px 0 0;">
                 
                 <!-- Progress bar -->
-                <div class="progress-wrapper md:block hidden">
+                <div class="progress-wrapper">
                   <div id="progress-text" class="progress-text-abs">Progress: 50%</div>
                   <div id="progress-bar-fill" class="progress-fill" style="width: 50%;"></div>
                 </div>
@@ -302,37 +302,20 @@
                 <div id="survey-error" style="display: none; background-color: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; text-align: center; border: 1px solid #fca5a5; font-family: 'Inter', sans-serif;"></div>
 
                 <!-- Steps -->
-                <div id="step-1" class="md:block">
-                  <p class="survey-q-title md:block hidden">Contact Information</p>
+                <div id="step-1">
+                  <p class="survey-q-title">Contact Information</p>
                   
-                  <div class="mb-4">
-                    <p class="premium-label">Full Name *</p>
-                    <input type="text" id="fullName" placeholder="Full Name" class="survey-input" style="margin-bottom: 0;">
-                  </div>
-                  <div class="mb-4">
-                    <p class="premium-label">Email Address *</p>
-                    <input type="email" id="email" placeholder="Email Address" class="survey-input" style="margin-bottom: 0;">
-                  </div>
-                  <div class="mb-4">
-                    <p class="premium-label">Phone Number *</p>
-                    <input type="tel" id="phone" placeholder="Phone Number" class="survey-input" style="margin-bottom: 0;">
-                  </div>
-                  <div class="mb-4">
-                    <p class="premium-label">Zip Code *</p>
-                    <input type="text" id="postcode" placeholder="Zip Code" class="survey-input" style="margin-bottom: 0;">
-                  </div>
-                  <div class="mb-4">
-                    <p class="premium-label">Special Message (Optional)</p>
-                    <textarea id="message" placeholder="Special Message (Optional)" class="survey-input" style="height: 100px; padding-top: 15px; margin-bottom: 0;"></textarea>
-                  </div>
+                  <input type="text" id="fullName" placeholder="Full Name" class="survey-input">
+                  <input type="email" id="email" placeholder="Email Address" class="survey-input">
+                  <input type="tel" id="phone" placeholder="Phone Number" class="survey-input">
+                  <input type="text" id="postcode" placeholder="Zip Code" class="survey-input">
                 </div>
 
-                <div id="step-2" class="md:hidden block">
-                  <p class="survey-q-title md:block hidden">Tell us about your project</p>
+                <div id="step-2" style="display: none;">
+                  <p class="survey-q-title">Tell us about your project</p>
                   
-                  <div class="mb-6">
-                    <p class="premium-label">Which type of Blinds/Shades you are looking for?</p>
-                    <p class="survey-sub-title md:block hidden">Which type of Blinds/Shades are you looking for?</p>
+                  <div class="mb-4">
+                    <p class="survey-sub-title">Which type of Blinds/Shades are you looking for?</p>
                     <select id="blindsType" class="survey-select">
                       <option value="">Select Blinds/Shades</option>
                       <option value="Blackout Shades">Blackout Shades</option>
@@ -353,9 +336,8 @@
                     </select>
                   </div>
 
-                  <div class="mb-6">
-                    <p class="premium-label">How many windows you are looking to cover?</p>
-                    <p class="survey-sub-title md:block hidden">How many windows?</p>
+                  <div class="mb-4">
+                    <p class="survey-sub-title">How many windows?</p>
                     <div class="grid grid-cols-2 gap-2">
                        <label class="option-card"><input type="radio" name="windowCount" value="1 or 2"> 1-2</label>
                        <label class="option-card"><input type="radio" name="windowCount" value="2 to 5"> 2-5</label>
@@ -364,19 +346,17 @@
                     </div>
                   </div>
 
-                  <div class="mb-6">
-                    <p class="premium-label">Timeline for your project?</p>
-                    <p class="survey-sub-title md:block hidden">Project Timeline?</p>
+                  <div class="mb-4">
+                    <p class="survey-sub-title">Project Timeline?</p>
                     <div class="grid grid-cols-2 gap-2">
                       <label class="option-card"><input type="radio" name="timeline" value="As soon as possible"> ASAP</label>
                       <label class="option-card"><input type="radio" name="timeline" value="Within 1 Month"> < 1 Month</label>
                     </div>
                   </div>
 
-                  <!-- Mobile Integrated Submit Button -->
-                  <button onclick="submitForm()" class="w-full bg-black text-white font-bold py-5 rounded-[15px] shadow-lg md:hidden block mt-6" style="font-family: 'Montserrat', sans-serif; font-size: 18px;">
-                    Request A Call back
-                  </button>
+                  <div class="mb-2 mt-4">
+                    <textarea id="message" placeholder="Special Message (Optional)" class="survey-input" style="height: 100px; padding-top: 15px; margin-bottom: 0;"></textarea>
+                  </div>
 
                   <p class="survey-footer-text mt-6">
                     🔒 Safe | Secure | <a href="{{ route('privacy-policy') }}" target="_blank" class="survey-link">Privacy Policy</a>
@@ -392,7 +372,7 @@
               </div>
 
               <!-- Footer with NEXT button -->
-              <div id="survey-footer" class="survey-footer-bar md:flex hidden">
+              <div id="survey-footer" class="survey-footer-bar">
                 <button id="prevBtn" onclick="prevStep()" class="survey-nav-btn" style="display: none; background-color: #666; border-radius: 0 0 0 20px; border-right: 1px solid rgba(255,255,255,0.1);">
                   BACK
                 </button>
