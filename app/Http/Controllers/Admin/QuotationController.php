@@ -147,6 +147,10 @@ class QuotationController extends Controller
         $invoice = \App\Models\Invoice::create([
             'customer_id'    => $customer->id,
             'invoice_number' => 'INV-' . strtoupper(uniqid()),
+            'subtotal'       => $quote->subtotal,
+            'vat_amount'     => $quote->vat_amount,
+            'discount'       => $quote->discount,
+            'freight'        => $quote->freight,
             'total'          => $quote->total_amount,
             'amount'         => $quote->total_amount,
             'due'            => $quote->total_amount,

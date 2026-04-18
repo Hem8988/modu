@@ -165,12 +165,24 @@
             <div class="totals-box">
                 <div class="total-row">
                     <span>Sub Total</span>
-                    <span>${{ number_format($invoice->total, 2) }}</span>
+                    <span>${{ number_format($invoice->subtotal, 2) }}</span>
                 </div>
                 <div class="total-row">
-                    <span>Tax (0%)</span>
-                    <span>$0.00</span>
+                    <span>Tax (VAT)</span>
+                    <span>${{ number_format($invoice->vat_amount, 2) }}</span>
                 </div>
+                @if($invoice->discount > 0)
+                <div class="total-row" style="color: #ef4444;">
+                    <span>Discount</span>
+                    <span>-${{ number_format($invoice->discount, 2) }}</span>
+                </div>
+                @endif
+                @if($invoice->freight > 0)
+                <div class="total-row">
+                    <span>Freight/Shipping</span>
+                    <span>${{ number_format($invoice->freight, 2) }}</span>
+                </div>
+                @endif
                 <div class="total-row grand-total">
                     <span>Total</span>
                     <span>${{ number_format($invoice->total, 2) }}</span>
