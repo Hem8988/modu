@@ -10,6 +10,17 @@
         </div>
         <span class="badge" style="background: rgba(37, 99, 235, 0.1); color: var(--accent); border: 1px solid rgba(37, 99, 235, 0.2); height: 28px; padding: 0 12px;">👤 {{ strtoupper($user->role ?? 'admin') }}</span>
     </div>
+    
+    @if (session('status') === 'profile-updated')
+        <div style="background: #ecfdf5; color: #065f46; padding: 16px; border-radius: 12px; border: 1px solid #10b981; margin-bottom: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+            <span>✅</span> Identity updated successfully.
+        </div>
+    @endif
+    @if (session('status') === 'password-updated')
+        <div style="background: #ecfdf5; color: #065f46; padding: 16px; border-radius: 12px; border: 1px solid #10b981; margin-bottom: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+            <span>🔒</span> Security protocol updated successfully.
+        </div>
+    @endif
 
     {{-- Identity Hub --}}
     <div class="card" style="padding: 32px;">
@@ -29,6 +40,10 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div><label class="form-label">Full Account Name</label><input class="form-control" name="name" value="{{ $user->name }}" required></div>
                     <div><label class="form-label">Admin Email Address</label><input class="form-control" type="email" name="email" value="{{ $user->email }}" required></div>
+                </div>
+                <div>
+                    <label class="form-label">Phone Number</label>
+                    <input class="form-control" name="phone" value="{{ $user->phone }}" placeholder="e.g. +1 234 567 890">
                 </div>
                 <div style="border-top: 1px solid var(--border); padding-top: 20px; text-align: right;">
                     <button type="submit" class="btn btn-primary" style="padding: 12px 24px;">💾 Update Profile Identity</button>
