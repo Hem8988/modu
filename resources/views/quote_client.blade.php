@@ -391,8 +391,6 @@
             padding: 32px;
             margin-bottom: 32px;
             text-align: left;
-            max-height: 400px;
-            overflow-y: auto;
             white-space: pre-wrap;
             font-size: 14px;
             color: var(--slate-600);
@@ -572,15 +570,16 @@
             <h2>Digital Authorization</h2>
             <p>Review the specifications and financials above. By signing below, you authorize the project to move into the manufacturing and logistics phase.</p>
             
+              <div class="agreement-box">
+                    <h3>Service Agreement & Terms</h3>
+                    {!! nl2br(e($quote->terms_conditions ?: \App\Models\Setting::get('quote_service_agreement', 'Default Service Agreement text will appear here.'))) !!}
+                </div>
             <form id="acceptance-form" class="auth-form" method="POST" action="{{ route('quote.accept', $quote->client_token) }}">
                 @csrf
                 <input type="hidden" name="signature_data" id="signature_data">
 
                 {{-- Service Agreement Display --}}
-                <div class="agreement-box">
-                    <h3>Service Agreement & Terms</h3>
-                    {!! nl2br(e($quote->terms_conditions ?: \App\Models\Setting::get('quote_service_agreement', 'Default Service Agreement text will appear here.'))) !!}
-                </div>
+              
 
                 {{-- Mandatory Checkbox --}}
                 <label class="checkbox-container" for="agree_terms">

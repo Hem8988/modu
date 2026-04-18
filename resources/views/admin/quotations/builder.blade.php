@@ -140,20 +140,14 @@
 
 This Agreement is made between ModuShade ("Company") and the undersigned client ("Customer").
 
----
-
 1. Scope of Work
 
 The Company agrees to supply and install blinds/shades as detailed in the approved quotation sent to the Customer.
-
----
 
 2. Measurements & Responsibility
 
 All measurements are based on on-site evaluation.
 Customer is responsible for approving final specifications (fabric, color, operation, placement).
-
----
 
 3. Payment Terms
 
@@ -162,35 +156,25 @@ Customer is responsible for approving final specifications (fabric, color, opera
 
 No order will be placed without deposit.
 
----
-
 4. Production & Installation Timeline
 
 Estimated lead time: 14–21 business days from deposit date.
 Installation will be scheduled once products are ready.
-
----
 
 5. Custom Order Policy
 
 All products are custom-made.
 👉 No cancellations or refunds after production has started.
 
----
-
 6. Installation Conditions
 
 Customer agrees to provide clear and safe access to installation areas.
 Any delays due to site conditions may result in rescheduling.
 
----
-
 7. Warranty
 
 Warranty is limited to manufacturer defects only.
 Does not cover misuse, damage, or improper handling.
-
----
 
 8. Final Approval
 
