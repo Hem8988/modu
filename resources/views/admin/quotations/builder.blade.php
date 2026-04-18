@@ -203,7 +203,7 @@
         document.querySelectorAll('#items-body tr').forEach(row => {
             const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
             const priceInput = row.querySelector('.item-price');
-            const basePrice = parseFloat(priceInput.dataset.basePrice) || 0;
+            let basePrice = parseFloat(priceInput.dataset.basePrice) || 0;
             
             // Calculate surcharges from technical attributes
             let surcharges = 0;
@@ -214,10 +214,17 @@
                 }
             });
 
-            // Update price input if there's a base price (dynamic product)
-            if (basePrice > 0 || surcharges > 0) {
-                const totalUnitPrice = basePrice + surcharges;
-                priceInput.value = totalUnitPrice.toFixed(2);
+            // Support Manual Price Overrides
+            // If the user is manually editing this field, we update the basePrice internally
+            if (document.activeElement === priceInput) {
+                const manualVal = parseFloat(priceInput.value) || 0;
+                priceInput.dataset.basePrice = manualVal - surcharges;
+            } else {
+                // Otherwise, push the calculated price (Base + Surcharges) to the UI
+                if (basePrice > 0 || surcharges > 0) {
+                    const totalUnitPrice = basePrice + surcharges;
+                    priceInput.value = totalUnitPrice.toFixed(2);
+                }
             }
 
             const price = parseFloat(priceInput.value) || 0;

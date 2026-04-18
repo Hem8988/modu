@@ -25,7 +25,7 @@
     
     <td style="padding: 24px 12px; vertical-align: top;">
         <div style="position: relative; display: flex; align-items: center;">
-            <span style="position: absolute; left: 14px; color: #94a3b8; font-weight: 800;">$</span>
+            <span style="position: absolute; left: 14px; color: #94a3b8; font-weight: 800; pointer-events: none;">$</span>
             <input type="number" name="items[{{ $index }}][price]" class="form-control item-price" value="{{ $item->unit_price ?? 0 }}" min="0" step="0.01" oninput="calculateTotals()" required style="padding-left: 28px; font-weight: 800; border-radius: 12px; height: 50px;">
         </div>
     </td>
