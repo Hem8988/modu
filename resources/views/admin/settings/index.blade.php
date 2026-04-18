@@ -232,10 +232,26 @@
                                 <input type="password" name="twilio_token" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['twilio_token'] ?? '' }}" placeholder="••••••••••••••••••••••••">
                             </div>
                             <div class="col-12">
-                                <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Twilio Sender Number (From)</label>
-                                <input type="text" name="twilio_from" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['twilio_from'] ?? '' }}" placeholder="+1234567890">
                                 <div class="form-text text-secondary mt-1 small">Your verified Twilio phone number or Messaging Service SID.</div>
                             </div>
+                        </div>
+
+                        {{-- Twilio Test Hub --}}
+                        <div class="bg-primary bg-opacity-10 border border-primary-subtle rounded-4 p-4">
+                            <h6 class="fw-bolder text-primary mb-3 d-flex align-items-center gap-2">
+                                <i class="fas fa-vial"></i> Connection Test Utility
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-8">
+                                    <input type="text" id="test_twilio_phone" class="form-control bg-white fw-bold py-2 custom-input" placeholder="Enter your mobile number (e.g. +1...)" value="{{ $settings['admin_phone'] ?? '' }}">
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button type="button" onclick="runTwilioTest()" id="btn-test-twilio" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">
+                                        Run Connection Test
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="twilio-test-feedback" class="mt-3 small fw-bold" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -496,6 +512,53 @@
 
     // Initial Render
     renderSequence();
+
+    window.runTwilioTest = function() {
+        const phone = document.getElementById('test_twilio_phone').value;
+        const sid = document.querySelector('input[name="twilio_sid"]').value;
+        const token = document.querySelector('input[name="twilio_token"]').value;
+        const from = document.querySelector('input[name="twilio_from"]').value;
+        const btn = document.getElementById('btn-test-twilio');
+        const feedback = document.getElementById('twilio-test-feedback');
+
+        if (!phone) {
+            alert('Please enter a destination phone number.');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Running...';
+        feedback.style.display = 'block';
+        feedback.className = 'mt-3 small fw-bold text-secondary';
+        feedback.innerText = 'Initializing connectivity probe...';
+
+        fetch("{{ route('admin.settings.test-sms') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ phone, sid, token, from })
+        })
+        .then(response => response.json())
+        .then(data => {
+            btn.disabled = false;
+            btn.innerText = 'Run Connection Test';
+            if (data.success) {
+                feedback.className = 'mt-3 small fw-bold text-success';
+                feedback.innerText = '✓ ' + data.message;
+            } else {
+                feedback.className = 'mt-3 small fw-bold text-danger';
+                feedback.innerText = '❌ ' + (data.message || 'Unknown error occurred.');
+            }
+        })
+        .catch(error => {
+            btn.disabled = false;
+            btn.innerText = 'Run Connection Test';
+            feedback.className = 'mt-3 small fw-bold text-danger';
+            feedback.innerText = '❌ Failed to reach the server. Check your internet connection.';
+        });
+    }
 </script>
 
 <style>

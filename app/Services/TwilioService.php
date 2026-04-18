@@ -17,6 +17,14 @@ class TwilioService
         $this->from  = $settings['twilio_from'] ?? config('services.twilio.from') ?? '';
     }
 
+    public function setCredentials(string $sid, string $token, string $from): self
+    {
+        $this->sid = $sid;
+        $this->token = $token;
+        $this->from = $from;
+        return $this;
+    }
+
     public function send(string $to, string $message): bool
     {
         if (empty($this->sid) || empty($this->token) || empty($this->from)) return false;
