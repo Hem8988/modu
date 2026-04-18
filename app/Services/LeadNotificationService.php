@@ -27,6 +27,14 @@ class LeadNotificationService
         $adminEmail = $settings['admin_email'] ?? $admin?->email ?? 'admin@modushade.com';
         $adminPhone = $settings['admin_phone'] ?? $admin?->phone ?? env('ADMIN_PHONE');
 
+        \Log::info('LeadNotification Debug:', [
+            'sms_enabled' => $settings['sms_enabled'] ?? 'MISSING',
+            'admin_found' => !is_null($admin),
+            'admin_phone_from_db' => $admin?->phone,
+            'final_admin_phone' => $adminPhone,
+            'env_admin_phone' => env('ADMIN_PHONE')
+        ]);
+
         // Send Emails
         try {
             // To Admin
