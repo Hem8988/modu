@@ -12,6 +12,8 @@ use App\Mail\UserLeadMail;
 use App\Mail\AdminAppointmentMail;
 use App\Mail\UserAppointmentMail;
 use App\Mail\AdminFollowUpMail;
+use App\Mail\AdminQuoteMail;
+use App\Mail\UserQuoteMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Config;
 
