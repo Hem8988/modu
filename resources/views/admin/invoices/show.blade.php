@@ -11,10 +11,11 @@
         
         /* Header Logic */
         .invoice-header { display: flex; justify-content: space-between; margin-bottom: 60px; }
+        .doc-meta { text-align: right; }
         .doc-meta h1 { font-size: 28px; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; }
         .doc-meta .id-badge { display: inline-block; background: var(--dark); color: #fff; padding: 6px 12px; font-size: 14px; font-weight: 700; border-radius: 4px; margin-bottom: 20px; }
         
-        .brand-meta { text-align: right; }
+        .brand-meta { text-align: left; }
         .brand-meta img { height: 40px; margin-bottom: 10px; }
         .brand-name { font-size: 24px; font-weight: 800; color: #000; letter-spacing: -1px; }
         .brand-name span { color: var(--gold); }
@@ -58,6 +59,8 @@
             body { background: #fff; padding: 0; }
             .invoice-card { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
             .print-fab { display: none; }
+            .invoice-header { display: flex !important; flex-direction: row !important; justify-content: space-between !important; }
+            .address-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 40px !important; }
         }
         @media (max-width: 768px) {
             body { padding: 16px; }
@@ -78,16 +81,8 @@
 
     <div class="invoice-card">
         <div class="invoice-header">
-            <div class="doc-meta">
-                <div class="id-badge">OFFICIAL INVOICE</div>
-                <h1>INVOICE #INV-{{ strtoupper(substr($invoice->invoice_number, 0, 8)) }}</h1>
-                <div style="font-size: 13px; font-weight: 700;">
-                   Status: <span style="color: {{ $invoice->status === 'paid' ? '#10b981' : '#f59e0b' }}">{{ strtoupper($invoice->status) }}</span>
-                </div>
-            </div>
             <div class="brand-meta">
                 <div class="brand-name">MODU<span>SHADE</span></div>
-                <!-- <div class="brand-sub">CREATE SPACE ON WEB</div> -->
                 <div class="company-details">
                     {{ $globalSettings['company_name'] ?? 'ModuShade Industrial' }}<br>
                     {{ $globalSettings['company_address_1'] ?? '24 Poplar Street' }}, {{ $globalSettings['company_address_2'] ?? 'Creskill, NJ 07626' }}<br>
@@ -96,19 +91,17 @@
                     Website: {{ $globalSettings['company_website'] ?? 'info.modu-shade.com' }}
                 </div>
             </div>
-        </div>
-
-        <div class="address-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-            <div class="address-box">
-                <h3>{{ $globalSettings['company_name'] ?? 'ModuShade' }}</h3>
-                <div style="font-size:12px; color:var(--muted)">
-                    {{ $globalSettings['company_address_1'] ?? '123 Industrial Parkway' }}<br>
-                    {{ $globalSettings['company_address_2'] ?? 'New Delhi, India' }}<br>
-                    {{ $globalSettings['company_email'] ?? 'info@modu-shade.com' }}<br>
-                    {{ $globalSettings['company_phone'] ?? '+91 98765 43210' }}
+            <div class="doc-meta">
+                <div class="id-badge">OFFICIAL INVOICE</div>
+                <h1>#INV-{{ strtoupper(substr($invoice->invoice_number, 0, 8)) }}</h1>
+                <div style="font-size: 13px; font-weight: 700;">
+                   Status: <span style="color: {{ $invoice->status === 'paid' ? '#10b981' : '#f59e0b' }}">{{ strtoupper($invoice->status) }}</span>
                 </div>
             </div>
-            <div></div>
+        </div>
+
+        <div class="address-grid" style="grid-template-columns: 1fr 1fr;">
+            <div></div> <!-- Spacer -->
             <div class="address-box" style="text-align: right;">
                 <h3 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; margin-bottom: 10px;">Bill To</h3>
                 <p>
