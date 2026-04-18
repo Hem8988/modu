@@ -249,8 +249,8 @@
                         </div>
                         <div id="welcome-sms-template-container" style="{{ ($settings['welcome_sms_enabled'] ?? 'off') === 'on' ? '' : 'display:none;' }}">
                             <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Welcome SMS Template</label>
-                            <textarea name="welcome_sms_template" rows="3" class="form-control bg-white fw-bold custom-input" placeholder="e.g. Hi {{name}}, we received your request for {{project}}!">{{ $settings['welcome_sms_template'] ?? "Hi {{name}}, we have received your request for {{project}}. Our team will contact you shortly!" }}</textarea>
-                            <div class="form-text text-secondary mt-2 small">Available tags: <code>{{name}}</code>, <code>{{project}}</code>, <code>{{phone}}</code>, <code>{{email}}</code></div>
+                            <textarea name="welcome_sms_template" rows="3" class="form-control bg-white fw-bold custom-input" placeholder="e.g. Hi [name], we received your request for [project]!">{{ $settings['welcome_sms_template'] ?? "Hi [name], we have received your request for [project]. Our team will contact you shortly!" }}</textarea>
+                            <div class="form-text text-secondary mt-2 small">Available tags: <code>[name]</code>, <code>[project]</code>, <code>[phone]</code>, <code>[email]</code></div>
                         </div>
                     </div>
 

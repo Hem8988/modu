@@ -49,9 +49,9 @@ class LeadNotificationService
             // To User (Immediate Welcome SMS)
             $welcomeSmsEnabled = ($settings['welcome_sms_enabled'] ?? 'off') === 'on';
             if ($welcomeSmsEnabled && !empty($lead->phone)) {
-                $template = $settings['welcome_sms_template'] ?? "Hi {{name}}, we have received your request for {{project}}. Our team will contact you shortly!";
+                $template = $settings['welcome_sms_template'] ?? "Hi [name], we have received your request for [project]. Our team will contact you shortly!";
                 $msg = str_replace(
-                    ['{{name}}', '{{project}}', '{{phone}}', '{{email}}'],
+                    ['[name]', '[project]', '[phone]', '[email]'],
                     [$lead->name, $lead->shades_needed ?: 'General Inquiry', $lead->phone, $lead->email],
                     $template
                 );
