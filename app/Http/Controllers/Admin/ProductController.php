@@ -47,4 +47,17 @@ class ProductController extends Controller
         Product::destroy($id); 
         return back()->with('success','Product removed from catalog.'); 
     }
+
+    public function apiSearch(Request $request)
+    {
+        $query = $request->get('q');
+        if (!$query) return response()->json([]);
+
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('category', 'LIKE', "%{$query}%")
+            ->limit(10)
+            ->get();
+
+        return response()->json($products);
+    }
 }

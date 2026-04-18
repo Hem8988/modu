@@ -30,16 +30,23 @@ class QuotationController extends Controller
 
     public function save(Request $request, $leadId)
     {
-        $quoteId = $request->quote_id;
-        $data = [
-            'lead_id'      => $leadId,
-            'quote_number' => $request->quote_number,
-            'total_amount' => $request->total_amount,
-            'expiry_date'  => now()->addDays(30),
-            'status'       => 'draft'
-        ];
+        $quote = Quote::updateOrCreate(
+            ['id' => $request->quote_id],
+            [
+                'lead_id'      => $leadId,
+                'quote_number' => $request->quote_number,
+                'subtotal'     => $request->subtotal,
+                'vat_amount'   => $request->vat_amount,
+                'freight'      => $request->freight,
+                'discount'     => $request->discount,
+                'total_amount' => $request->total_amount,
+                'narration'    => $request->narration,
+                'comments'     => $request->comments,
+                'status'       => 'draft',
+                'expiry_date'  => now()->addDays(30),
+            ]
+        );
         
-        $quote = $quoteId ? tap(Quote::find($quoteId))->update($data) : Quote::create($data);
         $quote->items()->delete();
         
         if ($request->has('items')) {
@@ -51,14 +58,16 @@ class QuotationController extends Controller
                 }
                 
                 $quote->items()->create([
-                    'product_id'   => $item['product_id'] ?? null,
-                    'product_name' => $item['name'] ?? 'Custom Unit',
-                    'width'        => $item['width'] ?? 0,
-                    'height'       => $item['height'] ?? 0,
-                    'quantity'     => $item['quantity'] ?? 1,
-                    'unit_price'   => $item['price'] ?? ($item['rate'] ?? 0),
-                    'subtotal'     => $item['total'] ?? 0,
-                    'options_json' => $options
+                    'product_id'     => $item['product_id'] ?? null,
+                    'product_name'   => $item['name'] ?? 'Custom Unit',
+                    'width'          => $item['width'] ?? 0,
+                    'height'         => $item['height'] ?? 0,
+                    'quantity'       => $item['quantity'] ?? 1,
+                    'unit_price'     => $item['price'] ?? 0,
+                    'vat_percentage' => $item['vat_percentage'] ?? 0,
+                    'vat_amount'     => $item['vat_amount'] ?? 0,
+                    'subtotal'       => $item['total'] ?? 0,
+                    'options_json'   => $options
                 ]);
             }
         }

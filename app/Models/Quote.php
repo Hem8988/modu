@@ -5,11 +5,16 @@ use Illuminate\Database\Eloquent\Model;
 class Quote extends Model {
     public $timestamps = true;
     protected $fillable = [
-        'lead_id', 'quote_number', 'total_amount', 'expiry_date', 'status', 
+        'lead_id', 'quote_number', 'subtotal', 'vat_amount', 'freight', 'discount', 
+        'total_amount', 'expiry_date', 'status', 'narration', 'comments',
         'client_token', 'signed_at', 'signature_data', 'signature_ip', 'signature_name'
     ];
     protected $casts = [
-        'expiry_date' => 'date', 
+        'expiry_date'  => 'date', 
+        'subtotal'     => 'decimal:2',
+        'vat_amount'   => 'decimal:2',
+        'freight'      => 'decimal:2',
+        'discount'     => 'decimal:2',
         'total_amount' => 'decimal:2',
         'signed_at'    => 'datetime'
     ];

@@ -92,10 +92,11 @@
 
         /* Address Grid */
         .address-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 50px;
+            page-break-inside: avoid;
         }
         .address-box h3 {
             font-size: 10px;
@@ -242,10 +243,10 @@
             .page { padding: 40px 0; border: none; max-width: 100%; box-shadow: none; }
             .page::before { opacity: 0.05; }
         }
-        @media (max-width: 768px) {
+        @media screen and (max-width: 768px) {
             .header-main { flex-direction: column !important; }
             .id-block { text-align: left; margin-top: 20px; }
-            .address-grid { grid-template-columns: 1fr !important; gap: 20px; }
+            .address-grid { flex-direction: column !important; gap: 40px; }
             .address-box { text-align: left !important; }
             .page { padding: 20px; }
             .table-responsive { width: 100%; overflow-x: auto; }
@@ -279,7 +280,7 @@
             </div>
         </header>
 
-        <section class="address-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+        <section class="address-grid">
             <div class="address-box">
                 <h3>Origin Entity</h3>
                 <div class="address-content">
@@ -289,7 +290,7 @@
                     {{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}
                 </div>
             </div>
-            <div></div>
+            
             <div class="address-box" style="text-align: right;">
                 <h3>Recipient Client</h3>
                 <div class="address-content">
@@ -309,6 +310,7 @@
                     <th>Configuration Details</th>
                     <th width="60" class="cell-right">Qty</th>
                     <th width="100" class="cell-right">Rate</th>
+                    <th width="80" class="cell-right">VAT %</th>
                     <th width="120" class="cell-right">Amount</th>
                 </tr>
             </thead>
@@ -333,34 +335,43 @@
                     </td>
                     <td class="cell-right" style="font-weight: 700;">{{ number_format($item->quantity, 0) }}</td>
                     <td class="cell-right">${{ number_format($item->unit_price, 2) }}</td>
-                    <td class="cell-right" style="font-weight: 800; color: var(--slate-900);">${{ number_format($item->subtotal, 2) }}</td>
+                    <td class="cell-right">{{ number_format($item->vat_percentage, 1) }}%</td>
+                    <td class="cell-right" style="font-weight: 800; color: var(--slate-900);">${{ number_format($item->subtotal + ($item->vat_amount ?? 0), 2) }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
         </div>
 
-        <div class="financial-container">
+        <div class="financial-container" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; margin-top: 30px;">
+            <div style="flex: 1;">
+                @if($quote->narration)
+                <h4 style="font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">Project Scope & Narration</h4>
+                <div style="font-size: 12px; color: var(--slate-600); line-height: 1.7; white-space: pre-line;">{{ $quote->narration }}</div>
+                @endif
+            </div>
+            
             <div class="ledger-box">
-                @php 
-                    $subtotal_sum = $items->sum('subtotal');
-                    $tax_rate = 0.08875;
-                    $tax_amount = $subtotal_sum * $tax_rate;
-                    $grand_total = $subtotal_sum + $tax_amount;
-                @endphp
                 <div class="ledger-row">
-                    <span>Sub-Total</span>
-                    <span>${{ number_format($subtotal_sum, 2) }}</span>
+                    <span>Item Subtotal</span>
+                    <span>${{ number_format($quote->subtotal ?: $items->sum('subtotal'), 2) }}</span>
                 </div>
                 <div class="ledger-row">
-                    <span>N.Y. State Tax (8.875%)</span>
-                    <span>${{ number_format($tax_amount, 2) }}</span>
+                    <span>VAT Total</span>
+                    <span>${{ number_format($quote->vat_amount, 2) }}</span>
                 </div>
+
+                @if($quote->discount > 0)
+                <div class="ledger-row" style="color: #ef4444;">
+                    <span>Total Discount</span>
+                    <span>-${{ number_format($quote->discount, 2) }}</span>
+                </div>
+                @endif
                 <div class="ledger-row total">
-                    <span>TOTAL</span>
-                    <span>${{ number_format($grand_total, 2) }}</span>
+                    <span>GRAND TOTAL</span>
+                    <span>${{ number_format($quote->total_amount, 2) }}</span>
                 </div>
-                <div style="font-size: 9px; color: var(--slate-400); text-align: right; margin-top: 8px; font-weight: 700;">USD Currency</div>
+                <div style="font-size: 9px; color: var(--slate-400); text-align: right; margin-top: 8px; font-weight: 700;">All prices in USD</div>
             </div>
         </div>
 

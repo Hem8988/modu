@@ -1,114 +1,57 @@
 <tr>
-    <td style="padding: 20px 24px; position: relative;">
+    <td style="padding: 24px 32px; vertical-align: top;">
         <input type="hidden" name="items[{{ $index }}][product_id]" class="item-product-id" value="{{ $item->product_id ?? '' }}">
         
-        <div style="margin-bottom: 12px; position: relative;" class="search-container">
-            <label style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">PRODUCT / DESCRIPTION</label>
-            <input type="text" name="items[{{ $index }}][name]" class="form-control item-name" placeholder="Search catalog or type custom description..." value="{{ $item->name ?? '' }}" required 
+        <div style="position: relative;" class="search-container">
+            <input type="text" name="items[{{ $index }}][name]" class="form-control item-name" placeholder="Search catalog or type custom description..." value="{{ $item->product_name ?? ($item->name ?? '') }}" required 
                 oninput="searchProducts(this)" 
                 onfocus="searchProducts(this)"
                 onblur="hideSearchResults(this)"
                 autocomplete="off"
-                style="font-weight: 700; color: var(--text); background: var(--surface2); border-color: var(--border); border-radius: 10px;">
-            
-            {{-- Dynamic Search Results --}}
+                style="font-weight: 700; color: #0f172a; border-radius: 12px; height: 50px; padding: 0 16px;">
             <div class="search-results-dropdown" style="display: none;"></div>
         </div>
 
-        {{-- Dynamic Technical Attributes Container --}}
-        <div class="attributes-wrapper" style="display: none; margin-bottom: 12px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
-            <div style="font-size: 9px; font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Technical Configuration</div>
-            <div class="attributes-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
-                {{-- Dropdowns injected by JS --}}
-            </div>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: 1fr; gap: 16px; align-items: flex-end;">
-            
-            <div style="flex: 1;">
-                <label style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">INSTALLATION NOTES</label>
-                <input type="text" name="items[{{ $index }}][notes]" class="form-control item-notes" placeholder="e.g. Inside Mount / Blackout Fabric" value="{{ $item->notes ?? '' }}" style="font-size: 12px; height: 42px; border-radius: 10px; border-style: dashed;">
-            </div>
+        {{-- Configuration Toggle / Attributes --}}
+        <div class="attributes-wrapper" style="display: none; margin-top: 12px; padding: 16px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px;">
+            <div style="font-size: 9px; font-weight: 900; color: #b89b5e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Configuration Settings</div>
+            <div class="attributes-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px;"></div>
         </div>
     </td>
     
-    <td style="padding: 20px 12px; text-align: center;">
-        <label style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 10px;">QTY</label>
-        <div style="display: inline-flex; align-items: center; background: var(--surface2); border-radius: 10px; padding: 4px; border: 1.5px solid var(--border);">
-            <input type="number" name="items[{{ $index }}][quantity]" class="form-control-minimal item-qty" value="{{ $item->quantity ?? 1 }}" min="1" step="1" oninput="calculateTotals()" required style="width: 45px; text-align: center; border: none; background: transparent; font-size: 15px; font-weight: 800; padding: 0;">
-        </div>
+    <td style="padding: 24px 12px; text-align: center; vertical-align: top;">
+        <input type="number" name="items[{{ $index }}][quantity]" class="form-control item-qty" value="{{ $item->quantity ?? 1 }}" min="1" step="1" oninput="calculateTotals()" required style="width: 70px; text-align: center; border-radius: 12px; height: 50px; font-weight: 800;">
     </td>
     
-    <td style="padding: 20px 12px;">
-        <label style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 10px; text-align: center;">UNIT RATE</label>
+    <td style="padding: 24px 12px; vertical-align: top;">
         <div style="position: relative; display: flex; align-items: center;">
-            <span style="position: absolute; left: 14px; color: var(--muted); font-weight: 800; font-size: 14px;">$</span>
-            <input type="number" name="items[{{ $index }}][price]" class="form-control item-price" value="{{ $item->unit_price ?? 0 }}" min="0" step="0.01" oninput="calculateTotals()" required style="padding-left: 28px; font-weight: 800; font-size: 15px; border-radius: 10px; background: var(--surface2); height: 45px;">
+            <span style="position: absolute; left: 14px; color: #94a3b8; font-weight: 800;">$</span>
+            <input type="number" name="items[{{ $index }}][price]" class="form-control item-price" value="{{ $item->unit_price ?? 0 }}" min="0" step="0.01" oninput="calculateTotals()" required style="padding-left: 28px; font-weight: 800; border-radius: 12px; height: 50px;">
+        </div>
+    </td>
+
+    <td style="padding: 24px 12px; vertical-align: top;">
+        <div style="position: relative; display: flex; align-items: center;">
+            <input type="number" name="items[{{ $index }}][vat_percentage]" class="form-control item-vat-percent" value="{{ $item->vat_percentage ?? 0 }}" min="0" step="0.01" oninput="calculateTotals()" placeholder="0" style="padding-right: 28px; font-weight: 800; border-radius: 12px; height: 50px; text-align: center;">
+            <span style="position: absolute; right: 14px; color: #94a3b8; font-weight: 800; font-size: 12px;">%</span>
+        </div>
+    </td>
+
+    <td style="padding: 24px 12px; vertical-align: top;">
+        <input type="number" name="items[{{ $index }}][vat_amount]" class="form-control item-vat-amount" value="{{ $item->vat_amount ?? 0 }}" readonly style="font-weight: 700; border-radius: 12px; height: 50px; background: #f1f5f9; border: none; text-align: center; color: #64748b;">
+    </td>
+    
+    <td style="padding: 24px 32px; text-align: right; vertical-align: top;">
+        <div class="item-row-total" style="font-size: 20px; font-weight: 950; color: #0f172a; padding-top: 10px;">
+            ${{ number_format(($item->subtotal ?? 0), 2) }}
         </div>
     </td>
     
-    <td style="padding: 20px 24px; text-align: right;">
-        <label style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 10px;">TOTAL</label>
-        <div class="item-row-total" style="font-size: 18px; font-weight: 900; color: var(--text); letter-spacing: -0.5px;">
-            ${{ number_format(($item->unit_price ?? 0) * ($item->quantity ?? 1), 2) }}
-        </div>
-    </td>
-    
-    <td style="padding: 20px 16px; text-align: center; width: 60px; vertical-align: bottom; padding-bottom: 32px;">
-        <button type="button" onclick="removeRow(this)" style="width: 32px; height: 32px; border-radius: 8px; background: #fee2e2; border: 1.5px solid #fecaca; color: #ef4444; cursor: pointer; display: flex; align-items: center; justify-content:center; transition: all .2s; font-size: 14px;" onmouseover="this.style.background='#ef4444'; this.style.color='white'; this.style.borderColor='#ef4444';" onmouseout="this.style.background='#fee2e2'; this.style.color='#ef4444'; this.style.borderColor='#fecaca';">
-            ✕
+    <td style="padding: 24px 16px; text-align: center; width: 60px; vertical-align: top;">
+        <button type="button" onclick="removeRow(this)" style="width: 40px; height: 40px; border-radius: 12px; background: #fff5f5; border: 1px solid #fee2e2; color: #ef4444; transition: all 0.2s; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';" onmouseout="this.style.background='#fff5f5'; this.style.color='#ef4444';">
+            <i class="fas fa-trash-alt"></i>
         </button>
     </td>
 </tr>
 
-<style>
-    .form-control-minimal:focus { outline: none; }
-    .search-results-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border: 1.5px solid var(--border);
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        z-index: 1000;
-        margin-top: 8px;
-        max-height: 250px;
-        overflow-y: auto;
-    }
-    .search-result-item {
-        padding: 12px 16px;
-        cursor: pointer;
-        border-bottom: 1px solid var(--surface2);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.2s;
-    }
-    .search-result-item:hover {
-        background: var(--surface2);
-    }
-    .search-result-item:last-child {
-        border-bottom: none;
-    }
-    .search-result-name {
-        font-weight: 700;
-        color: var(--text);
-        font-size: 13px;
-    }
-    .search-result-price {
-        font-weight: 800;
-        color: var(--accent);
-        font-size: 13px;
-    }
-    .search-result-category {
-        font-size: 10px;
-        font-weight: 800;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        display: block;
-    }
-</style>
+
