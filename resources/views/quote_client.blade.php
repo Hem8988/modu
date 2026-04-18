@@ -425,6 +425,15 @@
             .ref-badge { text-align: center; }
             .items-table th:nth-child(2), .items-table td:nth-child(2) { display: none; }
         }
+
+        @media print {
+            body { background: white !important; padding-bottom: 0; }
+            .app-container { margin: 0; padding: 0; max-width: none; }
+            .print-btn, .auth-form { display: none !important; }
+            .glass-header, .specs-card, .summary-dashboard { box-shadow: none !important; border: 1px solid #000 !important; }
+            .glass-header::before { display: none !important; }
+            .acceptance-section { page-break-inside: avoid; }
+        }
     </style>
 </head>
 <body>
@@ -446,6 +455,10 @@
             <div class="ref-label">PROPOSAL REFERENCE</div>
             <div class="ref-number">#{{ $quote->quote_number }}</div>
             <div class="ref-date">Expires: {{ $quote->expiry_date->format('M d, Y') }}</div>
+            <button class="print-btn" onclick="window.print()" style="margin-top: 12px; padding: 8px 16px; background: var(--slate-100); border: 1px solid var(--slate-300); border-radius: 8px; font-weight: 700; color: var(--slate-700); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 13px;">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                Print Proposal
+            </button>
         </div>
     </header>
 
