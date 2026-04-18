@@ -27,7 +27,11 @@ class TwilioService
 
     public function send(string $to, string $message): bool
     {
-        if (empty($this->sid) || empty($this->token) || empty($this->from)) return false;
+        $to = $this->sanitize($to);
+        if (empty($this->sid) || empty($this->token) || empty($this->from) || empty($to)) {
+            \Log::warning("Twilio skipped: Missing SID, Token, From, or Cleaned Recipient ($to)");
+            return false;
+        }
 
         $url  = "https://api.twilio.com/2010-04-01/Accounts/{$this->sid}/Messages.json";
         $data = ['From' => $this->from, 'To' => $to, 'Body' => $message];
@@ -38,9 +42,24 @@ class TwilioService
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_USERPWD, "{$this->sid}:{$this->token}");
-        curl_exec($ch);
+        $response = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return $code === 201;
+
+        if ($code !== 201) {
+            \Log::error("Twilio Send Failed [Status $code] to $to: " . $response);
+            return false;
+        }
+        
+        return true;
+    }
+
+    private function sanitize(string $number): string
+    {
+        // Remove everything except digits and the plus sign
+        $cleaned = preg_replace('/[^\d+]/', '', $number);
+        
+        // Ensure it starts with at least a '+' or a leading digit
+        return $cleaned;
     }
 }
