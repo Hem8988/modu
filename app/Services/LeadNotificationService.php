@@ -22,10 +22,14 @@ class LeadNotificationService
         $settings = Setting::getAll();
         self::configureMail($settings);
 
+        // Get Admin Contact
+        $admin = User::where('role', 'admin')->first();
+        $adminEmail = $settings['admin_email'] ?? $admin?->email ?? 'admin@modushade.com';
+        $adminPhone = $settings['admin_phone'] ?? $admin?->phone ?? env('ADMIN_PHONE');
+
         // Send Emails
         try {
             // To Admin
-            $adminEmail = User::where('role', 'admin')->first()?->email ?? 'admin@modushade.com';
             Mail::to($adminEmail)->send(new AdminLeadMail($lead));
             
             // To User
@@ -50,7 +54,6 @@ class LeadNotificationService
             }
 
             // To Admin (Immediate alert)
-            $adminPhone = env('ADMIN_PHONE');
             if (!empty($adminPhone)) {
                 $adminMsg = "🚨 New Lead Alert: {$lead->name} is interested in {$lead->shades_needed}. Phone: {$lead->phone}";
                 try {
@@ -68,9 +71,13 @@ class LeadNotificationService
         self::configureMail($settings);
         $lead = $appointment->lead;
 
+        // Admin Info
+        $admin = User::where('role', 'admin')->first();
+        $adminEmail = $settings['admin_email'] ?? $admin?->email ?? 'admin@modushade.com';
+        $adminPhone = $settings['admin_phone'] ?? $admin?->phone ?? env('ADMIN_PHONE');
+
         try {
             // To Admin & Agent (Email)
-            $adminEmail = $settings['admin_email'] ?? User::where('role', 'admin')->first()?->email ?? 'admin@modushade.com';
             $agent = User::find($lead->assigned_to);
             
             $recipients = array_unique(array_filter([$adminEmail, $agent?->email]));
@@ -97,12 +104,15 @@ class LeadNotificationService
             }
 
             // 2. To Admin & 3. To Agent
-            $adminPhone = env('ADMIN_PHONE');
             $staffPhones = array_unique(array_filter([$adminPhone, $agent?->phone]));
             
             foreach ($staffPhones as $phone) {
                 $staffMsg = "📅 Appointment Alert: Site visit for {$lead->name} scheduled on " . $appointment->date->format('M d') . " at {$appointment->time}. Handle with care.";
-                $twilio->send($phone, $staffMsg);
+                try {
+                    $twilio->send($phone, $staffMsg);
+                } catch (\Exception $e) {
+                    \Log::error('Staff Appointment SMS Error: ' . $e->getMessage());
+                }
             }
         }
     }
@@ -113,8 +123,12 @@ class LeadNotificationService
         self::configureMail($settings);
         $lead = $followUp->lead;
 
+        // Admin Info
+        $admin = User::where('role', 'admin')->first();
+        $adminEmail = $settings['admin_email'] ?? $admin?->email ?? 'admin@modushade.com';
+        $adminPhone = $settings['admin_phone'] ?? $admin?->phone ?? env('ADMIN_PHONE');
+
         try {
-            $adminEmail = $settings['admin_email'] ?? User::where('role', 'admin')->first()?->email ?? 'admin@modushade.com';
             $agent = User::find($lead->assigned_to);
             
             $recipients = array_unique(array_filter([$adminEmail, $agent?->email]));
@@ -125,11 +139,14 @@ class LeadNotificationService
             // SMS Alert to Staff
             if (($settings['sms_enabled'] ?? 'off') === 'on') {
                 $twilio = app(\App\Services\TwilioService::class);
-                $adminPhone = env('ADMIN_PHONE');
                 $staffPhones = array_unique(array_filter([$adminPhone, $agent?->phone]));
                 
                 foreach ($staffPhones as $phone) {
-                    $twilio->send($phone, "⏳ Reminder: Follow-up required for {$lead->name} today. Check CRM for notes.");
+                    try {
+                        $twilio->send($phone, "⏳ Reminder: Follow-up required for {$lead->name} today. Check CRM for notes.");
+                    } catch (\Exception $e) {
+                        \Log::error('Staff FollowUp SMS Error: ' . $e->getMessage());
+                    }
                 }
             }
         } catch (\Exception $e) {
