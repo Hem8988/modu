@@ -32,7 +32,7 @@
 
         <div class="row g-4">
             {{-- Main Workspace --}}
-            <div class="col-12 col-xl-9">
+            <div class="col-12">
                 <div style="background: #fff; border-radius: 24px; border: 1px solid #e2e8f0; overflow: visible !important; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
                     <div style="padding: 24px 32px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
                         <h3 style="font-size: 18px; font-weight: 950; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 12px;">
@@ -80,51 +80,58 @@
                     </div>
                 </div>
 
-                {{-- Narration & Comments --}}
-                <div class="row g-4 mt-1">
-                    <div class="col-12">
-                        <div style="background: #fff; padding: 24px; border-radius: 20px; border: 1px solid #e2e8f0;">
-                            <label style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 12px;">Narration / Scope of Work</label>
-                            <textarea name="narration" rows="4" class="form-control" placeholder="Describe the project scope..." style="border-radius: 12px; border: 1px solid #e2e8f0; font-size: 14px; padding: 16px;">{{ $existingQuote?->narration ?? '' }}</textarea>
+                {{-- Financial Summary Section --}}
+                <div style="margin-top: 24px; background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow: visible !important;">
+                    <div style="padding: 24px 32px; color: #0f172a;">
+                        <h3 style="font-size: 10px; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Financial Summary</h3>
+                        
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-3">
+                                <div style="background: #f8fafc; padding: 16px 20px; border-radius: 16px; border: 1px solid #f1f5f9;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <span style="font-size: 13px; color: #64748b; font-weight: 600;">Subtotal</span>
+                                        <span id="summary-subtotal" style="font-size: 15px; font-weight: 800; font-family: monospace;">$0.00</span>
+                                        <input type="hidden" name="subtotal" id="input-subtotal" value="0">
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 13px; color: #64748b; font-weight: 600;">VAT Total</span>
+                                        <span id="summary-vat" style="font-size: 15px; font-weight: 800; font-family: monospace;">$0.00</span>
+                                        <input type="hidden" name="vat_amount" id="input-vat" value="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div style="background: #f8fafc; padding: 16px 20px; border-radius: 16px; border: 1px solid #f1f5f9;">
+                                    <label style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">Discount</label>
+                                    <input type="number" name="discount" id="input-discount" value="{{ $existingQuote?->discount ?? 0 }}" oninput="calculateTotals()" step="0.01" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; color: #0f172a; padding: 8px 12px; font-weight: 700; width: 100%; font-size: 14px;">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div style="background: #f8fafc; padding: 16px 24px; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-size: 9px; font-weight: 950; color: #2563eb; letter-spacing: 1.5px; margin-bottom: 2px; text-transform: uppercase;">Total Payable</div>
+                                    <div id="summary-total" style="font-size: 28px; font-weight: 950; letter-spacing: -1px; font-family: 'Outfit'; color: #0f172a;">$0.00</div>
+                                    <input type="hidden" name="total_amount" id="input-total" value="0">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 text-end">
+                                <button type="submit" class="btn btn-primary" style="padding: 16px 32px; border-radius: 14px; background: #2563eb; border: none; font-size: 14px; font-weight: 900; letter-spacing: 0.5px; box-shadow: 0 8px 16px rgba(37,99,235,0.25); width: 100%;">
+                                    SAVE QUOTATION ➔
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {{-- Summary Sidebar --}}
-            {{-- Summary Sidebar --}}
-            <div class="col-12 col-xl-3">
-                <div style="background: #ffffff; border-radius: 24px; border: 1px solid #e2e8f0; overflow: visible !important; position: sticky; top: 24px; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.05);">
-                    <div style="padding: 32px; color: #0f172a;">
-                        <h3 style="font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 32px;">Financial Summary</h3>
-                        
-                        <div style="display: grid; gap: 24px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-size: 14px; color: #64748b; font-weight: 600;">Subtotal</span>
-                                <span id="summary-subtotal" style="font-size: 16px; font-weight: 800; font-family: monospace;">$0.00</span>
-                                <input type="hidden" name="subtotal" id="input-subtotal" value="0">
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-size: 14px; color: #64748b; font-weight: 600;">VAT Total</span>
-                                <span id="summary-vat" style="font-size: 16px; font-weight: 800; font-family: monospace;">$0.00</span>
-                                <input type="hidden" name="vat_amount" id="input-vat" value="0">
-                            </div>
-
-                            <div style="display: grid; gap: 8px;">
-                                <label style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Total Discount</label>
-                                <input type="number" name="discount" id="input-discount" value="{{ $existingQuote?->discount ?? 0 }}" oninput="calculateTotals()" step="0.01" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; color: #0f172a; padding: 12px 16px; font-weight: 700; width: 100%;">
-                            </div>
-
-                            <div style="margin-top: 24px; padding-top: 24px; border-top: 2px dashed #f1f5f9;">
-                                <div style="font-size: 10px; font-weight: 950; color: #2563eb; letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase;">Total Payable</div>
-                                <div id="summary-total" style="font-size: 44px; font-weight: 950; letter-spacing: -2px; font-family: 'Outfit'; color: #0f172a;">$0.00</div>
-                                <input type="hidden" name="total_amount" id="input-total" value="0">
-                            </div>
+                {{-- Narration --}}
+                <div class="row g-4 mt-1">
+                    <div class="col-12">
+                        <div style="background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0;">
+                            <label style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px;">Narration / Scope of Work</label>
+                            <textarea name="narration" rows="3" class="form-control" placeholder="Describe the project scope..." style="border-radius: 12px; border: 1px solid #e2e8f0; font-size: 13px; padding: 12px;">{{ $existingQuote?->narration ?? '' }}</textarea>
                         </div>
-
-                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 40px; padding: 20px; border-radius: 16px; background: #2563eb; border: none; font-size: 15px; font-weight: 900; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(37,99,235,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                            SAVE PROPOSAL ➔
-                        </button>
                     </div>
                 </div>
             </div>
