@@ -344,8 +344,8 @@
                     <div style="font-size:12px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:20px; display:flex; align-items:center; gap:10px;">
                         <span style="width:8px; height:2px; background:var(--accent);"></span> Proposal History
                     </div>
-                    <div class="table-responsive" style="background:var(--surface2); border:1px solid var(--border); overflow:hidden;">
-                        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                    <div class="table-responsive" style="background:var(--surface2); border:1px solid var(--border); overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                        <table style="width:100%; min-width: 600px; border-collapse:collapse; font-size:13px;">
                             <thead>
                                 <tr style="background:rgba(0,0,0,0.02); border-bottom:1px solid var(--border);">
                                     <th style="padding:12px 16px; text-align:left; font-weight:800; color:var(--muted); font-size:10px; text-transform:uppercase;">ID</th>

@@ -1,5 +1,5 @@
-<tr>
-    <td style="padding: 24px 32px; vertical-align: top;">
+<tr class="builder-row">
+    <td class="col-desc" data-label="Description" style="padding: 24px 32px; vertical-align: top;">
         <input type="hidden" name="items[{{ $index }}][product_id]" class="item-product-id" value="{{ $item->product_id ?? '' }}">
         
         <div style="position: relative;" class="search-container">
@@ -19,35 +19,35 @@
         </div>
     </td>
     
-    <td style="padding: 24px 12px; text-align: center; vertical-align: top;">
-        <input type="number" name="items[{{ $index }}][quantity]" class="form-control item-qty" value="{{ $item->quantity ?? 1 }}" min="1" step="1" oninput="calculateTotals()" required style="width: 70px; text-align: center; border-radius: 12px; height: 50px; font-weight: 800;">
+    <td class="col-qty" data-label="Qty" style="padding: 24px 12px; text-align: center; vertical-align: top;">
+        <input type="number" name="items[{{ $index }}][quantity]" class="form-control item-qty" value="{{ $item->quantity ?? 1 }}" min="1" step="1" oninput="calculateTotals()" required style="width: 70px; text-align: center; border-radius: 12px; height: 50px; font-weight: 800; margin: 0 auto;">
     </td>
     
-    <td style="padding: 24px 12px; vertical-align: top;">
-        <div style="position: relative; display: flex; align-items: center;">
+    <td class="col-rate" data-label="Unit Rate" style="padding: 24px 12px; vertical-align: top;">
+        <div style="position: relative; display: flex; align-items: center; max-width: 140px; margin: 0 auto;">
             <span style="position: absolute; left: 14px; color: #94a3b8; font-weight: 800; pointer-events: none;">$</span>
             <input type="number" name="items[{{ $index }}][price]" class="form-control item-price" value="{{ $item->unit_price ?? 0 }}" min="0" step="0.01" oninput="calculateTotals()" required style="padding-left: 28px; font-weight: 800; border-radius: 12px; height: 50px;">
         </div>
     </td>
 
-    <td style="padding: 24px 12px; vertical-align: top;">
-        <div style="position: relative; display: flex; align-items: center;">
+    <td class="col-vat-pct" data-label="VAT %" style="padding: 24px 12px; vertical-align: top;">
+        <div style="position: relative; display: flex; align-items: center; max-width: 100px; margin: 0 auto;">
             <input type="number" name="items[{{ $index }}][vat_percentage]" class="form-control item-vat-percent" value="{{ $item->vat_percentage ?? 0 }}" min="0" step="0.01" oninput="calculateTotals()" placeholder="0" style="padding-right: 28px; font-weight: 800; border-radius: 12px; height: 50px; text-align: center;">
             <span style="position: absolute; right: 14px; color: #94a3b8; font-weight: 800; font-size: 12px;">%</span>
         </div>
     </td>
 
-    <td style="padding: 24px 12px; vertical-align: top;">
-        <input type="number" name="items[{{ $index }}][vat_amount]" class="form-control item-vat-amount" value="{{ $item->vat_amount ?? 0 }}" readonly style="font-weight: 700; border-radius: 12px; height: 50px; background: #f1f5f9; border: none; text-align: center; color: #64748b;">
+    <td class="col-vat-amt" data-label="VAT Amt" style="padding: 24px 12px; vertical-align: top;">
+        <input type="number" name="items[{{ $index }}][vat_amount]" class="form-control item-vat-amount" value="{{ $item->vat_amount ?? 0 }}" readonly style="font-weight: 700; border-radius: 12px; height: 50px; background: #f1f5f9; border: none; text-align: center; color: #64748b; width: 100px; margin: 0 auto;">
     </td>
     
-    <td style="padding: 24px 32px; text-align: right; vertical-align: top;">
+    <td class="col-total" data-label="Line Total" style="padding: 24px 32px; text-align: right; vertical-align: top;">
         <div class="item-row-total" style="font-size: 20px; font-weight: 950; color: #0f172a; padding-top: 10px;">
             ${{ number_format(($item->subtotal ?? 0), 2) }}
         </div>
     </td>
     
-    <td style="padding: 24px 16px; text-align: center; width: 60px; vertical-align: top;">
+    <td class="col-actions" style="padding: 24px 16px; text-align: center; width: 60px; vertical-align: top;">
         <button type="button" onclick="removeRow(this)" style="width: 40px; height: 40px; border-radius: 12px; background: #fff5f5; border: 1px solid #fee2e2; color: #ef4444; transition: all 0.2s; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';" onmouseout="this.style.background='#fff5f5'; this.style.color='#ef4444';">
             <i class="fas fa-trash-alt"></i>
         </button>

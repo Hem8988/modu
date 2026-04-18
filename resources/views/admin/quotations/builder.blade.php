@@ -2,9 +2,9 @@
 @section('title', 'Project Estimator — ' . $lead->name)
 @section('content')
 
-<div style="max-width: 1400px; margin: 0 auto; font-family: 'Outfit', sans-serif;">
+<div class="builder-container" style="max-width: 1400px; margin: 0 auto; font-family: 'Outfit', sans-serif; padding: 20px;">
     {{-- Premium Glassmorphic Header --}}
-    <div style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.4); padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); margin-bottom: 32px;">
+    <div class="glass-header" style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.4); padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); margin-bottom: 32px;">
         <div class="row g-4 align-items-center">
             <div class="col-12 col-md-9">
                 <label style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px;">Billing Party</label>
@@ -40,7 +40,7 @@
                             Product Specifications
                         </h3>
                         <div style="display: flex; gap: 12px;">
-                            <button type="button" onclick="addItem()" class="btn btn-primary" style="background: #2563eb; border: none; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 800; box-shadow: 0 8px 16px rgba(37,99,235,0.2);">
+                            <button type="button" onclick="addItem()" class="btn btn-primary header-main-btn" style="background: #2563eb; border: none; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 800; box-shadow: 0 8px 16px rgba(37,99,235,0.2);">
                                 <i class="fas fa-plus"></i> Add Line Item
                             </button>
                         </div>
@@ -85,7 +85,7 @@
                     <div style="padding: 24px 32px; color: #0f172a;">
                         <h3 style="font-size: 10px; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Financial Summary</h3>
                         
-                        <div class="row g-3 align-items-center">
+                        <div class="row g-3 align-items-center financial-summary-row">
                             <div class="col-md-3">
                                 <div style="background: #f8fafc; padding: 16px 20px; border-radius: 16px; border: 1px solid #f1f5f9;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -519,6 +519,84 @@
         padding: 6px 14px;
         border-radius: 10px;
         white-space: nowrap;
+    }
+    /* Responsive Adjustments */
+    @media (max-width: 991.98px) {
+        .glass-header { padding: 20px !important; margin-bottom: 20px !important; }
+        .glass-header .row { flex-direction: column; text-align: left !important; }
+        .glass-header .col-md-3 { text-align: left !important; margin-top: 16px; }
+
+        .builder-container { padding: 10px !important; }
+
+        #items-table thead { display: none; }
+        #items-table, #items-body, .builder-row, .builder-row td { display: block; width: 100% !important; }
+        
+        .header-main-btn { width: 100% !important; margin-top: 12px; }
+        .builder-row {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .builder-row td {
+            padding: 12px 0 !important;
+            border-bottom: 1px solid #f1f5f9;
+            text-align: left !important;
+        }
+
+        .builder-row td:last-child { border-bottom: none; }
+
+        .builder-row td::before {
+            content: attr(data-label);
+            display: block;
+            font-size: 10px;
+            font-weight: 900;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .builder-row td.col-actions::before { display: none; }
+        .builder-row td.col-actions { text-align: left !important; padding-top: 20px !important; }
+
+        .item-qty, .item-price, .item-vat-percent, .item-vat-amount { 
+            width: 100% !important; 
+            max-width: 100% !important;
+            text-align: left !important;
+            padding-left: 16px !important;
+            margin: 0 !important;
+        }
+        
+        .col-qty input, .col-rate div, .col-vat-pct div, .col-vat-amt input {
+            max-width: 100% !important;
+            margin: 0 !important;
+        }
+
+        .item-price { padding-left: 32px !important; }
+        .item-row-total { padding-top: 5px !important; text-align: left !important; font-size: 24px !important; }
+        
+        .attributes-grid { grid-template-columns: 1fr 1fr !important; gap: 15px !important; }
+        
+        .search-results-dropdown {
+            min-width: 100% !important;
+            width: 100% !important;
+        }
+
+        .financial-summary-row > div {
+            margin-bottom: 15px;
+        }
+        .financial-summary-row button {
+            margin-top: 10px;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .attributes-grid { grid-template-columns: 1fr !important; }
+        #summary-total { font-size: 32px !important; }
     }
 </style>
 @endsection
