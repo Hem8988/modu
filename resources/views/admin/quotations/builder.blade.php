@@ -125,12 +125,83 @@
                     </div>
                 </div>
 
-                {{-- Narration --}}
+                {{-- Narration & Service Agreement --}}
                 <div class="row g-4 mt-1">
-                    <div class="col-12">
-                        <div style="background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0;">
+                    <div class="col-12 col-xl-4">
+                        <div style="background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0; height: 100%;">
                             <label style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px;">Narration / Scope of Work</label>
-                            <textarea name="narration" rows="3" class="form-control" placeholder="Describe the project scope..." style="border-radius: 12px; border: 1px solid #e2e8f0; font-size: 13px; padding: 12px;">{{ $existingQuote?->narration ?? '' }}</textarea>
+                            <textarea name="narration" rows="5" class="form-control" placeholder="Describe the project scope..." style="border-radius: 12px; border: 1px solid #e2e8f0; font-size: 13px; padding: 12px; height: calc(100% - 30px);">{{ $existingQuote?->narration ?? '' }}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-8">
+                        <div style="background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0;">
+                            <label style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px;">Project-Specific Service Agreement</label>
+                            <textarea name="terms_conditions" rows="8" class="form-control" placeholder="Legal terms for this project..." style="border-radius: 12px; border: 1px solid #e2e8f0; font-size: 13px; padding: 12px; font-weight: 600;">{{ $existingQuote?->terms_conditions ?? 'ModuShade – Service Agreement
+
+This Agreement is made between ModuShade ("Company") and the undersigned client ("Customer").
+
+---
+
+1. Scope of Work
+
+The Company agrees to supply and install blinds/shades as detailed in the approved quotation sent to the Customer.
+
+---
+
+2. Measurements & Responsibility
+
+All measurements are based on on-site evaluation.
+Customer is responsible for approving final specifications (fabric, color, operation, placement).
+
+---
+
+3. Payment Terms
+
+- Deposit: ___% required to start production
+- Balance: Due upon completion of installation
+
+No order will be placed without deposit.
+
+---
+
+4. Production & Installation Timeline
+
+Estimated lead time: 14–21 business days from deposit date.
+Installation will be scheduled once products are ready.
+
+---
+
+5. Custom Order Policy
+
+All products are custom-made.
+👉 No cancellations or refunds after production has started.
+
+---
+
+6. Installation Conditions
+
+Customer agrees to provide clear and safe access to installation areas.
+Any delays due to site conditions may result in rescheduling.
+
+---
+
+7. Warranty
+
+Warranty is limited to manufacturer defects only.
+Does not cover misuse, damage, or improper handling.
+
+---
+
+8. Final Approval
+
+By signing below, the Customer confirms:
+
+- Approval of quotation
+- Approval of product specifications
+- Agreement to all terms above' }}</textarea>
+                            <div style="font-size: 11px; color: #64748b; margin-top: 8px; font-weight: 500;">
+                                <i class="fas fa-info-circle me-1"></i> These terms will be displayed specifically for this client on the digital signing portal.
+                            </div>
                         </div>
                     </div>
                 </div>

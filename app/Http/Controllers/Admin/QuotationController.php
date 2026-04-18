@@ -40,9 +40,10 @@ class QuotationController extends Controller
                 'freight'      => $request->freight ?? 0,
                 'discount'     => $request->discount ?? 0,
                 'total_amount' => $request->total_amount ?? 0,
-                'narration'    => $request->narration ?? '',
-                'comments'     => $request->comments ?? '',
-                'status'       => 'draft',
+                'narration'        => $request->narration ?? '',
+                'comments'         => $request->comments ?? '',
+                'terms_conditions' => $request->terms_conditions,
+                'status'           => 'draft',
                 'expiry_date'  => now()->addDays(30),
             ]
         );

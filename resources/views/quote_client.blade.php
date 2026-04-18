@@ -382,6 +382,44 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Agreement Box */
+        .agreement-box {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+            text-align: left;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 14px;
+            color: var(--slate-600);
+            border-left: 4px solid var(--accent);
+        }
+        .agreement-box h3 {
+            color: var(--slate-900);
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            padding: 16px;
+            background: var(--accent-soft);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .checkbox-container:hover { background: rgba(37, 99, 235, 0.15); }
+        .checkbox-container input { width: 20px; height: 20px; cursor: pointer; }
+        .checkbox-label { font-size: 14px; font-weight: 700; color: var(--accent); cursor: pointer; }
 
         @media (max-width: 768px) {
             .summary-grid { grid-template-columns: 1fr 1fr; }
@@ -537,6 +575,18 @@
             <form id="acceptance-form" class="auth-form" method="POST" action="{{ route('quote.accept', $quote->client_token) }}">
                 @csrf
                 <input type="hidden" name="signature_data" id="signature_data">
+
+                {{-- Service Agreement Display --}}
+                <div class="agreement-box">
+                    <h3>Service Agreement & Terms</h3>
+                    {!! nl2br(e($quote->terms_conditions ?: \App\Models\Setting::get('quote_service_agreement', 'Default Service Agreement text will appear here.'))) !!}
+                </div>
+
+                {{-- Mandatory Checkbox --}}
+                <label class="checkbox-container" for="agree_terms">
+                    <input type="checkbox" id="agree_terms" required>
+                    <span class="checkbox-label">I have read and agree to the Service Agreement above.</span>
+                </label>
                 
                 <div class="input-group">
                     <label class="input-label">Full Legal Name</label>
@@ -598,6 +648,12 @@
 
         const form = document.getElementById('acceptance-form');
         form.addEventListener('submit', function(e) {
+            const agreeCheckbox = document.getElementById('agree_terms');
+            if (agreeCheckbox && !agreeCheckbox.checked) {
+                alert("You must agree to the Service Agreement before signing.");
+                e.preventDefault();
+                return;
+            }
             if (signaturePad.isEmpty()) {
                 alert("Please provide a digital signature to authorize this proposal.");
                 e.preventDefault();

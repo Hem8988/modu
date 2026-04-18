@@ -6,7 +6,7 @@ class Quote extends Model {
     public $timestamps = true;
     protected $fillable = [
         'lead_id', 'quote_number', 'subtotal', 'vat_amount', 'freight', 'discount', 
-        'total_amount', 'expiry_date', 'status', 'narration', 'comments',
+        'total_amount', 'expiry_date', 'status', 'narration', 'comments', 'terms_conditions',
         'client_token', 'signed_at', 'signature_data', 'signature_ip', 'signature_name'
     ];
     protected $casts = [
