@@ -239,9 +239,39 @@
 
         @media print {
             .print-fab { display: none; }
-            body { background: white; }
-            .page { padding: 40px 0; border: none; max-width: 100%; box-shadow: none; }
-            .page::before { opacity: 0.05; }
+            body { background: white; -webkit-print-color-adjust: exact; }
+            .page { padding: 5px 0 !important; border: none; max-width: 100%; box-shadow: none; margin: 0; }
+            .page::before { display: none; }
+            
+            .header-main { margin-bottom: 20px !important; padding-bottom: 15px !important; border-bottom-width: 1px !important; }
+            .brand-block h1 { font-size: 28px !important; }
+            .id-badge { font-size: 16px !important; padding: 4px 12px !important; }
+            
+            .address-grid { margin-bottom: 20px !important; }
+            .address-box h3 { margin-bottom: 6px !important; padding-bottom: 4px !important; }
+            .address-content strong { font-size: 14px !important; }
+            .address-content { font-size: 12px !important; }
+            
+            table { margin-bottom: 15px !important; }
+            th { padding: 8px 15px !important; }
+            td { padding: 10px 15px !important; }
+            .item-name { font-size: 13px !important; }
+            .item-specs { font-size: 9px !important; }
+            
+            .financial-container { margin-top: 10px !important; gap: 30px !important; }
+            .ledger-box { padding: 15px !important; width: 260px !important; }
+            .ledger-row { margin-bottom: 6px !important; font-size: 11px !important; }
+            .ledger-row.total { margin-top: 10px !important; padding-top: 10px !important; font-size: 20px !important; }
+            
+            footer { margin-top: 20px !important; }
+            .signature-block { margin-top: 20px !important; }
+            .sig-meta, .sig-drawing { padding: 15px !important; }
+            .sig-name { font-size: 18px !important; }
+            .sig-details { font-size: 9px !important; }
+            .sig-drawing img { max-height: 60px !important; }
+            
+            /* Empty signature block vertical space */
+            .signature-placeholder { margin-top: 40px !important; }
         }
         @media screen and (max-width: 768px) {
             .header-main { flex-direction: column !important; }
@@ -264,7 +294,6 @@
         <header class="header-main">
             <div style="flex: 1;"></div>
             <div class="id-block">
-                <div class="sig-header" style="color: var(--slate-400); text-align: right; margin-bottom: 8px;">Official Project Registry</div>
                 <div class="id-badge">PROPOSAL #{{ $quote->quote_number }}</div>
                 <div class="id-details">
                     Issue Date: <strong>{{ $quote->created_at?->format('F d, Y') }}</strong><br>
@@ -396,7 +425,7 @@
                 </div>
             </div>
             @else
-            <div style="margin-top: 100px; display: flex; justify-content: flex-end; gap: 60px;">
+            <div class="signature-placeholder" style="margin-top: 100px; display: flex; justify-content: flex-end; gap: 60px;">
                 <div style="text-align: center; width: 220px;">
                     <div style="height: 60px; border-bottom: 1px solid var(--border); margin-bottom: 8px;"></div>
                     <div style="font-size: 10px; font-weight: 800; color: var(--slate-400); text-transform: uppercase;">{{ $globalSettings['company_name'] ?? 'ModuShade' }} Authority</div>
