@@ -191,6 +191,24 @@
                             <input type="text" name="mail_from_name" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['mail_from_name'] ?? 'Modu Shade' }}">
                         </div>
                     </div>
+
+                    {{-- Email Test Hub --}}
+                    <div class="bg-primary bg-opacity-10 border border-primary-subtle rounded-4 p-4 mt-5">
+                        <h6 class="fw-bolder text-primary mb-3 d-flex align-items-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Email Connection Test Utility
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-12 col-md-8">
+                                <input type="email" id="test_mail_address" class="form-control bg-white fw-bold py-2 custom-input" placeholder="Enter recipient email (e.g. your@email.com)" value="{{ auth()->user()->email }}">
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button type="button" onclick="runEmailTest()" id="btn-test-email" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">
+                                    Run Email Test
+                                </button>
+                            </div>
+                        </div>
+                        <div id="email-test-feedback" class="mt-3 small fw-bold" style="display: none;"></div>
+                    </div>
                 </div>
 
                 {{-- SMS Card --}}
@@ -568,6 +586,67 @@
         .catch(error => {
             btn.disabled = false;
             btn.innerText = 'Run Connection Test';
+            feedback.className = 'mt-3 small fw-bold text-danger';
+            feedback.innerText = '❌ Failed to reach the server. Check your internet connection.';
+        });
+    }
+
+    window.runEmailTest = function() {
+        const email = document.getElementById('test_mail_address').value;
+        const host = document.querySelector('input[name="mail_host"]').value;
+        const port = document.querySelector('input[name="mail_port"]').value;
+        const user = document.querySelector('input[name="mail_username"]').value;
+        const pass = document.querySelector('input[name="mail_password"]').value;
+        const enc = document.querySelector('select[name="mail_encryption"]').value;
+        const from = document.querySelector('input[name="mail_from_address"]').value;
+        const fromName = document.querySelector('input[name="mail_from_name"]').value;
+        
+        const btn = document.getElementById('btn-test-email');
+        const feedback = document.getElementById('email-test-feedback');
+
+        if (!email) {
+            alert('Please enter a destination email address.');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Sending...';
+        feedback.style.display = 'block';
+        feedback.className = 'mt-3 small fw-bold text-secondary';
+        feedback.innerText = 'Attempting SMTP handshake...';
+
+        fetch("{{ route('admin.settings.test-email') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ 
+                email: email,
+                mail_host: host,
+                mail_port: port,
+                mail_username: user,
+                mail_password: pass,
+                mail_encryption: enc,
+                mail_from_address: from,
+                mail_from_name: fromName
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            btn.disabled = false;
+            btn.innerText = 'Run Email Test';
+            if (data.success) {
+                feedback.className = 'mt-3 small fw-bold text-success';
+                feedback.innerText = '✓ ' + data.message;
+            } else {
+                feedback.className = 'mt-3 small fw-bold text-danger';
+                feedback.innerText = '❌ ' + (data.message || 'Unknown error occurred.');
+            }
+        })
+        .catch(error => {
+            btn.disabled = false;
+            btn.innerText = 'Run Email Test';
             feedback.className = 'mt-3 small fw-bold text-danger';
             feedback.innerText = '❌ Failed to reach the server. Check your internet connection.';
         });

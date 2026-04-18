@@ -128,6 +128,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/settings',                       [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/update', [SettingController::class, 'update'])->name('settings.update');
     Route::post('/settings/test-sms', [SettingController::class, 'testSms'])->name('settings.test-sms');
+    Route::post('/settings/test-email', [SettingController::class, 'testEmail'])->name('settings.test-email');
 
     // Real-time Activities Monitoring
     Route::get('/activities/latest', [ActivityController::class, 'latest'])->name('activities.latest');
