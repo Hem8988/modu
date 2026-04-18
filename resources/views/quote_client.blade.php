@@ -427,20 +427,22 @@
         }
 
         @media print {
-            body { background: white !important; padding: 0; margin: 0; }
+            @page { size: landscape; margin: 1.5cm; }
+            body { background: white !important; padding: 0; margin: 0; font-size: 11pt; }
             .app-container { margin: 0; padding: 0; max-width: none; }
             .print-btn, .auth-form { display: none !important; }
             .glass-header, .specs-card, .summary-dashboard { 
                 box-shadow: none !important; 
                 border: 1px solid #cbd5e1 !important; 
                 margin-bottom: 16px !important;
-                page-break-inside: avoid;
+                page-break-inside: auto; /* ALLOW break to prevent multi-page gaps */
             }
             .glass-header::before { display: none !important; }
-            .acceptance-section { page-break-inside: avoid; margin-bottom: 0; }
-            .agreement-box { padding: 16px !important; margin-bottom: 16px !important; }
-            .items-table td, .items-table th { padding: 12px 16px !important; }
-            .summary-box { padding: 12px !important; }
+            .acceptance-section { page-break-inside: auto; margin-bottom: 0; }
+            .agreement-box { padding: 16px !important; margin-bottom: 16px !important; page-break-inside: auto; }
+            .items-table td, .items-table th { padding: 8px 12px !important; }
+            .items-table tr { page-break-inside: avoid; } /* Keep items together */
+            .summary-box { padding: 12px !important; page-break-inside: avoid; }
             .total-payable-box { color: #000 !important; border: 2px solid #000 !important; }
         }
     </style>
