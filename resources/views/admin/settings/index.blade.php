@@ -209,6 +209,17 @@
                         </div>
                         <div id="email-test-feedback" class="mt-3 small fw-bold" style="display: none;"></div>
                     </div>
+
+                    {{-- Client Email Automation Toggle --}}
+                    <div class="d-flex align-items-center justify-content-between bg-light p-4 rounded-4 border mt-5">
+                        <div>
+                            <h5 class="fw-bolder text-dark mb-1">Enable Client Welcome Email</h5>
+                            <p class="text-secondary small fw-semibold mb-0">Automatically send a thank-you email when a new lead arrives.</p>
+                        </div>
+                        <div class="form-check form-switch ms-3">
+                            <input class="form-check-input fs-3 custom-switch" type="checkbox" name="welcome_email_enabled" {{ ($settings['welcome_email_enabled'] ?? 'off') === 'on' ? 'checked' : '' }}>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- SMS Card --}}

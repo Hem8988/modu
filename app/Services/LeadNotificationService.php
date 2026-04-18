@@ -27,21 +27,14 @@ class LeadNotificationService
         $adminEmail = $settings['admin_email'] ?? $admin?->email ?? 'admin@modushade.com';
         $adminPhone = $settings['admin_phone'] ?? $admin?->phone ?? env('ADMIN_PHONE');
 
-        \Log::info('LeadNotification Debug:', [
-            'sms_enabled' => $settings['sms_enabled'] ?? 'MISSING',
-            'admin_found' => !is_null($admin),
-            'admin_phone_from_db' => $admin?->phone,
-            'final_admin_phone' => $adminPhone,
-            'env_admin_phone' => env('ADMIN_PHONE')
-        ]);
-
         // Send Emails
         try {
             // To Admin
             Mail::to($adminEmail)->send(new AdminLeadMail($lead));
             
             // To User
-            if (!empty($lead->email)) {
+            $welcomeEmailEnabled = ($settings['welcome_email_enabled'] ?? 'off') === 'on';
+            if ($welcomeEmailEnabled && !empty($lead->email)) {
                 Mail::to($lead->email)->send(new UserLeadMail($lead));
             }
         } catch (\Exception $e) {
@@ -63,7 +56,17 @@ class LeadNotificationService
 
             // To Admin (Immediate alert)
             if (!empty($adminPhone)) {
-                $adminMsg = "🚨 New Lead Alert: {$lead->name} is interested in {$lead->shades_needed}. Phone: {$lead->phone}";
+                $shadesNeeded = $lead->shades_needed ?: 'General Inquiry';
+                $adminMsg = "🚨 NEW LEAD: {$lead->name}\n";
+                $adminMsg .= "📧 Email: {$lead->email}\n";
+                $adminMsg .= "📱 Phone: {$lead->phone}\n";
+                $adminMsg .= "🏗️ Project: {$shadesNeeded}\n";
+                
+                if ($lead->windows_count) $adminMsg .= "🪟 Windows: {$lead->windows_count}\n";
+                if ($lead->budget) $adminMsg .= "💰 Budget: {$lead->budget}\n";
+                if ($lead->zip_code) $adminMsg .= "📍 ZIP: {$lead->zip_code}\n";
+                if ($lead->source) $adminMsg .= "🌐 Source: {$lead->source}";
+
                 try {
                     $twilio->send($adminPhone, $adminMsg);
                 } catch (\Exception $e) {
