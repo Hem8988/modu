@@ -232,6 +232,8 @@
                                 <input type="password" name="twilio_token" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['twilio_token'] ?? '' }}" placeholder="••••••••••••••••••••••••">
                             </div>
                             <div class="col-12">
+                                <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Twilio Sender Number (From)</label>
+                                <input type="text" name="twilio_from" class="form-control bg-light fw-bold py-2 custom-input" value="{{ $settings['twilio_from'] ?? '' }}" placeholder="+1234567890">
                                 <div class="form-text text-secondary mt-1 small">Your verified Twilio phone number or Messaging Service SID.</div>
                             </div>
                         </div>
@@ -514,12 +516,18 @@
     renderSequence();
 
     window.runTwilioTest = function() {
-        const phone = document.getElementById('test_twilio_phone').value;
-        const sid = document.querySelector('input[name="twilio_sid"]').value;
-        const token = document.querySelector('input[name="twilio_token"]').value;
-        const from = document.querySelector('input[name="twilio_from"]').value;
+        const phone = document.getElementById('test_twilio_phone')?.value;
+        const sidEl = document.querySelector('input[name="twilio_sid"]');
+        const tokenEl = document.querySelector('input[name="twilio_token"]');
+        const fromEl = document.querySelector('input[name="twilio_from"]');
+        
         const btn = document.getElementById('btn-test-twilio');
         const feedback = document.getElementById('twilio-test-feedback');
+
+        if (!sidEl?.value || !tokenEl?.value || !fromEl?.value) {
+            alert('Please fill in Twilio SID, Token, and From Number before testing.');
+            return;
+        }
 
         if (!phone) {
             alert('Please enter a destination phone number.');
@@ -538,7 +546,12 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ phone, sid, token, from })
+            body: JSON.stringify({ 
+                phone: phone, 
+                sid: sidEl.value, 
+                token: tokenEl.value, 
+                from: fromEl.value 
+            })
         })
         .then(response => response.json())
         .then(data => {
