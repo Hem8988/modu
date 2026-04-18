@@ -577,8 +577,8 @@
                 <span class="label" style="color: #92400e;">Total Discount</span>
                 <span class="value" style="color: #92400e;">-${{ number_format($quote->discount, 2) }}</span>
             </div>
-            <div class="summary-box total-payable-box">
-                <span class="label">Net Total Payable</span>
+            <div class="summary-box">
+                <span class="label" >Net Total Payable</span>
                 <span class="value">${{ number_format($quote->total_amount, 2) }}</span>
             </div>
         </div>
