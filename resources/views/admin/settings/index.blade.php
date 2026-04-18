@@ -236,6 +236,24 @@
                         </div>
                     </div>
 
+                    {{-- Client Welcome SMS (Immediate) --}}
+                    <div class="bg-light p-4 rounded-4 border mb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div>
+                                <h5 class="fw-bolder text-dark mb-1">Send Immediate Client Confirmation</h5>
+                                <p class="text-secondary small fw-semibold mb-0">Sends a "Thank You" or Lead Receipt SMS the moment they submit.</p>
+                            </div>
+                            <div class="form-check form-switch ms-3">
+                                <input class="form-check-input fs-3 custom-switch" type="checkbox" name="welcome_sms_enabled" {{ ($settings['welcome_sms_enabled'] ?? 'off') === 'on' ? 'checked' : '' }}>
+                            </div>
+                        </div>
+                        <div id="welcome-sms-template-container" style="{{ ($settings['welcome_sms_enabled'] ?? 'off') === 'on' ? '' : 'display:none;' }}">
+                            <label class="form-label small fw-bold text-secondary text-uppercase mb-1">Welcome SMS Template</label>
+                            <textarea name="welcome_sms_template" rows="3" class="form-control bg-white fw-bold custom-input" placeholder="e.g. Hi {{name}}, we received your request for {{project}}!">{{ $settings['welcome_sms_template'] ?? "Hi {{name}}, we have received your request for {{project}}. Our team will contact you shortly!" }}</textarea>
+                            <div class="form-text text-secondary mt-2 small">Available tags: <code>{{name}}</code>, <code>{{project}}</code>, <code>{{phone}}</code>, <code>{{email}}</code></div>
+                        </div>
+                    </div>
+
                     <div id="sms-sequence-container" class="d-flex flex-column gap-4 mb-4">
                         {{-- Steps will be injected here by JS --}}
                     </div>

@@ -46,6 +46,22 @@ class LeadNotificationService
         if ($smsEnabled) {
             $twilio = app(\App\Services\TwilioService::class);
 
+            // To User (Immediate Welcome SMS)
+            $welcomeSmsEnabled = ($settings['welcome_sms_enabled'] ?? 'off') === 'on';
+            if ($welcomeSmsEnabled && !empty($lead->phone)) {
+                $template = $settings['welcome_sms_template'] ?? "Hi {{name}}, we have received your request for {{project}}. Our team will contact you shortly!";
+                $msg = str_replace(
+                    ['{{name}}', '{{project}}', '{{phone}}', '{{email}}'],
+                    [$lead->name, $lead->shades_needed ?: 'General Inquiry', $lead->phone, $lead->email],
+                    $template
+                );
+                try {
+                    $twilio->send($lead->phone, $msg);
+                } catch (\Exception $e) {
+                    \Log::error('Client Welcome SMS Error: ' . $e->getMessage());
+                }
+            }
+
             // To User (via Sequence / Delayed Job)
             $sequence = json_decode($settings['sms_sequence'] ?? '[]', true);
             if (!empty($sequence) && !empty($lead->phone)) {
