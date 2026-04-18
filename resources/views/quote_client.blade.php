@@ -427,18 +427,21 @@
         }
 
         @media print {
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            body { padding-bottom: 0; }
-            .app-container { max-width: 100%; margin: 0; padding: 0 20px; }
+            body { background: white !important; padding: 0; margin: 0; }
+            .app-container { margin: 0; padding: 0; max-width: none; }
             .print-btn, .auth-form { display: none !important; }
-            
-            /* Prevent breaking crucial blocks */
-            .glass-header, .summary-dashboard, .acceptance-section, .agreement-box { 
-                page-break-inside: avoid; 
+            .glass-header, .specs-card, .summary-dashboard { 
+                box-shadow: none !important; 
+                border: 1px solid #cbd5e1 !important; 
+                margin-bottom: 16px !important;
+                page-break-inside: avoid;
             }
+            .glass-header::before { display: none !important; }
+            .acceptance-section { page-break-inside: avoid; margin-bottom: 0; }
+            .agreement-box { padding: 16px !important; margin-bottom: 16px !important; }
+            .items-table td, .items-table th { padding: 12px 16px !important; }
+            .summary-box { padding: 12px !important; }
+            .total-payable-box { color: #000 !important; border: 2px solid #000 !important; }
         }
     </style>
 </head>
