@@ -262,14 +262,7 @@
 
     <div class="page">
         <header class="header-main">
-                @php $nParts = explode(' ', $globalSettings['company_name'] ?? 'Modu Shade'); $first = array_shift($nParts); $rest = implode(' ', $nParts); @endphp
-                <h1>{{ $first }}<span>{{ $rest }}</span></h1>
-                <p>Digital Industrial Solutions</p>
-                <div style="margin-top: 20px; font-size: 12px; color: var(--slate-600); line-height: 1.5;">
-                    {{ $globalSettings['company_address_1'] ?? '24 Poplar Street' }}, {{ $globalSettings['company_address_2'] ?? 'Creskill, NJ 07626' }}<br>
-                    <strong>{{ $globalSettings['company_phone'] ?? '+1 201 660 5298' }}</strong> | {{ $globalSettings['company_email'] ?? 'info@modu-shade.com' }}
-                </div>
-            </div>
+            <div style="flex: 1;"></div>
             <div class="id-block">
                 <div class="sig-header" style="color: var(--slate-400); text-align: right; margin-bottom: 8px;">Official Project Registry</div>
                 <div class="id-badge">PROPOSAL #{{ $quote->quote_number }}</div>
@@ -376,14 +369,14 @@
         </div>
 
         <footer>
-            <div class="notes-section">
+            <!-- <div class="notes-section">
                 <h4>Terms of Engagement</h4>
                 <p>
                     • A 50% commitment deposit is required to initiate manufacture.<br>
                     • Quotation remains active for 30 calendar days from issue date.<br>
                     • Standard warranty covers mechanical systems for 5 years post-installation.
                 </p>
-            </div>
+            </div> -->
 
             @if($quote->signature_data)
             <div class="signature-block">
