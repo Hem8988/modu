@@ -73,7 +73,8 @@ class LeadNotificationService
             // To Admin (Immediate alert)
             if (!empty($adminPhone)) {
                 $shadesNeeded = $lead->shades_needed ?: 'General Inquiry';
-                $adminMsg = "🚨 NEW LEAD: {$lead->name}\n";
+                $adminMsg = "New Lead";
+                $adminMsg .= "🚨 Name: {$lead->name}\n";
                 $adminMsg .= "📧 Email: {$lead->email}\n";
                 $adminMsg .= "📱 Phone: {$lead->phone}\n";
                 $adminMsg .= "🏗️ Project: {$shadesNeeded}\n";
