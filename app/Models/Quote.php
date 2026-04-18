@@ -33,5 +33,9 @@ class Quote extends Model {
                 $quote->client_token = \Illuminate\Support\Str::random(40);
             }
         });
+
+        static::created(function ($quote) {
+            \App\Services\LeadNotificationService::handleNewQuote($quote);
+        });
     }
 }

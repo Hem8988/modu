@@ -164,11 +164,12 @@ class LeadNotificationService
                 Mail::to($recipients)->send(new AdminFollowUpMail($followUp));
             }
 
-            // SMS Alert to Staff
+            // SMS Alerts
             if (($settings['sms_enabled'] ?? 'off') === 'on') {
                 $twilio = app(\App\Services\TwilioService::class);
-                $staffPhones = array_unique(array_filter([$adminPhone, $agent?->phone]));
                 
+                // 1. To Staff (Admin & Agent)
+                $staffPhones = array_unique(array_filter([$adminPhone, $agent?->phone]));
                 foreach ($staffPhones as $phone) {
                     try {
                         $twilio->send($phone, "⏳ Reminder: Follow-up required for {$lead->name} today. Check CRM for notes.");
@@ -176,9 +177,73 @@ class LeadNotificationService
                         \Log::error('Staff FollowUp SMS Error: ' . $e->getMessage());
                     }
                 }
+
+                // 2. To Client (User)
+                if (!empty($lead->phone)) {
+                    try {
+                        $twilio->send($lead->phone, "Hi {$lead->name}, just a quick note that we've scheduled a follow-up for your project on " . $followUp->date . ". We look forward to speaking with you!");
+                    } catch (\Exception $e) {
+                        \Log::error('Client FollowUp SMS Error: ' . $e->getMessage());
+                    }
+                }
             }
         } catch (\Exception $e) {
             \Log::error('FollowUp Notification Error: ' . $e->getMessage());
+        }
+    }
+
+    public static function handleNewQuote(\App\Models\Quote $quote)
+    {
+        $settings = Setting::getAll();
+        self::configureMail($settings);
+        $lead = $quote->lead;
+
+        // Admin Info
+        $admin = User::where('role', 'admin')->first();
+        $adminEmail = $settings['admin_email'] ?? $admin?->email ?? 'admin@modushade.com';
+        $adminPhone = $settings['admin_phone'] ?? $admin?->phone ?? env('ADMIN_PHONE');
+
+        try {
+            $agent = User::find($lead->assigned_to);
+            
+            // Emails
+            // To Admin & Agent
+            $recipients = array_unique(array_filter([$adminEmail, $agent?->email]));
+            if (!empty($recipients)) {
+                Mail::to($recipients)->send(new AdminQuoteMail($quote));
+            }
+
+            // To Client
+            if (!empty($lead->email)) {
+                Mail::to($lead->email)->send(new UserQuoteMail($quote));
+            }
+
+            // SMS Alerts
+            if (($settings['sms_enabled'] ?? 'off') === 'on') {
+                $twilio = app(\App\Services\TwilioService::class);
+                $total = number_format($quote->total_amount, 2);
+
+                // 1. To Client
+                if (!empty($lead->phone)) {
+                    try {
+                        $twilio->send($lead->phone, "Hi {$lead->name}, your quotation #{$quote->quote_number} for \${$total} has been created! Please check your email for the full details and link to sign.");
+                    } catch (\Exception $e) {
+                        \Log::error('Client Quote SMS Error: ' . $e->getMessage());
+                    }
+                }
+
+                // 2. To Admin & Agent
+                $staffPhones = array_unique(array_filter([$adminPhone, $agent?->phone]));
+                foreach ($staffPhones as $phone) {
+                    try {
+                        $twilio->send($phone, "🚨 New Quote: Quotation #{$quote->quote_number} for \${$total} has been generated for {$lead->name}.");
+                    } catch (\Exception $e) {
+                        \Log::error('Staff Quote SMS Error: ' . $e->getMessage());
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('Quotation Notification Error: ' . $e->getMessage());
         }
     }
 
